@@ -5,6 +5,8 @@ var mysql = require('mysql');
 var path = require('path');
 var schema = require('../db/schema.js')
 
+var port = process.env.PORT || 3000;
+
 var app = express();
 
 // middleware - parse JSON
@@ -17,8 +19,8 @@ app.use('*', function(req, res, next) {
 })
 
 // spin up server
-app.listen('3000', function() {
-  console.log('Listening on port 3000');
+app.listen(port, function() {
+  console.log('Listening on port ', port);
 });
 
 // export app
