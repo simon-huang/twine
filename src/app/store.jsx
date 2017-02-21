@@ -1,5 +1,11 @@
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 
-import reducer from "./reducers/index.jsx"
+import logger from "redux-logger";
+import thunk from "redux-thunk";
+import promise from "redux-promise-middleware";
 
-export default createStore(reducer);
+import reducer from "./reducers/index.jsx";
+
+var middleware = applyMiddleware(promise(), thunk, logger());
+
+export default createStore(reducer, middleware);
