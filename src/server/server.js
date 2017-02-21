@@ -12,6 +12,9 @@ app.use(parser.json());
 
 // serve static client-facing files
 app.use(express.static(path.resolve(__dirname, '../public')));
+app.use('*', function(req, res, next) {
+  res.sendFile(path.resolve(__dirname, '../public/index.html'));
+})
 
 // spin up server
 app.listen('3000', function() {
