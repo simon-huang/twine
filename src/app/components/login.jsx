@@ -1,5 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+// UI
+import styles from './styles/style.jsx';
+import TextField from 'material-ui/TextField';
+import RaisedBtn from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/RaisedButton';
+
+// Store properties
 import * as user from '../actions/userActions.jsx';
 
 @connect((store) => {
@@ -29,11 +37,14 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.login}>
-        <input type="text" onChange={this.handleChange} value={this.props.email} name="email" placeholder="Email address" />
-        <input type="text" onChange={this.handleChange} value={this.props.password} name="password" placeholder="Password" />
-        <input type="submit" value="Login"/>
-      </form>
+      <div className="text-center mt45">
+        <h2>Log in to your account</h2>
+        <form onSubmit={this.login} style={styles.formFields}>
+          <TextField type="text" onChange={this.handleChange} value={this.props.email} name="email" floatingLabelText="Email address" style={styles.signup} />
+          <TextField type="password" onChange={this.handleChange} value={this.props.password} name="password" floatingLabelText="Password" style={styles.signup} />
+          <RaisedButton type="submit" label="Log in" primary={true} style={styles.btn} />
+        </form>
+      </div>
     );
   }
 }
