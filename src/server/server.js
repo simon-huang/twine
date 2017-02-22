@@ -4,9 +4,10 @@ var mysql = require('mysql');
 var passport = require('passport');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-
 var path = require('path');
+
 var schema = require('../db/schema.js')
+var authRouter = require('./routers/auth.js');
 
 var port = process.env.PORT || 3000;
 
@@ -47,27 +48,31 @@ function isLoggedIn(req, res, next) {
 
 
 //================== set up routes ==================
-// process the signup form
-app.post('/signup', passport.authenticate('local-signup', {
-  successRedirect : '/profile', // redirect to the secure profile section
-  failureRedirect : '/signup', // redirect back to the signup page if there is an error
-  failureFlash : true // allow flash messages
-}));
+
+// process input routes from the client
+app.use('/api/auth', authRouter);
+
+// // process the signup form
+// app.post('/signup', passport.authenticate('local-signup', {
+//   successRedirect : '/profile', // redirect to the secure profile section
+//   failureRedirect : '/signup', // redirect back to the signup page if there is an error
+//   failureFlash : true // allow flash messages
+// }));
 
 
-// process the login form
-app.post('/login', passport.authenticate('local-login', {
-  successRedirect : '/profile', // redirect to the secure profile section
-  failureRedirect : '/login', // redirect back to the signup page if there is an error
-  failureFlash : true // allow flash messages
-}));
+// // process the login form
+// app.post('/login', passport.authenticate('local-login', {
+//   successRedirect : '/profile', // redirect to the secure profile section
+//   failureRedirect : '/login', // redirect back to the signup page if there is an error
+//   failureFlash : true // allow flash messages
+// }));
 
-app.get('/logout', function (req, res) {
-  // passport attaches logout method to all requests
-  console.log('The logout listener is working');
-  req.logout();
-  res.redirect('/');
-});
+// app.get('/logout', function (req, res) {
+//   // passport attaches logout method to all requests
+//   console.log('The logout listener is working');
+//   req.logout();
+//   res.redirect('/');
+// });
 //======================================================
 
 

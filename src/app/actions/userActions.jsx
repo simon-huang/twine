@@ -16,12 +16,42 @@ export function userLogin (username, password) {
   }
 }
 
-export function userSignUp (email, username, password) {
-  return function(dispatch) {
-    axios.post('/signup', {
-      email: email,
-      username: username,
-      password: password
+export function handleChange (name, value) {
+  return {
+    type: "EDIT_" + name.toUpperCase(),
+    payload: value
+  }
+}
+
+export function login () {
+  return function(dispatch, getState) {
+    var user = getState().user.user;
+    axios.post('/api/auth/login', {
+      email: user.email,
+      password: user.password
+    })
+    .then((response) => {
+      dispatch({
+        type: "USER_CREATED", 
+        payload: response.data
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type: "USER_LOGIN_REJECTED", 
+        payload: err
+      })
+    })
+  }
+}
+
+export function signup () {
+  return function(dispatch, getState) {
+    var user = getState().user.user;
+    axios.post('/api/auth/signup', {
+      email: user.email,
+      username: user.username,
+      password: user.password
     })
     .then((response) => {
       dispatch({
