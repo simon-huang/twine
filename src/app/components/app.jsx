@@ -1,21 +1,34 @@
 import React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
+import SignUp from './signUp.jsx';
+import Login from './login.jsx';
+
+
+//import action to dispatch
+import * as user from '../actions/userActions.jsx';
 
 @connect((store) => {
   return {
-    foo: store.doc.error
+    foo: store.doc.error,
+    login: store.user.login
   }
 })
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+  handleClick() {
+    this.props.dispatch(user.changeView());
   }
-
+  
   render() {
-    console.log(this.props.foo);
     return (
-      <h1>Hello World</h1>
+      <div>
+        {this.props.login ? (<SignUp />) : (<Login />)}
+        <div>
+          <button type="button" onClick={this.handleClick.bind(this)}>
+            Switch
+          </button>
+        </div>
+      </div>
     );
   }
 }
