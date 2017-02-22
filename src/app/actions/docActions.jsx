@@ -15,10 +15,3 @@ export function createDocument() {
     axios.post('/api/doc/createDoc', states.doc.docInit);
   }
 }
-
-// export function testFunc() {
-//   return (dispatch, getState) => {
-//     var states = getState();
-//     console.log('docInit States', states.doc.docInit);
-//   }
-// }

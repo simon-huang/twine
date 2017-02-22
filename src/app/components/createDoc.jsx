@@ -1,13 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as doc from '../actions/documentActions.jsx';
-
-// Name of doc
-// Desciption of doc (optional)
-// Public or Private
-// Create Doc button
-  // Create Doc fires off an API call over to the server/SQL DB
-
+import * as doc from '../actions/docActions.jsx';
 
 @connect((store) => {
   return {
@@ -32,6 +25,12 @@ export default class CreateDoc extends React.Component {
   createDocSubmit() {
     console.log('Submitting! Sorta');
     this.props.dispatch(doc.createDocument());
+  }
+
+  componentWillMount() {
+    this.props.dispatch(doc.handleChange('docName', ''));
+    this.props.dispatch(doc.handleChange('docDescription', ''));
+    this.props.dispatch(doc.handleChange('docType', ''));
   }
 
   render() {
