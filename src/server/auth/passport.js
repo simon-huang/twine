@@ -1,15 +1,20 @@
 // load all the things we need
-var LocalStrategy   = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
+var db = require('../../db/schema.js');
 
-var mysql = require('mysql');
+/*
+// methods ======================
+// generating a hash
+User.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
 
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : ''
-});
+// checking if password is valid
+User.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
+*/
 
-//connection.query('USE vidyawxx_build2');  
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -45,29 +50,17 @@ module.exports = function(passport) {
     passReqToCallback : true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) {
-  // find a user whose email is the same as the forms email
-  // we are checking to see if the user trying to login already exists
-    connection.query("select * from users where email = '"+email+"'",function(err,rows){
-      console.log(rows);
-      console.log("above row object");
-      if (err)
-        return done(err);
-      if (rows.length) {
-        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-      } else {
-        // if there is no user with that email
-        // create the user
-        var newUserMysql = new Object();
-        newUserMysql.email = email;
-        newUserMysql.password = password; // use the generateHash function in our user model
-        var insertQuery = "INSERT INTO users ( email, password ) values ('" + email +"','"+ password +"')";
-        console.log(insertQuery);
-        connection.query(insertQuery,function(err,rows){
-          newUserMysql.id = rows.insertId;
-          return done(null, newUserMysql);
-        }); 
-      } 
-    });
+    // Check the database for the supplied username to see if already taken
+    db.User.findAll({
+      where: { username: username }
+    }).then(function(users) {
+      if (users.length === 0) {
+        db.User.create({
+          email: email,
+          password: password
+        })
+      }
+    })
   }));
 
   // =========================================================================
@@ -83,18 +76,13 @@ module.exports = function(passport) {
     passReqToCallback : true // allows us to pass back the entire request to the callback
   },
   function(req, email, password, done) { // callback with email and password from our form
-    connection.query("SELECT * FROM `users` WHERE `email` = '" + email + "'",function(err,rows){
-      if (err)
-        return done(err);
-      if (!rows.length) {
-        return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-      } 
-    
-    // if the user is found but the password is wrong
-      if (!( rows[0].password == password))
-        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-        // all is well, return successful user
-        return done(null, rows[0]);     
-    });
+    //check db and write !user
   }));
-};
+  
+}
+  
+  
+  
+  
+  
+  
