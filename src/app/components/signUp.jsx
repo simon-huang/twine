@@ -1,5 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+// UI
+import styles from './styles/style.jsx';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+
+// Store properties
 import * as user from '../actions/userActions.jsx';
 
 @connect((store) => {
@@ -29,16 +39,19 @@ export default class SignUp extends React.Component {
   
   render() {
     return (
-      <form onSubmit={this.signup}>
-        <input type="text" onChange={this.handleChange} value={this.props.username} name="username" placeholder="Pick a username" />
-        <input type="text" onChange={this.handleChange} value={this.props.email} name="email" placeholder="Email address" />
-        <input type="text" onChange={this.handleChange} value={this.props.password} name="password" placeholder="Password" />
-        <label>
-          <input type="checkbox" name="terms" />
-          I agree to PublishUs terms
-        </label>
-        <input type="submit" value="create account" />
-      </form>
+      <div className="text-center mt45">
+        <h2>Welcome! Create your account</h2>
+        <form onSubmit={this.signup} style={styles.formFields}>
+          <TextField type="text" onChange={this.handleChange} value={this.props.username} name="username" floatingLabelText="Pick a username" style={styles.signup} />
+          <TextField type="text" onChange={this.handleChange} value={this.props.email} name="email" floatingLabelText="Email address" style={styles.signup} />
+          <TextField type="password" onChange={this.handleChange} value={this.props.password} name="password" floatingLabelText="Password" style={styles.signup} />
+          <div className="checkbox">
+            <Checkbox checkedIcon={<ActionFavorite />} uncheckedIcon={<ActionFavoriteBorder />} style={styles.terms} />
+            <span>I agree to <a href="#">PublishUs Terms</a></span>
+          </div>
+          <RaisedButton type="submit" label="Create account" primary={true} style={styles.btn} />
+        </form>
+      </div>
     );
   }
 }
