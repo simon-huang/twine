@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SignUp from './signUp.jsx';
 import Login from './login.jsx';
+import CreateDoc from './createDoc.jsx';
 
 
 //import action to dispatch
@@ -28,6 +29,8 @@ export default class App extends React.Component {
             Switch
           </button>
         </div>
+        <hr/>
+        <CreateDoc />
       </div>
     );
   }
