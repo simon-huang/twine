@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as doc from '../../actions/docActions.jsx';
-import EditDoc_actions from './editDoc_actions.jsx';
 import EditDoc_details from './editDoc_details.jsx';
 
 @connect((store) => {

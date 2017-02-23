@@ -8,6 +8,10 @@ import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 
+// Components
+import MergeSplit from './doc_merge_splitView.jsx';
+import MergeUnified from './doc_merge_unifiedView.jsx';
+
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 
@@ -101,9 +105,11 @@ export default class Home extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="row document-container mt10">
+            <div className="row doc-review-container mt10">
               <div className="col-sm-12">
-                
+                <div className="doc-review">
+                  <MergeSplit />
+                </div>
               </div>
             </div>
           </div>  

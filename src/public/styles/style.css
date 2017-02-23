@@ -44,6 +44,14 @@ table {
   border-spacing: 0;
 }
 
+/*==================================*/
+/*============ Fonts =============*/
+/*==================================*/
+
+p {
+  font-size: 12px;
+  line-height: 16px;
+}
 
 /*==================================*/
 /*============ Styling =============*/
@@ -130,12 +138,14 @@ table {
 
 .merge-comment {
   border: 1px solid #E6E6E6;
+  background-color: white;
   border-radius: 3px;
   position: absolute;
   right: 0;
   top: 50px;
   padding: 10px;
   width: 300px;
+  z-index: 2;
 }
 
 .merge-comment textarea {
@@ -144,11 +154,76 @@ table {
   padding: 0px;
   border: none;
   resize: none;
+  z-index: 2;
 }
 
 .merge-comment textarea:focus {
   outline: none;
 }
+
+.doc-review {
+  background-color: #F9F9F9;
+  padding: 15px 10px;
+  z-index: 1;
+}
+
+.split-master,
+.split-changes {
+  display: inline-block;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+}
+
+.split-master {
+  float: left;
+}
+
+.split-title,
+.unified-title {
+  display: block;
+  font-size: 12px;
+  color: #818181;
+  font-weight: 600;
+}
+
+.split-document {
+  background-color: white;
+  border: 1px solid #BABABA;
+  padding: 30px 40px;
+  width: 560px;
+  height: 725px;
+}
+
+.split-document-L {
+  border-right: none; 
+}
+
+.unified-document {
+  background-color: white;
+  border: 1px solid #BABABA;
+  padding: 30px 40px;
+  height: 1056px;
+}
+
+/*==================================*/
+/*======== Merge Styling ===========*/
+/*==================================*/
+
+.text-addition {
+  background-color: rgba(1, 187, 72, 0.49);
+}
+
+.text-deletion {
+  background-color: rgba(201, 2, 66, 0.5);
+  color: black;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  color: rgba(201, 2, 66, 0.5);
+}
+
 
 /*==================================*/
 /*============ Spacing =============*/
