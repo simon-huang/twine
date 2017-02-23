@@ -5,21 +5,12 @@ var passport = require('passport');
 
 var authentication = require('../auth/authenticate.js');
 
-
-// app.post('/signup', authentication.register, passport.authenticate('local'), authentication.login);
-
-// app.post('/signup', function(req, res) {
-//   console.log(req.body);
-// });
-  
-
 router.route('/signup').post(authentication.register, 
-                              passport.authenticate('local'), 
-                              //authentication.login, 
-                              function(req, res) {
-                                var user = req.body;
-                                console.log('WOA! Signup is happening', user);  
-  
+  passport.authenticate('local'), 
+  authentication.login, 
+  function(req, res) {
+    var user = req.body;
+    console.log('WOA! Signup is happening', user);  
 });
 
 router.route('/login').post(
