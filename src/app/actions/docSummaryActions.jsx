@@ -1,3 +1,9 @@
+export function cancelComment () {
+  return {
+    type: "CANCEL_COMMENT"
+  }
+}
+
 export function tabChange (tab) {
   return {
     type: "TAB_CHANGE",

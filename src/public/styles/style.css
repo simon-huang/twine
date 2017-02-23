@@ -65,6 +65,39 @@ table {
   outline: none;
 }
 
+.btn-cancel {
+  padding: 8px 15px;
+  background-color: white;
+  border: none;
+  color: #5F00FF;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.btn-cancel:hover,
+.btn-cancel:focus,
+.btn-cancel:active {
+  cursor: pointer;
+  outline: none;
+  text-decoration: underline;
+}
+
+.btn-exit {
+  position: absolute;
+  right: 10px;
+  top: 6px;
+  color: #a9a9a9;
+  font-size: 14px;
+}
+
+.btn-exit:hover,
+.btn-exit:focus,
+.btn-exit:active {
+  cursor: pointer;
+  outline: none;
+  color: #828282;
+}
+
 .checkbox {
   display: block;
   width: 100%;

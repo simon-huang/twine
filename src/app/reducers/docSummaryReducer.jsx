@@ -8,6 +8,15 @@ export default function reducer(state = {
 }, action) {
 
   switch(action.type) {
+    case "CANCEL_COMMENT": {
+      return {
+        ...state,
+        reviewChanges: {acceptQuick: false, acceptComments: false, declineComments: false}
+      }
+    }
+  }
+
+  switch(action.type) {
     case "TAB_CHANGE": {
       return {
         ...state,
