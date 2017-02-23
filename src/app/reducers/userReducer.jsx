@@ -1,5 +1,5 @@
 export default function reducer(state = {
-  login: false,
+  login: true,
   user: {
     username: '',
     email: '',

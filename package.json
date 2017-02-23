@@ -14,7 +14,9 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "bcrypt": "^1.0.2",
     "bcrypt-nodejs": "0.0.3",
+    "bluebird": "^3.4.7",
     "body-parser": "^1.9.2",
     "bootstrap": "^3.3.7",
     "cookie-parser": "^1.4.3",
