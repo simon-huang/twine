@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router'
 
 
+
 export default class Navbar extends React.Component {
   render() {
     return (
@@ -12,6 +13,7 @@ export default class Navbar extends React.Component {
         <Link href="#/login">Login</Link>
         <Link href="#/signup">Signup</Link>
         <Link href="#/doc">Doc</Link>
+        <Link>Logout</Link>
       </div>
     );
   }
