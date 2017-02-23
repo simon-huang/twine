@@ -1,21 +1,25 @@
 const styles = {
   terms: {
     margin: '0',
-    'text-align': 'left',
+    textAlign: 'left',
     width: 'initial',
     display: 'inline-block',
-    'vertical-align': 'middle',
+    verticalAlign: 'middle',
   },
   signup: {
     display: 'block',
   },
-  btn: {
-    'box-shadow': 'none',
-    'margin-top': '20px',
+  btnSignup: {
+    boxShadow: 'none',
+    marginTop: '20px',
+  },
+  btnDocActions: {
+    boxShadow: 'none',
+    marginRight: '10px',
   },
   formFields: {
     display: 'inline-block',
-    'text-align': 'left',
+    textAlign: 'left',
   }
 };
 

@@ -42,7 +42,7 @@ export default class Login extends React.Component {
         <form onSubmit={this.login} style={styles.formFields}>
           <TextField type="text" onChange={this.handleChange} value={this.props.email} name="email" floatingLabelText="Email address" style={styles.signup} />
           <TextField type="password" onChange={this.handleChange} value={this.props.password} name="password" floatingLabelText="Password" style={styles.signup} />
-          <RaisedButton type="submit" label="Log in" primary={true} style={styles.btn} />
+          <RaisedButton type="submit" label="Log in" primary={true} style={styles.btnSignup} />
         </form>
       </div>
     );

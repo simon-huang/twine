@@ -49,7 +49,7 @@ export default class SignUp extends React.Component {
             <Checkbox checkedIcon={<ActionFavorite />} uncheckedIcon={<ActionFavoriteBorder />} style={styles.terms} />
             <span>I agree to <a href="#">PublishUs Terms</a></span>
           </div>
-          <RaisedButton type="submit" label="Create account" primary={true} style={styles.btn} />
+          <RaisedButton type="submit" label="Create account" primary={true} style={styles.btnSignup} />
         </form>
       </div>
     );
