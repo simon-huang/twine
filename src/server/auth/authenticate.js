@@ -45,7 +45,6 @@ exports.register = function (req, res, next) {
     })
 }
 
-
 exports.logout = function (req, res, next) {
   req.session.destroy(function(err) {
     res.clearCookie('connect.sid');
