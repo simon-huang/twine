@@ -57,14 +57,14 @@ export default class CreateDoc extends React.Component {
     return (
       <div className="create_doc" >
         <h2>Create a new doc</h2>
-        <TextField onChange={this.handleChange} type="text" value={this.props.docName} name="docName" floatingLabelText="Give me a name" /><br/>
-        <TextField onChange={this.handleChange} type="text" value={this.props.docDescription} name="docDescription" floatingLabelText="Add a description (optional)" /><br/>
+        <input onChange={this.handleChange} type="text" value={this.props.docName} name="docName" placeHolder="Give me a name"></input><br/>
+        <input onChange={this.handleChange} type="text" value={this.props.docDescription} name="docDescription" placeHolder="Add a description (optional)"></input><br/>
         <div>Type of Doc:</div>
-        <DropDownMenu onChange={this.dropDownMenuChange} value={this.props.docType} name="docType">
-          <MenuItem value={'public'} primaryText="Public" />
-          <MenuItem value={'private'} primaryText="Private" />
-        </DropDownMenu><br/>
-        <RaisedButton onClick={this.createDocSubmit} label="Submit" primary={true} style={styles.btn} />
+        <option onChange={this.handleChange} value={this.props.docType} name="docType" >
+          <select value="public" primaryText="Public" />
+          <select value="private" primaryText="Private" />
+        </option><br/>
+        <button onClick={this.createDocSubmit} label="Submit">Submit</button>
       </div>
     );
   }
