@@ -71,16 +71,16 @@ export default class Home extends React.Component {
       <div className="doc-merge mt10 mb10">
         <div className="row">
           <div className="col-sm-12">
-            <div className="row mt10">
+            <div className="row title-container mt10">
               <div className="col-sm-12">
                 <div className="doc-merge-details">
                   <p>franklinjjeng wants to merge changes into this document : “Adding results section with data analysis”</p>
                 </div>
               </div>  
             </div>
-            <div className="row mt15">
+            <div className="row actions-container mt15">
               <div className="col-sm-12">
-                <div className="doc-merge-metrics text-center">
+                <div className="merge-actions text-center">
                   <div className="row">
                     <div className="col-sm-3 text-left">
                       <p>3 changes in this merge</p>
@@ -99,6 +99,11 @@ export default class Home extends React.Component {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="row document-container mt10">
+              <div className="col-sm-12">
+                
               </div>
             </div>
           </div>  

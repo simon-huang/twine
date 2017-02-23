@@ -106,13 +106,13 @@ table {
 }
 
 .doc-desc-metrics,
-.doc-merge-metrics {
+.merge-actions {
   border: 1px solid #E6E6E6;
   padding: 9px 15px;
   border-radius: 3px;
 }
 
-.doc-merge-metrics p {
+.merge-actions p {
   line-height: 30px;
 }
 
