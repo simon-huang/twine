@@ -10,6 +10,7 @@ import SignUp from './components/signUp.jsx';
 import Login from './components/login.jsx';
 import Home from './components/home.jsx';
 import Doc from './components/document/doc.jsx';
+import EditDoc from './components/editDoc/editDoc.jsx';
 
 store.subscribe(() => {
   console.log('store changed', store.getState());
@@ -23,6 +24,7 @@ ReactDOM.render(<Provider store={store}>
       <Route path="/signup" component={SignUp}/>
       <Route path="/createdoc" component={CreateDoc}/>
       <Route path="/doc" component={Doc}/>
+      <Route path="/editdoc" component={EditDoc}/>
     </Route>
   </Router>
 </Provider>, document.getElementById('app'));

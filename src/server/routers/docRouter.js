@@ -7,4 +7,11 @@ router.route('/createDoc').post(function(req, res) {
   console.log('Inbound init values', docInit)
 });
 
+router.route('/mergeDoc').post(function(req, res) {
+  var mergeRequest = req.body;
+  console.log('POST request received on /api/doc/mergeDoc');
+  console.log('Inbound init values', mergeRequest)
+});
+
+
 module.exports = router;

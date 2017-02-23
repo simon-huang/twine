@@ -3,7 +3,7 @@ import axios from 'axios';
 export function handleChange(name, value) {
   return {
     type: "EDIT_" + name.toUpperCase(),
-    value: value
+    payload: value
   }
 }
 
@@ -14,3 +14,12 @@ export function createDocument() {
     axios.post('/api/doc/createDoc', states.doc.docInit);
   }
 }
+
+export function editDocChange(value) {
+  return {
+    type: "EDIT_DOCCONTENT",
+    payload: value
+  }
+}
+
+
