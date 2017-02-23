@@ -17,7 +17,8 @@ import * as docSummary from './../../actions/docSummaryActions.jsx';
 
 @connect((store) => {
   return {
-    reviewChanges: store.docSummary.reviewChanges
+    reviewChanges: store.docSummary.reviewChanges,
+    mergeSplitView: store.docSummary.mergeSplitView
   };
 })
 
@@ -27,6 +28,7 @@ export default class Home extends React.Component {
     this.reviewChanges = this.reviewChanges.bind(this);
     this.cancelComment = this.cancelComment.bind(this);
     this.submitMergeComment = this.submitMergeComment.bind(this);
+    this.switchSplitOrUnified = this.switchSplitOrUnified.bind(this);
   }
 
   reviewChanges(e) {
@@ -40,6 +42,10 @@ export default class Home extends React.Component {
   submitMergeComment(e) {
     e.preventDefault();
     console.log('merge comment!', e.target.name, e.target);
+  }
+
+  switchSplitOrUnified() {
+    this.props.dispatch(docSummary.switchSplitOrUnified())
   }
 
   commentBox() {
@@ -91,8 +97,8 @@ export default class Home extends React.Component {
                     </div>
                     <div className="col-sm-9 text-right">
                       <ButtonGroup className="mr10">
-                        <Button bsSize="small">Split</Button>
-                        <Button bsSize="small">Unified</Button>
+                        <Button onClick={this.switchSplitOrUnified} bsSize="small">Split</Button>
+                        <Button onClick={this.switchSplitOrUnified} bsSize="small">Unified</Button>
                       </ButtonGroup>
                       <DropdownButton onSelect={this.reviewChanges} bsSize="small" title="Review changes" id="review-merge">
                         <MenuItem eventKey="acceptQuick">Quick Accept</MenuItem>
@@ -108,7 +114,7 @@ export default class Home extends React.Component {
             <div className="row doc-review-container mt10">
               <div className="col-sm-12">
                 <div className="doc-review">
-                  <MergeSplit />
+                  {this.props.mergeSplitView ? <MergeSplit /> : <MergeUnified />}
                 </div>
               </div>
             </div>
