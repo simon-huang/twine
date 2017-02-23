@@ -129,7 +129,7 @@ return fse.remove(path.resolve(__dirname, 'testRepos/7MergeConflict'))
 })
 .then(function(a) {
   console.log('commit added ', a);
-  return exec("git --git-dir=/Users/simonhuang/Desktop/publishus/spec/testRepos/7MergeConflict/7MergeTestClone/.git --work-tree=/Users/simonhuang/Desktop/publishus/spec/testRepos/7MergeConflict/7MergeTestClone/ pull origin master");
+  return exec("git --git-dir=/Users/simonhuang/Desktop/publishus/spec/git/testRepos/7MergeConflict/7MergeTestClone/.git --work-tree=/Users/simonhuang/Desktop/publishus/spec/git/testRepos/7MergeConflict/7MergeTestClone/ pull origin master");
 })
 .then(function(a,b,c) {
   console.log('pulled ', a,b,c);
