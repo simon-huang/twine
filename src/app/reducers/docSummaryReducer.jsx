@@ -1,11 +1,30 @@
 export default function reducer(state = {
   currentTab: 'merge',
+  mergeSplitView: true,
   reviewChanges: {
     acceptQuick: false,
     acceptComments: false,
     declineComments: false,
   }
 }, action) {
+
+  switch(action.type) {
+    case "SWITCH_SPLIT_UNIFIED": {
+      return {
+        ...state,
+        mergeSplitView: !state.mergeSplitView
+      }
+    }
+  }
+
+  switch(action.type) {
+    case "CANCEL_COMMENT": {
+      return {
+        ...state,
+        reviewChanges: {acceptQuick: false, acceptComments: false, declineComments: false}
+      }
+    }
+  }
 
   switch(action.type) {
     case "TAB_CHANGE": {
