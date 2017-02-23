@@ -7,7 +7,8 @@ var cookieParser = require('cookie-parser');
 var path = require('path');
 
 var schema = require('../db/schema.js')
-var authRouter = require('./routers/auth.js');
+var authRouter = require('./routers/authRouter.js');
+var docRouter = require('./routers/docRouter.js');
 
 var port = process.env.PORT || 3000;
 
@@ -51,6 +52,8 @@ function isLoggedIn(req, res, next) {
 
 // process input routes from the client
 app.use('/api/auth', authRouter);
+
+app.use('/api/doc', docRouter);
 
 // // process the signup form
 // app.post('/signup', passport.authenticate('local-signup', {

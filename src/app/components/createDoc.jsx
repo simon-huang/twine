@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as doc from '../actions/documentActions.jsx';
+import * as doc from '../actions/docActions.jsx';
 
-// Name of doc
-// Desciption of doc (optional)
-// Public or Private
-// Create Doc button
-  // Create Doc fires off an API call over to the server/SQL DB
-
+import styles from './styles/style.jsx';
+import TextField from 'material-ui/TextField';
+import RaisedBtn from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 @connect((store) => {
   return {
@@ -22,6 +22,7 @@ export default class CreateDoc extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.createDocSubmit = this.createDocSubmit.bind(this);
+    this.dropDownMenuChange = this.dropDownMenuChange.bind(this);
   }
 
   handleChange(e) {
@@ -29,16 +30,36 @@ export default class CreateDoc extends React.Component {
     this.props.dispatch(doc.handleChange(e.target.name, e.target.value));
   }
 
+  dropDownMenuChange(e) {
+    e.preventDefault();
+    var type = e.target.innerHTML.toLowerCase();
+    if (type[0] === '<') {
+      type = type.split('')
+      type.splice(0, 5);
+      type.splice(type.length - 6, 6);
+      type = type.join('');
+    }
+    this.props.dispatch(doc.handleChange('DOCTYPE', type));
+  }
+
   createDocSubmit() {
     console.log('Submitting! Sorta');
     this.props.dispatch(doc.createDocument());
   }
 
+  componentWillMount() {
+    this.props.dispatch(doc.handleChange('docName', ''));
+    this.props.dispatch(doc.handleChange('docDescription', ''));
+    this.props.dispatch(doc.handleChange('docType', 'public'));
+  }
+
   render() {
     return (
-      <div className="create_doc">
+      <div className="create_doc" >
+        <h2>Create a new doc</h2>
         <input onChange={this.handleChange} type="text" value={this.props.docName} name="docName" placeholder="Give me a name" /><br/>
         <input onChange={this.handleChange} type="text" value={this.props.docDescription} name="docDescription" placeholder="Add a description (optional)" /><br/>
+        <div>Type of Doc:</div>
         <select onChange={this.handleChange} value={this.props.docType} name="docType">
           <option value="public">Public</option>
           <option value="private">Private</option>
@@ -48,3 +69,9 @@ export default class CreateDoc extends React.Component {
     );
   }
 };
+
+
+
+
+
+

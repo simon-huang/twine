@@ -8,18 +8,7 @@ export default function reducer(state = {
 }, action) {
 
   switch(action.type) {
-    case "FOO": {
-      return {
-        ...state,
-        error: null
-      }
-    }
-    case "FOOBAR": {
-      return {
-        ...state,
-        error: null
-      }
-    }
+
     case "EDIT_DOCNAME": {
       return {
         ...state,
