@@ -12,10 +12,10 @@ export default function reducer(state = {
 
   switch(action.type) { 
 
-    case "CHANGE_LOGIN_STATE": { 
+    case "USER_LOGOUT": { 
       return {
         ...state,
-        login: !state.login
+        login: false
       }
     }
 
@@ -53,7 +53,15 @@ export default function reducer(state = {
         fetching: false,
         error: action.payload
       }
-    }    
+    }   
+    
+    case "USER_LOGOUT_REJECTED": {
+      return {
+        ...state,
+        fetching: false,
+        error: action.payload
+      }
+    } 
     
     case "USER_SIGNUP_REJECTED": {
       return {

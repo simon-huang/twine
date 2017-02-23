@@ -13,7 +13,7 @@ export default class Navbar extends React.Component {
         <Link href="#/login">Login</Link>
         <Link href="#/signup">Signup</Link>
         <Link href="#/doc">Doc</Link>
-        <Link>Logout</Link>
+        <Link href='#/logout'>Logout</Link>
       </div>
     );
   }

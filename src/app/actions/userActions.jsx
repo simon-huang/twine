@@ -16,6 +16,11 @@ export function userLogin (username, password) {
   }
 }
 
+
+
+
+
+
 export function handleChange (name, value) {
   return {
     type: "EDIT_" + name.toUpperCase(),
@@ -62,6 +67,24 @@ export function signup () {
     .catch((err) => {
       dispatch({
         type: "USER_SIGNUP_REJECTED", 
+        payload: err
+      })
+    })
+  }
+}
+
+export function userLogout () {
+  return function(dispatch, getState) {
+    axios.post('/api/auth/logout')
+    .then((response) => {
+      dispatch({
+        type: "USER_LOGOUT",
+        payload: response.data
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type: "USER_LOGOUT_REJECTED",
         payload: err
       })
     })
