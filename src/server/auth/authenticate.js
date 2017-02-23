@@ -10,18 +10,13 @@ exports.auth = function (req, res, next) {
 }
 
 exports.login = function (req, res, next) {
-  //console.log ('REQ.SESSION FROM LOGIN', req.session);
-  //console.log('REQ.SESSION.USERNAME');
-  //console.log('req.user.username  ', req.user.username);
   console.log('USERNAME from login  ', req.user.username);
   req.session.username = req.user.username;
-  //console.log('REQ.SESSION.USERNAME:  ', res.session.username)
   // res.redirect('/');
   res.send({ status: 'successful', username: req.user.username });
 }
 
 exports.register = function (req, res, next) {
-  //console.log('REQ from REGISTER', req.body);
   var username = req.body.username;
   var password = req.body.password;
   var email = req.body.email;
@@ -57,7 +52,7 @@ exports.logout = function (req, res, next) {
   req.session.destroy(function(err) {
     res.clearCookie('connect.sid');
     res.end('Logged out');
-    // res.redirect('/auth/login');
+    // res.redirect('/');
   });
   
   
