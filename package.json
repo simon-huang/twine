@@ -30,6 +30,7 @@
     "passport-local": "^1.0.0",
     "q": "^1.4.1",
     "react": "^15.4.2",
+    "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
     "react-loader": "^2.4.0",
     "react-redux": "^5.0.2",
