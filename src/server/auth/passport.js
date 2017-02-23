@@ -10,12 +10,10 @@ var User = require('../../db/schema.js').User;
 
 module.exports = function(passport) {
   passport.serializeUser(function(user, done) {
-    console.log('serialize');
     done(null, user.id);
   });
   
   passport.deserializeUser(function(id, done) {
-    console.log('deserialize');
     User
     .findOne({ where: {id: id} })
     .then(function(user) {
@@ -28,8 +26,6 @@ module.exports = function(passport) {
   
   passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true },
     function(req, email, password, done) {
-      console.log('username', email);
-      console.log('password', password);
       User.findOne({ where: {email: email} })
       .then(function(user) {
         if (user) {

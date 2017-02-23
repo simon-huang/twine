@@ -10,9 +10,7 @@ exports.auth = function (req, res, next) {
 }
 
 exports.login = function (req, res, next) {
-  console.log('USERNAME from login  ', req.user.username);
   req.session.username = req.user.username;
-  // res.redirect('/');
   res.send({ status: 'successful', username: req.user.username });
 }
 
@@ -52,7 +50,6 @@ exports.logout = function (req, res, next) {
   req.session.destroy(function(err) {
     res.clearCookie('connect.sid');
     res.end('Logged out');
-    // res.redirect('/');
   });
   
   

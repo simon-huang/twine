@@ -14,14 +14,6 @@ var User = sequelize.define('user', {
 // Sync all models and associations
 sequelize.sync();
 
-// sequelize 
-// .sync({ force: true })
-// .then(function(err) {
-//     console.log('It worked!');
-//   }, function (err) { 
-//          console.log('An error occurred while creating the table:', err);
-//   });
-
 module.exports.User = User;
 
 
