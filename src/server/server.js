@@ -36,17 +36,6 @@ require('./auth/passport.js')(passport);
 //=========================
 
 
-// ============ route middleware to make sure a user is logged in ==========/
-function isLoggedIn(req, res, next) {
-  // if user is authenticated in the session, carry on 
-  if (req.isAuthenticated())
-    return next();
-  // if they aren't redirect them to the home page POTENTIAL PROBLEM!! 
-  //CANNOT REDIRECT FROM BACK END IN REACT!!
-  res.redirect('/'); //res.send('This user is not logged in!!')
-}
-// =========================================================================/
-
 
 //================== set up routes ==================
 
@@ -55,27 +44,6 @@ app.use('/api/auth', authRouter);
 
 app.use('/api/doc', docRouter);
 
-// // process the signup form
-// app.post('/signup', passport.authenticate('local-signup', {
-//   successRedirect : '/profile', // redirect to the secure profile section
-//   failureRedirect : '/signup', // redirect back to the signup page if there is an error
-//   failureFlash : true // allow flash messages
-// }));
-
-
-// // process the login form
-// app.post('/login', passport.authenticate('local-login', {
-//   successRedirect : '/profile', // redirect to the secure profile section
-//   failureRedirect : '/login', // redirect back to the signup page if there is an error
-//   failureFlash : true // allow flash messages
-// }));
-
-// app.get('/logout', function (req, res) {
-//   // passport attaches logout method to all requests
-//   console.log('The logout listener is working');
-//   req.logout();
-//   res.redirect('/');
-// });
 //======================================================
 
 
