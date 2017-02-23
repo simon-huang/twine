@@ -17,7 +17,7 @@ exports.login = function (req, res, next) {
   req.session.username = req.user.username;
   //console.log('REQ.SESSION.USERNAME:  ', res.session.username)
   // res.redirect('/');
-  res.send({ status: 'successful' });
+  res.send({ status: 'successful', man: 'Mark is the man' });
 }
 
 exports.register = function (req, res, next) {
