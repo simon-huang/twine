@@ -37,5 +37,3 @@ export default class EditDoc extends React.Component {
     )
   }
 }
-
-// <EditDoc_details mergeMenu={this.props.mergeMenu} showMergeMenu={this.showMergeMenu} handleChange={this.handleChange}/>
