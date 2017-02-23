@@ -17,4 +17,6 @@ router.route('/login').post(
   passport.authenticate('local'),
   authentication.login);
 
+router.route('/logout').post(authentication.logout);
+
 module.exports = router;
