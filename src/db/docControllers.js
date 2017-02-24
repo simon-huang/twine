@@ -9,7 +9,7 @@ function createDoc(req, res, next) {
   var doc = {
     name: req.body.name,
     description: req.body.description,
-    public: req.body.TYPE === public ? 1 : 0
+    public: req.body.TYPE === 'public' ? 1 : 0
   };
   
   // get userID
