@@ -18,7 +18,6 @@ var User = sequelize.define('user', {
 var Doc = sequelize.define('doc', {
   name: Sequelize.STRING,
   description: Sequelize.STRING,
-  public: Sequelize.BOOLEAN, 
   filepath: Sequelize.STRING,
   public: Sequelize.BOOLEAN, 
   timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
