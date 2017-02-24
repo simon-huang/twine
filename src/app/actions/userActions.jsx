@@ -16,11 +16,6 @@ export function userLogin (username, password) {
   }
 }
 
-
-
-
-
-
 export function handleChange (name, value) {
   return {
     type: "EDIT_" + name.toUpperCase(),
@@ -74,8 +69,10 @@ export function signup () {
 }
 
 export function userLogout () {
-  return function(dispatch, getState) {
-    axios.post('/api/auth/logout')
+  console.log('logout inside user action');
+  return function(dispatch) {
+    console.log('inside user action user logout');
+    axios.get('/api/auth/logout')
     .then((response) => {
       dispatch({
         type: "USER_LOGOUT",
