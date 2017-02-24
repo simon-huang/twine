@@ -10,12 +10,14 @@ export default function reducer(state = {
   error: null
 }, action) {
 
+console.log(action.type);
   switch(action.type) { 
 
-    case "CHANGE_LOGIN_STATE": { 
+    case "USER_LOGOUT": {
+    console.log('user reducer logout'); 
       return {
         ...state,
-        login: !state.login
+        login: false
       }
     }
 
@@ -53,7 +55,15 @@ export default function reducer(state = {
         fetching: false,
         error: action.payload
       }
-    }    
+    }   
+    
+    case "USER_LOGOUT_REJECTED": {
+      return {
+        ...state,
+        fetching: false,
+        error: action.payload
+      }
+    } 
     
     case "USER_SIGNUP_REJECTED": {
       return {

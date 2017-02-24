@@ -67,3 +67,23 @@ export function signup () {
     })
   }
 }
+
+export function userLogout () {
+  console.log('logout inside user action');
+  return function(dispatch) {
+    console.log('inside user action user logout');
+    axios.get('/api/auth/logout')
+    .then((response) => {
+      dispatch({
+        type: "USER_LOGOUT",
+        payload: response.data
+      })
+    })
+    .catch((err) => {
+      dispatch({
+        type: "USER_LOGOUT_REJECTED",
+        payload: err
+      })
+    })
+  }
+}
