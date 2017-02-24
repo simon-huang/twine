@@ -39,9 +39,9 @@ exports.register = function (req, res, next) {
               res.status(400).end();
             });
           });
-        } else {
-          res.status(409).end('user exists');
-        }
+      } else {
+        res.status(409).end('user exists');
+      }
     })
 }
 
@@ -50,6 +50,11 @@ exports.logout = function (req, res, next) {
     res.clearCookie('connect.sid');
     res.end('Logged out');
   });
-  
-  
 }
+
+
+
+
+
+
+

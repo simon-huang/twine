@@ -15,7 +15,8 @@ var port = process.env.PORT || 3000;
 var app = express();
 
 
-//=== MIDDLEWARE ====/ 
+//=================== Middleware ===================
+//==================================================
 //parse requests
 app.use(parser.json());
 app.use(parser.urlencoded({
@@ -33,9 +34,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 require('./auth/passport.js')(passport);
-//=========================
-
-
 
 //================== set up routes ==================
 
@@ -44,7 +42,8 @@ app.use('/api/auth', authRouter);
 
 app.use('/api/doc', docRouter);
 
-//======================================================
+//====================================================
+//====================================================
 
 
 // serve static client-facing files
