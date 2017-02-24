@@ -13,6 +13,6 @@ router.route('/login').post(
   passport.authenticate('local'),
   authentication.login);
 
-router.route('/logout').post(authentication.logout);
+router.route('/logout').get(authentication.logout);
 
 module.exports = router;
