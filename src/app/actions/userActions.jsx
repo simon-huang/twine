@@ -1,5 +1,21 @@
 import axios from 'axios';
 
+export function autoLogin () {
+  return function(dispatch, getState) {
+    axios.get('/api/auth/checkAuth')
+      .then((response) => {
+        if (response.data.status === 'successful') {
+          dispatch({
+            type: "AUTO_LOGIN", 
+            payload: response.data.username
+          })
+        }
+      }).catch((err) => {
+        console.log('no prior auth');
+      })
+  }
+}
+
 export function setRedirectUrl (url) {
   return {
     type: "SET_REDIRECT_URL",

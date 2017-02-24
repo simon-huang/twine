@@ -10,8 +10,12 @@ exports.auth = function (req, res, next) {
 }
 
 exports.login = function (req, res, next) {
-  req.session.username = req.user.username;
-  res.send({ status: 'successful', username: req.user.username });
+  if (req.user) {
+    req.session.username = req.user.username;
+    res.send({ status: 'successful', username: req.user.username });
+  } else {
+    res.send({ status: 'unsuccessful login'});
+  }
 }
 
 exports.register = function (req, res, next) {

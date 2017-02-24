@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
@@ -24,6 +25,13 @@ import * as user from '../actions/userActions.jsx';
 })
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.props.dispatch(user.autoLogin());
+  }
 
   componentDidUpdate(prevProps) {
     const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
