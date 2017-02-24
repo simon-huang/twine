@@ -18,7 +18,6 @@ export default class Navbar extends React.Component {
   }
   
   logout() {
-    console.log('NAVBAR logout');
     this.props.dispatch(user.userLogout());
   }
   
@@ -33,7 +32,6 @@ export default class Navbar extends React.Component {
         <Link href="#/doc">Doc</Link>
         <Link to="/logout" 
               onClick={()=> {
-                console.log('logout clicked');
                 this.logout();
               }}>Logout</Link>
       </div>

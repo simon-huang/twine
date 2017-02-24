@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+export function setRedirectUrl (url) {
+  return {
+    type: "SET_REDIRECT_URL",
+    payload: url
+  }
+}
+
 export function changeView () {
   return { 
     type: "CHANGE_LOGIN_STATE"
@@ -69,9 +76,7 @@ export function signup () {
 }
 
 export function userLogout () {
-  console.log('logout inside user action');
   return function(dispatch) {
-    console.log('inside user action user logout');
     axios.get('/api/auth/logout')
     .then((response) => {
       dispatch({

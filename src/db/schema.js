@@ -17,7 +17,7 @@ var Doc = sequelize.define('doc', {
   name: Sequelize.STRING,
   description: Sequelize.STRING,
   filepath: Sequelize.STRING,
-  public: Sequelize.BIT, 
+  public: Sequelize.BOOLEAN, 
   timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 });
 Doc.hasMany(Doc, {as: 'origin', allowNull: true}); // TEST THIS
