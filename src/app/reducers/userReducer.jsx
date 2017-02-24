@@ -10,9 +10,11 @@ export default function reducer(state = {
   error: null
 }, action) {
 
+console.log(action.type);
   switch(action.type) { 
 
-    case "USER_LOGOUT": { 
+    case "USER_LOGOUT": {
+    console.log('user reducer logout'); 
       return {
         ...state,
         login: false
