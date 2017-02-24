@@ -8,19 +8,23 @@ var sequelize = new Sequelize('publishus', 'root', '');
 var User = sequelize.define('user', {
   username: {type: Sequelize.STRING, unique: true},
   email: {type: Sequelize.STRING, unique: true},
-  password: Sequelize.STRING,
+  password: Sequelize.STRING
 });
 
 // Create Doc model
-//BIT is truthy. 1/0 instead of true/false
+// BIT is truthy. 1/0 instead of true/false
+// maybe Username so I don't have to query for it first
+// type: owner or collaborator
 var Doc = sequelize.define('doc', {
   name: Sequelize.STRING,
   description: Sequelize.STRING,
+  public: Sequelize.BOOLEAN, 
   filepath: Sequelize.STRING,
   public: Sequelize.BOOLEAN, 
   timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 });
-Doc.hasMany(Doc, {as: 'origin', allowNull: true}); // TEST THIS
+Doc.belongsTo(Doc, {as: 'origin', allowNull: true}); // TEST THIS
+Doc.belongsTo(User, {as: 'user_ID'});
 
 // Create DocVersion model
 // Are we letting the user see all saves (commits) in their version history?
@@ -34,6 +38,7 @@ DocVersion.belongsTo(Doc, {as: 'doc_ID'});
 DocVersion.belongsTo(User, {as: 'user_ID'});
 
 // Create DocPermission model
+// NOT FOR MVP
 // type: owner or collaborator
 var DocPermission = sequelize.define('docPermission', {
   type: Sequelize.STRING 
@@ -45,7 +50,9 @@ DocPermission.belongsTo(User, {as: 'user_ID'});
 sequelize.sync();
 
 module.exports.User = User;
-
+module.exports.Doc = Doc;
+module.exports.DocVersion = DocVersion;
+module.exports.DocPermission = DocPermission;
 
 
 
