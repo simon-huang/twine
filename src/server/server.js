@@ -39,7 +39,6 @@ require('./auth/passport.js')(passport);
 
 // process input routes from the client
 app.use('/api/auth', authRouter);
-
 app.use('/api/doc', docRouter);
 
 //====================================================

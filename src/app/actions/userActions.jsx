@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+export function autoLogin (username) {
+  return {
+    type: "AUTO_LOGIN",
+    payload: username
+  }
+}
+
 export function setRedirectUrl (url) {
   return {
     type: "SET_REDIRECT_URL",

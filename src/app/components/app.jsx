@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
@@ -24,6 +25,19 @@ import * as user from '../actions/userActions.jsx';
 })
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    axios.get('/api/auth/checkAuth').then((response) => {
+      if (response.data.status === 'successful') {
+        this.props.dispatch(user.autoLogin(response.data.username));
+      }
+    }).catch((err) => {
+      console.log('no prior auth');
+    })
+  }
 
   componentDidUpdate(prevProps) {
     const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn

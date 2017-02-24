@@ -5,6 +5,10 @@ var passport = require('passport');
 
 var authentication = require('../auth/authenticate.js');
 
+router.route('/checkAuth').get(
+  authentication.login
+)
+
 router.route('/signup').post(
   authentication.register, 
   passport.authenticate('local'), 
