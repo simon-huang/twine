@@ -27,7 +27,7 @@ export default class EditDoc extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h2>Edit your Document</h2>
         <div>{this.props.docName}</div>
         <textarea onChange={this.editDocChange} type="text" value={this.props.docContent} rows="40" cols="90"></textarea>
