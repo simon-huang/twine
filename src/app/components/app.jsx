@@ -30,13 +30,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    axios.get('/api/auth/checkAuth').then((response) => {
-      if (response.data.status === 'successful') {
-        this.props.dispatch(user.autoLogin(response.data.username));
-      }
-    }).catch((err) => {
-      console.log('no prior auth');
-    })
+    this.props.dispatch(user.autoLogin());
   }
 
   componentDidUpdate(prevProps) {
