@@ -5,14 +5,19 @@ var passport = require('passport');
 
 var authentication = require('../auth/authenticate.js');
 
-router.route('/signup').post(authentication.register, 
+router.route('/signup').post(
+  authentication.register, 
   passport.authenticate('local'), 
-  authentication.login);
+  authentication.login
+);
 
 router.route('/login').post(
   passport.authenticate('local'),
-  authentication.login);
+  authentication.login
+);
 
-router.route('/logout').get(authentication.logout);
+router.route('/logout').get(
+  authentication.logout
+);
 
 module.exports = router;

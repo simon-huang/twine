@@ -37,7 +37,7 @@ export default class CreateDoc extends React.Component {
 
   render() {
     return (
-      <div className="create_doc" >
+      <div className="container create_doc" >
         <h2>Create a new doc</h2>
         <input onChange={this.handleChange} type="text" value={this.props.docName} name="docName" placeholder="Give me a name" /><br/>
         <input onChange={this.handleChange} type="text" value={this.props.docDescription} name="docDescription" placeholder="Add a description (optional)" /><br/>

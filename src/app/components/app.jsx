@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 // Components
 import SignUp from './signUp.jsx';
@@ -17,24 +18,33 @@ import * as user from '../actions/userActions.jsx';
 
 @connect((store) => {
   return {
-    login: store.user.login
+    isLoggedIn: store.user.login,
+    redirectUrl: store.user.redirectUrl
   }
 })
 
 export default class App extends React.Component {
 
+  componentDidUpdate(prevProps) {
+    const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
+
+    if (isLoggingIn) {
+      this.props.router.push(this.props.redirectUrl);
+    }
+  }
+
   render() {
-    var children = React.Children.map(this.props.children, function(child) {
-      return React.cloneElement(child, {
-      });
-    });
     return (
       <Theme>
         <div>
           <Navbar />
-          {children}
+          {this.props.children}
         </div>
       </Theme>
     );
   }
 }
+
+
+
+

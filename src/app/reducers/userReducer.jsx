@@ -1,23 +1,30 @@
 export default function reducer(state = {
-  login: true,
+  login: false,
   user: {
     username: '',
     email: '',
     password: ''
   },
+  redirectUrl: '/doc',
   fetching: false,
   fetched: false,
   error: null
 }, action) {
 
-console.log(action.type);
   switch(action.type) { 
 
     case "USER_LOGOUT": {
-    console.log('user reducer logout'); 
       return {
         ...state,
+        user: {...state.user, username: '', password: '', email: ''},
         login: false
+      }
+    }
+
+    case "SET_REDIRECT_URL": {
+      return {
+        ...state,
+        redirectUrl: action.payload
       }
     }
 
@@ -44,8 +51,9 @@ console.log(action.type);
     
     case "USER_CREATED": {
       return {
-        ...state,
-        user: action.payload 
+        ...state, 
+        user: {...state.user, username: action.payload.username, password: '', email: ''},
+        login: true
       }
     }
 
