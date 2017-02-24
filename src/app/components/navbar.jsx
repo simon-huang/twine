@@ -1,10 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router'
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
+// Store properties
+import * as user from '../actions/userActions.jsx';
 
+@connect((store) => {
+  return {
+    username: store.user.user.username
+  };
+})
 
 export default class Navbar extends React.Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.logout = this.logout.bind(this);
+  }
+  
+  logout() {
+    console.log('NAVBAR logout');
+    this.props.dispatch(user.userLogout());
+  }
+  
+  render() { 
     return (
       <div>
         <Link href="#">Publish Us</Link>
@@ -13,7 +31,11 @@ export default class Navbar extends React.Component {
         <Link href="#/login">Login</Link>
         <Link href="#/signup">Signup</Link>
         <Link href="#/doc">Doc</Link>
-        <Link href='#/logout'>Logout</Link>
+        <Link to="/logout" 
+              onClick={()=> {
+                console.log('logout clicked');
+                this.logout();
+              }}>Logout</Link>
       </div>
     );
   }
