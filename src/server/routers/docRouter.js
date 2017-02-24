@@ -1,17 +1,25 @@
 var express = require('express');
 var router = express.Router();
 
-router.route('/createDoc').post(function(req, res) {
-  var docInit = req.body;
-  console.log('POST request received on /api/doc/createDoc');
-  console.log('Inbound init values', docInit)
-});
+import { createDoc, mergeDoc} from '../../db/docControllers.js';
 
-router.route('/mergeDoc').post(function(req, res) {
-  var mergeRequest = req.body;
-  console.log('POST request received on /api/doc/mergeDoc');
-  console.log('Inbound init values', mergeRequest)
-});
-
+router.route('/createDoc').post(createDoc);
 
 module.exports = router;
+
+/*
+MVP:
+Create doc
+Open doc
+Clone doc
+Save
+Pull from origin
+Send pull request
+Review pull request
+Accept/reject pull request
+
+Not MVP:
+Delete doc
+
+Pseudocode (ish) in docControllers.js
+*/
