@@ -47,7 +47,6 @@ exports.register = function (req, res, next) {
 
 exports.logout = function (req, res, next) {
   req.session.destroy(function(err) {
-    console.log('USER LOGGED OUT VIA PASSPORT');
     res.clearCookie('connect.sid');
     res.end('Logged out');
   });
