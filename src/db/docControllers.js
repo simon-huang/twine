@@ -1,70 +1,198 @@
-import { User, Doc, DocVersion } from './schema.js';
+// import { User, Doc, DocVersion, Doc Permission } from './schema.js';
+var User = require('./schema.js').User;
+var Doc = require('./schema.js').Doc;
+var DocVersion = require('./schema.js').DocVersion;
+var DocPermission = require('./schema.js').DocPermission;
 
-import { createNewDoc } from './docHelpers.js';
+// import { createNewDoc } from './docHelpers.js';
+var NodeGit = require('nodegit');
+var path = require('path');
+var promisify = require('promisify-node');
+var fse = promisify(require('fs-extra'));
+fse.ensureDir = promisify(fse.ensureDir);
 
-// CHECK ATTRIBUTE NAMES AND ARGUMENT NAMES
+var filesFolder = 'documents';
+
+
+// CHECK VARIABLE NAMES
 function createDoc(req, res, next) {
   // console.log('POST request received on /api/doc/createDoc');
-  var user, commitID, path;
+  console.log('req body ', req.body);
+  var user, pathToDoc, commitID;
+
+  var repository;
+  var index;
+
   var doc = {
     name: req.body.name,
     description: req.body.description,
     public: req.body.TYPE === 'public' ? 1 : 0
-  };
+  }; 
   
   // get userID
-  User.findOne({ where: {username: req.body.username, } })
+  return User.findOne({ where: {username: req.body.username } })
   .then(function(foundUser){
-    user = foundUser;
+    console.log('found user ');
+    user = foundUser.dataValues;
     // make sure the user doesn't already have a doc with the same name
-    Doc.findOne({ where: {name: req.body.name, userID: user._id} })
+    return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
   })
- .then(function(doc){
+  .then(function(foundDoc){
   //already exists
-  if (doc) {
-    // res.status().end()
-    res.end('You already have a doc with that name');
-  } 
-  return createNewDoc(user, doc.name)
+    if (foundDoc) {
+      // res.status().end()
+      console.log('doc already exists');
+      res.end('You already have a doc with that name');
+    } 
+    console.log('make doc');
+    var docName = doc.name;
+    NodeGit.Repository.init(path.resolve(__dirname, filesFolder, user.username, docName), 0)
+    .then(function(repo) {
+      console.log('1');
+      repository = repo;
+      return fse.writeFile(path.join(repository.workdir(), docName + '.txt'), '');
+    })
+    .then(function(){
+      console.log('2');
+      return repository.index();
+    })
+    .then(function(idx) {
+      console.log('3');
+      index = idx;
+    })
+    .then(function() {
+      console.log('4');
+      return index.addByPath(docName+ '.txt');
+    })
+    .then(function() {
+      console.log('5');
+      return index.write();
+    })
+    .then(function() {
+      console.log('6');
+      return index.writeTree();
+    })
+    .then(function(oid) {
+      console.log('7');
+      var who = NodeGit.Signature.now(user.username, user.email);
+
+      return repository.createCommit("HEAD", who, who, "Create document", oid, []);
+    })
+    .done(function(commit) {
+      console.log('successful commit ', commit);
+      commitID = commit[0];
+      console.log('file made')
+      pathToDoc = path.resolve(__dirname, filesFolder, user.username, docName);
+      Doc.build({
+        name: doc.name,
+        description: doc.description,
+        filepath: pathToDoc,
+        public: doc.public,
+        origin: null,
+        userId: user.id
+      })
+      .save()
+      .then(function(madeDoc) { 
+        console.log('put into database');
+        doc = madeDoc;
+        DocVersion.build({
+          commitID: commitID,
+          commitMessage: "Create document",
+          docId: doc.id,
+          userId: user.id
+        })
+        .save()
+        .then(function(madeDocVersion) { 
+          DocPermission.build({
+            docId: doc.id,
+            userId: user.id,
+            type: 'owner'
+          })
+          .save()
+          .then(function(madeDocPermission) { 
+            res.end('Success'); // WHAT SHOULD WE SEND BACK?
+          })
+        })
+      })
+    });
   })
-  .then(function(result){
-    commitID = result.commitID;
-    path = result.path;
-    //Put doc in database
-
-  })
-
-/*
-.then(function(foundUser){
-
-})
-
-Put in database:
-  add a new Doc instance, including path
-  add a new DocPermission
-  add a new DocVersion
-then, send back the doc info (name, text, maybe desc, maybe type)
-*/
 };
 
+//3:16
+function saveDoc(req, res, next) {
+  console.log('req body ', req.body);
+  // {username, doc name, doc text, optional commit message}
+  var user, doc, commitID, comment;
 
-export { createDoc };
+  var repository, index, oid;
 
+  return User.findOne({ where: {username: req.body.username } })
+  .then(function(foundUser){
+    console.log('found user ');
+    user = foundUser.dataValues;
+    // make sure the user doesn't already have a doc with the same name
+    return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
+  })
+  .then(function(foundDoc){
+  //already exists
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('You already have a doc with that name');
+    }
+    doc = foundDoc.dataValues; 
+    console.log('save doc');
+    NodeGit.Repository.open(doc.filepath)
+    .then(function(repo) {
+      repository = repo;
+      return fse.writeFile(path.join(repository.workdir(), doc.name + '.txt'), req.body.text);
+    })
+    .then(function(){
+      return repository.index();
+    })
+    .then(function(idx) {
+      index = idx;
+    })
+    .then(function() {
+      return index.addByPath(doc.name + '.txt');
+    })
+    .then(function() {
+      return index.write();
+    })
+    .then(function() {
+      return index.writeTree();
+    })
+    .then(function(oidResult) {
+      oid = oidResult;
+      return NodeGit.Reference.nameToId(repository, "HEAD");
+    })
+    .then(function(head) {
+      return repository.getCommit(head);
+    })
+    .then(function(parent) {
+      var author = NodeGit.Signature.now('Simon','simon@gmail.com');
+      var committer = NodeGit.Signature.now('Simon','simon@gmail.com');
+      comment = req.body.commit || new Date().toLocaleString();
 
-/*
-On creation of new doc: 
-receive request with name, description, and public, and username
-check if doc name is unique
-create a folder and a doc in the folder
-add a new Doc instance, including path
-add a new DocPermission
-add a new DocVersion
-then, send back the doc info (name, text, maybe desc, maybe type)
+      return repository.createCommit("HEAD", author, committer, comment, oid, [parent]);
+    })
+    .done(function(commit) {
+      console.log('successful commit ', commit);
+      commitID = commit[0];
+      DocVersion.build({
+        commitID: commitID,
+        commitMessage: comment,
+        docId: doc.id,
+        userId: user.id
+      })
+      .save()
+      .then(function(madeDocVersion) { 
+        res.end('Saved');
+      })
+    });
+  })
+};
 
-files should go into db folder
-../../db/repos/username/
-server, src,
-*/
+export { createDoc, saveDoc };
 
 
 /*

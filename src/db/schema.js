@@ -23,7 +23,7 @@ var Doc = sequelize.define('doc', {
   timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
 });
 Doc.belongsTo(Doc, {as: 'origin', allowNull: true}); // TEST THIS
-Doc.belongsTo(User, {as: 'user_ID'});
+Doc.belongsTo(User);
 
 // Create DocVersion model
 // Are we letting the user see all saves (commits) in their version history?
@@ -33,8 +33,8 @@ var DocVersion = sequelize.define('docVersion', {
   commitMessage: Sequelize.STRING,
   timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW} 
 });
-DocVersion.belongsTo(Doc, {as: 'doc_ID'});
-DocVersion.belongsTo(User, {as: 'user_ID'});
+DocVersion.belongsTo(Doc);
+DocVersion.belongsTo(User);
 
 // Create DocPermission model
 // NOT FOR MVP
@@ -42,8 +42,8 @@ DocVersion.belongsTo(User, {as: 'user_ID'});
 var DocPermission = sequelize.define('docPermission', {
   type: Sequelize.STRING 
 });
-DocPermission.belongsTo(Doc, {as: 'doc_ID'});
-DocPermission.belongsTo(User, {as: 'user_ID'});
+DocPermission.belongsTo(Doc);
+DocPermission.belongsTo(User);
 
 // Sync all models and associations
 sequelize.sync();
