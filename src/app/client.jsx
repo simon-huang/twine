@@ -11,6 +11,7 @@ import Login from './components/login.jsx';
 import Home from './components/home.jsx';
 import Doc from './components/document/doc.jsx';
 import EditDoc from './components/editDoc/editDoc.jsx';
+import Profile from './components/profile/profile.jsx';
 import EnsureLoggedInContainer from './components/ensureLoggedInContainer.jsx';
 
 store.subscribe(() => {
@@ -28,6 +29,7 @@ ReactDOM.render(<Provider store={store}>
         <Route path="/createdoc" component={CreateDoc}/>
         <Route path="/doc" component={Doc}/>
         <Route path="/editdoc" component={EditDoc}/>
+        <Route path="/profile" component={Profile}/>
       </Route>
     </Route>
   </Router>
