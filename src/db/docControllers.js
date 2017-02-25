@@ -28,6 +28,33 @@ function escapeHTML(s) {
 
 var filesFolder = 'documents';
 
+function retrieveOwnDocs(username, callback) {
+  var user, docs;
+  User.findOne({ where: {username: username } })
+  .then(function(foundUser) {
+    console.log('found user in db ');
+    return Doc.findAll({ where: {userId: foundUser.id} })
+  })
+  .then(function(allDocs) {
+    console.log('found docs: ');
+
+    docs = allDocs.map(instance => {
+      var type = instance.dataValues.public === 1 ? 'public' : 'private';
+      return {
+        docOwner: username,
+        docName: instance.dataValues.name, 
+        docDescription: instance.dataValues.description,
+        docType: type,
+        parentID:instance.dataValues.originId,
+        filePath: instance.dataValues.filepath,
+        docContent: '',
+        docCommits: []
+      }
+    });
+    console.log(docs);
+    callback(docs);
+  })
+}
 
 // CHECK VARIABLE NAMES
 function createDoc(req, res, next) {
@@ -218,7 +245,7 @@ function saveDoc(req, res, next) {
 function copyDoc(req, res, next) {
   console.log('req body ', req.body);
   // {username, username and doc name of target doc}
-  var currentUser, docOwner, targetDoc, copiedDoc;
+  var currentUser, docOwner, targetDoc, copiedDoc, docs;
   var newFilepath, repo;
 
   return User.findOne({ where: {username: req.body.docOwner } })
@@ -275,8 +302,21 @@ function copyDoc(req, res, next) {
           return Doc.findAll({ where: {userId: currentUser.id} })
         })
         .then(function(allDocs) {
-          console.log('found new list of all docs');
-          res.send({allDocuments: allDocs}); 
+          docs = allDocs.map(instance => {
+            var type = instance.dataValues.public === 1 ? 'public' : 'private';
+            return {
+              docOwner: currentUser.username,
+              docName: instance.dataValues.name, 
+              docDescription: instance.dataValues.description,
+              docType: type,
+              parentID:instance.dataValues.originId,
+              filePath: instance.dataValues.filepath,
+              docContent: '',
+              docCommits: []
+            }
+          });
+          console.log('found updated list of all docs');
+          res.send({allDocuments: docs}); 
         })
       })
     });
@@ -661,4 +701,4 @@ function actionPullRequest(req, res, next) { // What am I getting
 // update PullRequest table in db
 };
 
-export { createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest };
+export { retrieveOwnDocs, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest };
