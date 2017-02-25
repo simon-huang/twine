@@ -22,7 +22,7 @@ import * as docSummary from './../../actions/docSummaryActions.jsx';
   };
 })
 
-export default class Home extends React.Component {
+export default class Doc_merge extends React.Component {
   constructor(props) {
     super(props);
     this.reviewChanges = this.reviewChanges.bind(this);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Home extends React.Component {
+export default class Doc_merge_split extends React.Component {
 
   render() {
     return (
