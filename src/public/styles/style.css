@@ -57,6 +57,18 @@ p {
 /*============ Styling =============*/
 /*==================================*/
 
+.editor .ql-toolbar {
+  box-shadow: 0 1px 10px rgba(0, 0, 0, .1);
+}
+
+.editor .ql-editor {
+  padding: 1rem;
+}
+
+.editor .ql-tooltip.ql-image-tooltip {
+  float: none;
+}
+
 .btn-purple {
   background-color: #5F00FF;
   border-radius: 3px;

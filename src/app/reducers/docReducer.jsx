@@ -4,8 +4,9 @@ export default function reducer(state = {
   docType: '',
   parentID: null,
   filePath: '',
-  editContent: '',
-  originalContent: 'TEST ORIGINAL CONTENT',
+  editsObject: null,
+  editsHtml: '',
+  masterHtml: '<h1>This is a title</h1>',
   previewContent: null,
   showMerge: false,
   error: null
@@ -31,10 +32,10 @@ export default function reducer(state = {
         docType: action.payload
       }
     }
-    case "EDIT_EDITCONTENT": {
+    case "EDIT_DOC_CONTENT": {
       return {
         ...state,
-        editContent: action.payload
+        editsObject: action.payload
       }
     }
     case "EDIT_PREVIEWCONTENT": {
@@ -43,6 +44,21 @@ export default function reducer(state = {
         previewContent: action.payload
       }
     }
+    case "UPDATE_DOC_HTML": {
+      return {
+        ...state,
+        editsHtml: action.payload
+      }
+    }
+
+    case "POPULATE_EDITOR": {
+      return {
+        ...state,
+        editsObject: action.payload.editorState,
+        editsHtml: action.payload.editsHtml
+      }
+    }
+
   }
 
   return state;

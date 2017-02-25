@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
 
 export function handleChange(name, value) {
   return {
@@ -18,20 +19,33 @@ export function editDocChange(value) {
 export function loadOriginalContent() {
   return (dispatch, getState) => {
     var states = getState();
+
+    // Convert master HTML back into EditorState
+    const blocksFromHTML = convertFromHTML(states.doc.masterHtml);
+    const contentState = ContentState.createFromBlockArray(blocksFromHTML);
+    const editorState = EditorState.createWithContent(contentState);
+
     dispatch({
-      type: "EDIT_EDITCONTENT",
-      payload: states.doc.originalContent
+      type: "POPULATE_EDITOR",
+      payload: {
+        editorState: editorState,
+        editsHtml: states.doc.masterHtml
+      }
     });
   }
 }
 
-export function loadPreviewContent() {
-  return (dispatch, getState) => {
-    var states = getState();
-    dispatch({
-      type: "EDIT_EDITCONTENT",
-      payload: states.doc.previewContent
-    });
+export function editingDoc(value) {
+  return {
+    type: "EDIT_DOC_CONTENT",
+    payload: value
+  }
+}
+
+export function createHTML(value) {
+  return {
+    type: "UPDATE_DOC_HTML",
+    payload: value
   }
 }
 

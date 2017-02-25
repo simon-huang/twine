@@ -22,9 +22,9 @@ ReactDOM.render(<Provider store={store}>
   <Router history={hashHistory}>
     <Route component={App}>
       <Route path="/" component={Home}/>
-      <Route path="/login" component={Login}/>
-      <Route path="/signup" component={SignUp}/>
-      <Route path="/logout" component={Home}/>
+      <Route path="login" component={Login}/>
+      <Route path="signup" component={SignUp}/>
+      <Route path="logout" component={Home}/>
       <Route component={EnsureLoggedInContainer}>
         <Route path="/createdoc" component={CreateDoc}/>
         <Route path="/doc" component={Doc}/>

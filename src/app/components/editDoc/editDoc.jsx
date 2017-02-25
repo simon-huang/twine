@@ -1,37 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as doc from '../../actions/docActions.jsx';
+
 import EditDoc_details from './editDoc_details.jsx';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToHtml from 'draftjs-to-html';
+import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
+
+// Store properties
+import * as doc from '../../actions/docActions.jsx';
 
 @connect((store) => {
   return {
     docName: store.doc.docName,
-    docDescription: store.doc.docDescription,
-    docType: store.doc.docType,
-    parentID: store.doc.parentID,
-    filePath: store.doc.filePath,
-    editContent: store.doc.editContent,
-    previewContent: store.doc.previewContent
+    docObject: store.doc.editsObject,
   }
 })
 
 export default class EditDoc extends React.Component {
   constructor(props) {
     super(props);
-    this.editDocChange = this.editDocChange.bind(this);
+    this.editingDoc = this.editingDoc.bind(this);
+    this.createHTML = this.createHTML.bind(this);
   }
 
-  editDocChange(e) {
-    e.preventDefault();
-    this.props.dispatch(doc.editDocChange(e.target.value));
+  createHTML(contents) {
+    const html = draftToHtml(contents);
+    this.props.dispatch(doc.createHTML(html));
+  }
+
+  editingDoc(editorState) {
+    this.props.dispatch(doc.editingDoc(editorState));
   }
 
   componentWillMount() {
-    if(this.props.previewContent) {
-      this.props.dispatch(doc.loadPreviewContent());
-    } else {
-      this.props.dispatch(doc.loadOriginalContent());
-    }
+    this.props.dispatch(doc.loadOriginalContent());
   }
 
   render() {
@@ -39,9 +41,21 @@ export default class EditDoc extends React.Component {
       <div className="container">
         <h2>Edit your Document</h2>
         <div>{this.props.docName}</div>
-        <textarea onChange={this.editDocChange} type="text" value={this.props.editContent} rows="40" cols="90"></textarea>
+        <Editor editorState={this.props.docObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
         <EditDoc_details />
       </div>
     )
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
