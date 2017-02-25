@@ -9,9 +9,9 @@ var fileName = "newfile.txt";
 var repoDir = 'testRepos/addCommitTest';
 var repository;
 var index;
-var old;
+var oid;
 
-return NodeGit.Repository.open(path.resolve(__dirname, repoDir))
+NodeGit.Repository.open(path.resolve(__dirname, repoDir))
 .then(function(repo) {
   repository = repo;
   return fse.writeFile(path.join(repository.workdir(), fileName), 'Overwriting with this');

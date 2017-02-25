@@ -15,7 +15,7 @@ function createNewDoc(user, docName) {
   NodeGit.Repository.init(path.resolve(__dirname, filesFolder, user.username, docName), 0)
   .then(function(repo) {
     repository = repo;
-    return fse.writeFile(path.join(repository.workdir(), docName), '');
+    return fse.writeFile(path.join(repository.workdir(), docName + '.txt'), '');
   })
   .then(function(){
     return repository.index();
@@ -44,6 +44,6 @@ function createNewDoc(user, docName) {
     };
   });
 }
-
+// createNewDoc = promisify(createNewDoc);
 
 export {createNewDoc};
