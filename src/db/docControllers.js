@@ -1,15 +1,29 @@
-// import { User, Doc, DocVersion, Doc Permission } from './schema.js';
 var User = require('./schema.js').User;
 var Doc = require('./schema.js').Doc;
 var DocVersion = require('./schema.js').DocVersion;
 var DocPermission = require('./schema.js').DocPermission;
 
-// import { createNewDoc } from './docHelpers.js';
 var NodeGit = require('nodegit');
 var path = require('path');
 var promisify = require('promisify-node');
 var fse = promisify(require('fs-extra'));
 fse.ensureDir = promisify(fse.ensureDir);
+
+// pull
+var exec = require('child_process').exec;
+// exec = promisify(exec);
+
+
+// diff
+var jsdiff = require('diff');
+function escapeHTML(s) {
+  var n = s;
+  n = n.replace(/&/g, '&amp;');
+  n = n.replace(/</g, '&lt;');
+  n = n.replace(/>/g, '&gt;');
+  n = n.replace(/"/g, '&quot;');
+  return n;
+}
 
 var filesFolder = 'documents';
 
@@ -118,7 +132,6 @@ function createDoc(req, res, next) {
   })
 };
 
-//3:16
 function saveDoc(req, res, next) {
   console.log('req body ', req.body);
   // {username, doc name, doc text, optional commit message}
@@ -168,11 +181,10 @@ function saveDoc(req, res, next) {
       return repository.getCommit(head);
     })
     .then(function(parent) {
-      var author = NodeGit.Signature.now('Simon','simon@gmail.com');
-      var committer = NodeGit.Signature.now('Simon','simon@gmail.com');
+      var who = NodeGit.Signature.now(user.username, user.email);
       comment = req.body.commit || new Date().toLocaleString();
 
-      return repository.createCommit("HEAD", author, committer, comment, oid, [parent]);
+      return repository.createCommit("HEAD", who, who, comment, oid, [parent]);
     })
     .done(function(commit) {
       console.log('successful commit ', commit);
@@ -235,7 +247,7 @@ function copyDoc(req, res, next) {
         description: targetDoc.description,
         filepath: newFilepath,
         public: targetDoc.public,
-        origin: targetDoc.id,
+        originId: targetDoc.id,
         userId: currentUser.id
       })
       .save()
@@ -304,11 +316,172 @@ function openDoc(req, res, next) {
       docText: text
     });
   })
-
 };
 
+function reviewUpstream(req, res, next) {
+  console.log('req body ', req.body);
+  // {username, doc name}
+  var user, doc, upstreamDoc;
+  var repository;
+  var result = [];
+  var obj = {};
 
-export { createDoc, saveDoc, copyDoc, openDoc };
+  return User.findOne({ where: {username: req.body.username } })
+  .then(function(foundUser){
+    console.log('found user ');
+    user = foundUser.dataValues;
+    return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\'t find that doc');
+    }
+    console.log('found my doc');
+    doc = foundDoc.dataValues; 
+    return Doc.findOne({ where: {name: req.body.name, id: doc.originId} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\'t find upstream doc');
+    }
+    console.log('found upstream doc');
+    upstreamDoc = foundDoc.dataValues; 
+    // console.log('here they are ', doc, upstreamDoc);
+    return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
+  })
+  .then(function(data) {
+    obj.text1 = data;
+    console.log('text 1 ', data);
+    return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
+  })
+  .done(function(data) {
+    obj.text2 = data;
+    console.log('text 2 ', data);
+    var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
+
+    diff.forEach(function(part){
+      if (part.added) {
+        result.push('<ins>');
+      } else if (part.removed) {
+        result.push('<del>');
+      }
+
+      result.push(escapeHTML(part.value));
+
+      if (part.added) {
+        result.push('</ins>');
+      } else if (part.removed) {
+        result.push('</del>');
+      }
+    });
+
+    console.log('result', result.join(''));
+    result = result.join('');
+    res.end(result);
+  })
+};
+
+function getUpstream(req, res, next) {
+  console.log('req body ', req.body);
+  // {username, doc name}
+  var user, doc, upstreamDoc, text;
+  var repository, index, oid, comment, commitID;
+
+  return User.findOne({ where: {username: req.body.username } })
+  .then(function(foundUser){
+    console.log('found user ');
+    user = foundUser.dataValues;
+    return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\'t find that doc');
+    }
+    console.log('found my doc');
+    doc = foundDoc.dataValues; 
+    return Doc.findOne({ where: {name: req.body.name, id: doc.originId} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\'t find upstream doc');
+    }
+    console.log('found upstream doc');
+    upstreamDoc = foundDoc.dataValues; 
+    console.log('both filepaths ', doc.filepath, upstreamDoc.filepath);
+    exec(`git --git-dir=${doc.filepath}/.git --work-tree=${doc.filepath}/ pull origin master`, (error, stdout, stderr) => {
+      console.log(error, stdout, stderr);
+    });
+  // })
+  // .then(function(a,b,c) {
+  //   console.log('pulled ',a,b,c);
+  // })
+  // .done(function() {
+  //   res.end('end');
+  // })
+  // .catch(function(a,b,c) {
+  //   console.log('pull conflict ',a,b,c);
+  //   NodeGit.Repository.open(doc.filepath)
+  //   .then(function(repo) {
+  //     repository = repo;
+  //     return repository.index();
+  //   })
+  //   .then(function(idx) {
+  //     index = idx;
+  //   })
+  //   .then(function() {
+  //     return index.addByPath(doc.name + '.txt');
+  //   })
+  //   .then(function() {
+  //     return index.write();
+  //   })
+  //   .then(function() {
+  //     return index.writeTree();
+  //   })
+  //   .then(function(oidResult) {
+  //     oid = oidResult;
+  //     return NodeGit.Reference.nameToId(repository, "HEAD");
+  //   })
+  //   .then(function(head) {
+  //     return repository.getCommit(head);
+  //   })
+  //   .then(function(parent) {
+  //     var who = NodeGit.Signature.now(user.username, user.email);
+  //     comment = `Update from original at ${new Date().toLocaleString()}`;
+
+  //     return repository.createCommit("HEAD", who, who, comment, oid, [parent]);
+  //   })
+  //   .then(function(commit) {
+  //     console.log('successful commit ', commit);
+  //     commitID = commit.tostrS();
+  //     // console.log(commit.tostrS(), typeof commit.tostrS());
+  //     DocVersion.build({
+  //       commitID: commitID,
+  //       commitMessage: comment,
+  //       docId: doc.id,
+  //       userId: user.id
+  //     })
+  //     .save()
+  //   })
+  // })
+  // .then(function() {
+  //   return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8');
+  // })
+  // .done(function(data) {
+  //   console.log('read contents ', data);
+  //   text = data;
+  //   res.send({
+  //     docName: doc.name, 
+  //     docDescription: doc.description,
+  //     docText: text
+  //   });
+  })
+};
+
+export { createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream };
 
 
 /*
@@ -334,7 +507,7 @@ On send pull request to origin:
 receive request with info to find doc in database
 *short version* 
 make a copy of the current doc
-add the path to the doc, the commitiD, the docID, and optionally the userID and the user/doc ID of the origin
+add the path to the doc, the commitID, the docID, and optionally the userID and the user/doc ID of the origin
   also whether the pull request is open/closed
 */
 
