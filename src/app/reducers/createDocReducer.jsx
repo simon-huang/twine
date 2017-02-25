@@ -1,38 +1,28 @@
 export default function reducer(state = {
-  docName: 'TestName',
+  docName: '',
   docDescription: '',
-  docType: '',
-  parentID: null,
-  filePath: '',
-  docContent: '',
-  showMerge: false,
+  docType: 'public',
   error: null
 }, action) {
 
   switch(action.type) {
 
-    case "EDIT_DOCNAME": {
+    case "CREATE_DOCNAME": {
       return {
         ...state,
         docName: action.payload
       }
     }
-    case "EDIT_DOCDESCRIPTION": {
+    case "CREATE_DOCDESCRIPTION": {
       return {
         ...state,
         docDescription: action.payload
       }
     }
-    case "EDIT_DOCTYPE": {
+    case "CREATE_DOCTYPE": {
       return {
         ...state,
         docType: action.payload
-      }
-    }
-    case "EDIT_DOCCONTENT": {
-      return {
-        ...state,
-        docContent: action.payload
       }
     }
   }

@@ -5,12 +5,12 @@ import EditDoc_details from './editDoc_details.jsx';
 
 @connect((store) => {
   return {
-    docName: store.doc.editDoc.docName,
-    docDescription: store.doc.editDoc.docDescription,
-    docType: store.doc.editDoc.docType,
-    parentID: store.doc.editDoc.parentID,
-    filePath: store.doc.editDoc.filePath,
-    docContent: store.doc.editDoc.docContent,
+    docName: store.doc.docName,
+    docDescription: store.doc.docDescription,
+    docType: store.doc.docType,
+    parentID: store.doc.parentID,
+    filePath: store.doc.filePath,
+    docContent: store.doc.docContent,
   }
 })
 
