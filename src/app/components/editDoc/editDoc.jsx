@@ -10,7 +10,8 @@ import EditDoc_details from './editDoc_details.jsx';
     docType: store.doc.docType,
     parentID: store.doc.parentID,
     filePath: store.doc.filePath,
-    docContent: store.doc.docContent,
+    editContent: store.doc.editContent,
+    previewContent: store.doc.previewContent
   }
 })
 
@@ -25,12 +26,20 @@ export default class EditDoc extends React.Component {
     this.props.dispatch(doc.editDocChange(e.target.value));
   }
 
+  componentWillMount() {
+    if(this.props.previewContent) {
+      this.props.dispatch(doc.loadPreviewContent());
+    } else {
+      this.props.dispatch(doc.loadOriginalContent());
+    }
+  }
+
   render() {
     return (
       <div className="container">
         <h2>Edit your Document</h2>
         <div>{this.props.docName}</div>
-        <textarea onChange={this.editDocChange} type="text" value={this.props.docContent} rows="40" cols="90"></textarea>
+        <textarea onChange={this.editDocChange} type="text" value={this.props.editContent} rows="40" cols="90"></textarea>
         <EditDoc_details />
       </div>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Home extends React.Component {
+export default class Doc_history extends React.Component {
 
   render() {
     return (

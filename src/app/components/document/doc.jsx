@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { hashHistory } from 'react-router';
 
 // UI
 import styles from './../styles/style.jsx';
@@ -25,18 +26,35 @@ import * as docSummary from './../../actions/docSummaryActions.jsx';
 
 @connect((store) => {
   return {
-    tab: store.docSummary.currentTab
+    tab: store.docSummary.currentTab,
+    docName: store.doc.docName,
+    docDescription: store.doc.docDescription,
+    docType: store.doc.docType,
+    parentID: store.doc.parentID,
+    filePath: store.doc.filePath,
+    docContent: store.doc.docContent,
+    username: store.user.user.username
   };
 })
 
-export default class Home extends React.Component {
+export default class Doc extends React.Component {
   constructor(props) {
     super(props);
     this.tabChange = this.tabChange.bind(this);
+    this.redirectEditDoc = this.redirectEditDoc.bind(this);
+    this.redirectProfile = this.redirectProfile.bind(this);
   }
 
   tabChange(tab) {
     this.props.dispatch(docSummary.tabChange(tab));
+  }
+
+  redirectEditDoc() {
+    hashHistory.push('/editdoc');
+  }
+
+  redirectProfile() {
+    hashHistory.push('/profile');
   }
 
   render() {
@@ -47,11 +65,11 @@ export default class Home extends React.Component {
             <div className="row doc-title mb20">
               <div className="col-sm-8">
                 <Breadcrumb className="breadcrumb">
-                  <BreadcrumbItem href="#">
-                    just1jp
+                  <BreadcrumbItem href="#" onClick={this.redirectProfile}>
+                    just1jp|||{this.props.username}
                   </BreadcrumbItem>
-                  <BreadcrumbItem href="#">
-                    Materials science: Organic analogues of graphene
+                  <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
+                    Materials science: Organic analogues of graphene|||{this.props.docName}
                   </BreadcrumbItem>
                 </Breadcrumb>
               </div>

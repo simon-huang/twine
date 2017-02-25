@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as merge from '../../actions/mergeActions.jsx';
+import * as doc from '../../actions/docActions.jsx';
 
 @connect((store) => {
   return {
     showMerge: store.merge.showMerge,
     mergeTitle: store.merge.mergeTitle,
-    mergeMessage: store.merge.mergeMessage
+    mergeMessage: store.merge.mergeMessage,
+    // editContent: store.doc.editContent
   }
 })
 
@@ -18,6 +20,7 @@ export default class EditDoc_details extends React.Component {
     this.mergeRequest = this.mergeRequest.bind(this);
     this.clearMergeInfo = this.clearMergeInfo.bind(this);
     this.cancelMerge = this.cancelMerge.bind(this);
+    this.saveDoc = this.saveDoc.bind(this);
   }
 
   showMergeMenu(value) {
@@ -45,6 +48,10 @@ export default class EditDoc_details extends React.Component {
     this.showMergeMenu(value);
   }
 
+  saveDoc() {
+    this.props.dispatch(doc.saveDoc());
+  }
+
   render() {
     if (this.props.showMerge) {
       return (
@@ -59,7 +66,7 @@ export default class EditDoc_details extends React.Component {
     }
     return (
       <div>
-        <button className="btn btn-success" onClick={()=>(console.log('test save'))}>Save</button>
+        <button className="btn btn-success" onClick={this.saveDoc}>Save</button>
         <button className="btn btn-success" onClick={()=>(this.showMergeMenu(!this.props.showMerge))}>Merge</button>
       </div>
     );

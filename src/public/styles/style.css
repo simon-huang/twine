@@ -210,6 +210,11 @@ p {
   margin-bottom: 0px;
 }
 
+.list-title {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 /*==================================*/
 /*======== Merge Styling ===========*/
 /*==================================*/

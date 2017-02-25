@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/lib/Button';
 // Components
 import DocContents from './doc_contents.jsx'
 
-export default class Home extends React.Component {
+export default class Doc_details extends React.Component {
   constructor(props) {
     super(props);
   }

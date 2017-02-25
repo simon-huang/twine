@@ -1,10 +1,12 @@
 export default function reducer(state = {
-  docName: 'TestName',
+  docName: 'Test Doc Name',
   docDescription: '',
   docType: '',
   parentID: null,
   filePath: '',
-  docContent: '',
+  editContent: '',
+  originalContent: 'TEST ORIGINAL CONTENT',
+  previewContent: null,
   showMerge: false,
   error: null
 }, action) {
@@ -29,10 +31,16 @@ export default function reducer(state = {
         docType: action.payload
       }
     }
-    case "EDIT_DOCCONTENT": {
+    case "EDIT_EDITCONTENT": {
       return {
         ...state,
-        docContent: action.payload
+        editContent: action.payload
+      }
+    }
+    case "EDIT_PREVIEWCONTENT": {
+      return {
+        ...state,
+        previewContent: action.payload
       }
     }
   }

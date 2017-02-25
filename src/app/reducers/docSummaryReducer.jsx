@@ -1,5 +1,5 @@
 export default function reducer(state = {
-  currentTab: 'merge',
+  currentTab: 'document',
   mergeSplitView: true,
   reviewChanges: {
     acceptQuick: false,

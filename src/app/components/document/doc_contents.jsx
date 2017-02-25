@@ -1,10 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default class Home extends React.Component {
+class Doc_contents extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     return (
       <div>
+        {this.props.doc.originalContent}|||
         <h1>Graphene Oxide Dispersions in Organic Solvents</h1>
         <br/>
         <p>J. I. Paredes*, S. Villar-Rodil, A. Martínez-Alonso and J. M. D. Tascón</p>
@@ -26,7 +31,7 @@ export default class Home extends React.Component {
 }
 
 
-
+export default connect(state => state)(Doc_contents);
 
 
 
