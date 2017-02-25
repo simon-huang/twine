@@ -17,9 +17,9 @@ describe('Doc Tests', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/createDoc')
-        .send({username: 'Sim', name: 'testMinusSpacesDoc2', description: 'This is the test', public: 'public'})
+        .send({username: 'Sim', docName: 'Ninth Test Doc', docDescription: 'This is the test', docType: 'public'})
         .end(function(err, res) {
-          expect(res.text).to.equal('Success');
+          expect(res.body.docName).to.equal('Ninth Test Doc');
           done();
         });
     });
@@ -29,18 +29,18 @@ describe('Doc Tests', function() {
     it('should work without commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')
-        .send({username: 'Sim', name: 'testMinusSpacesDoc2', text: 'Overwriting the text 1', commit: ''})
+        .send({username: 'Sim', docName: 'Ninth Test Doc', docContent: 'Overwriting the text 1', commitMessage: ''})
         .end(function(err, res) {
-          expect(res.text).to.equal('Saved');
+          // expect(res.text).to.equal('Saved');
           done();
         });
     });
     it('should work with commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')
-        .send({username: 'Sim', name: 'testMinusSpacesDoc2', text: 'Overwriting the text 2', commit: 'Testing commit'})
+        .send({username: 'Sim', docName: 'Ninth Test Doc', docContent: 'Overwriting the text 2', commitMessage: 'Testing commit'})
         .end(function(err, res) {
-          expect(res.text).to.equal('Saved');
+          // expect(res.text).to.equal('Saved');
           done();
         });
     });
@@ -50,61 +50,73 @@ describe('Doc Tests', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/copyDoc')
-        .send({targetUser: 'Sim', name: 'testMinusSpacesDoc2', currentUser: 'Tim'})
+        .send({docOwner: 'Sim', docName: 'Ninth Test Doc', username: 'Tim'})
         .end(function(err, res) {
-          expect(res.text).to.equal('Copied');
+          expect(Array.isArray(res.body.allDocuments)).to.equal(true);
           done();
         });
     });
   });
 
-  xdescribe('Open Doc', function() {
+  describe('Open Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/openDoc')
-        .send({username: 'Sim', name: 'testMinusSpacesDoc2'})
+        .send({username: 'Sim', docName: 'Ninth Test Doc'})
         .end(function(err, res) {
-          expect(res.body.docText).to.equal('Overwriting the text 2');
+          console.log('opened ', res.body);
+          // expect(res.body.docText).to.equal('Overwriting the text 2');
           done();
         });
     });
   });
-  xdescribe('Review Upstream', function() {
+  describe('Review Upstream', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/reviewUpstream')
-        .send({username: 'Tim', name: 'testMinusSpacesDoc2'})
+        .send({username: 'Tim', docName: 'Ninth Test Doc'})
         .end(function(err, res) {
-          console.log('res.text: ', res.text);
+          console.log('res.body: ', res.body);
           // expect(res.body.docText).to.equal('Overwriting the text 2');
           done();
         });
     });
   });
   describe('Get Upstream', function() {
-    it('should work', function(done) {
+    it('should work when there\'s no merge conflict', function(done) {
       agent
+        .post('/api/doc/saveDoc')
+        .send({username: 'Sim', docName: 'Ninth Test Doc', docContent: 'Overwriting the origin for something to be pulled', commitMessage: ''})
+        .end(function(err, res) {
+          agent
             .post('/api/doc/getUpstream')
-            .send({username: 'Tim', name: 'testMinusSpacesDoc2'})
+            .send({username: 'Tim', docName: 'Ninth Test Doc'})
             .end(function(err, res) {
-              console.log('res.text: ', res.text, res.body);
-              // expect(res.body.docText).to.equal('Overwriting the text 2');
+              console.log('res.text: ', res.text, res. body);
               done();
             });
-        
-      // agent
-      //   .post('/api/doc/saveDoc')
-      //   .send({username: 'Sim', name: 'testMinusSpacesDoc2', text: 'Overwriting the text a Fifth time', commit: ''})
-      //   .end(function(err, res) {
-      //     agent
-      //       .post('/api/doc/getUpstream')
-      //       .send({username: 'Tim', name: 'testMinusSpacesDoc2'})
-      //       .end(function(err, res) {
-      //         console.log('res.text: ', res.text, res.body);
-      //         // expect(res.body.docText).to.equal('Overwriting the text 2');
-      //         done();
-      //       });
-      //   });
+        });
+    });
+    it('should work despite merge conflict', function(done) {
+      agent
+        .post('/api/doc/saveDoc')
+        .send({username: 'Sim', docName: 'Ninth Test Doc', docContent: 'Overwriting the text a \nFifth time', commitMessage: ''})
+        .end(function(err, res) {
+          agent
+            .post('/api/doc/saveDoc')
+            .send({username: 'Tim', docName: 'Ninth Test Doc', docContent: 'drones \nThis is it \nAgain time', commitMessage: ''})
+            .end(function(err, res) {
+              agent
+                .post('/api/doc/getUpstream')
+                .send({username: 'Tim', docName: 'Ninth Test Doc'})
+                .end(function(err, res) {
+                  console.log('res.text: ', res.text, res.body);
+                  done();
+                });
+            });
+        });
     });
   });
 });
+
+          

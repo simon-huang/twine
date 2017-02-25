@@ -37,13 +37,28 @@ DocVersion.belongsTo(Doc);
 DocVersion.belongsTo(User);
 
 // Create DocPermission model
-// NOT FOR MVP
 // type: owner or collaborator
 var DocPermission = sequelize.define('docPermission', {
   type: Sequelize.STRING 
 });
 DocPermission.belongsTo(Doc);
 DocPermission.belongsTo(User);
+
+// I haven't written out the other part of the associations
+  // e.g. Users haveMany Docs, PullRequests, etc.
+  // Is it important to do that? Why?
+
+// (accept/decline = closed, open = pending)
+var PullRequest = sequelize.define('pullRequest', {
+  status: Sequelize.STRING, 
+  collaboratorMessage: Sequelize.STRING,
+  ownerMessage: Sequelize.STRING
+});
+PullRequest.belongsTo(User, { as: 'requester', foreignKey: 'requesterId' });
+PullRequest.belongsTo(User, { as: 'target', foreignKey: 'targetUserId' });
+PullRequest.belongsTo(Doc, { as: 'requestDoc', foreignKey: 'requestDocId' });
+PullRequest.belongsTo(Doc, { as: 'upstreamDoc', foreignKey: 'upstreamDocId' });
+PullRequest.belongsTo(DocVersion, { as: 'savepoint', foreignKey: 'commitId' });
 
 // Sync all models and associations
 sequelize.sync();

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "webpack --watch | nodemon --ignore node_modules ./src/server/server.js --exec babel-node",
-    "test": "mocha --compilers js:babel-core/register spec/server-spec.js"
+    "test": "mocha --compilers js:babel-core/register spec/doc-spec.js"
   },
   "dependencies": {
     "axios": "^0.15.3",
