@@ -25,11 +25,20 @@ describe('Doc Tests', function() {
     });
   });
 
-  describe('Save Doc', function() {
-    it('should work', function(done) {
+  xdescribe('Save Doc', function() {
+    it('should work without commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')
-        .send({username: 'Sim', name: 'Test Doc', text: 'Overwriting the text', commit: ''})
+        .send({username: 'Sim', name: 'Test Doc', text: 'Overwriting the text 1', commit: ''})
+        .end(function(err, res) {
+          expect(res.text).to.equal('Saved');
+          done();
+        });
+    });
+    it('should work with commit message', function(done) {
+      agent
+        .post('/api/doc/saveDoc')
+        .send({username: 'Sim', name: 'Test Doc', text: 'Overwriting the text 2', commit: 'Testing commit'})
         .end(function(err, res) {
           expect(res.text).to.equal('Saved');
           done();
@@ -37,4 +46,27 @@ describe('Doc Tests', function() {
     });
   });
   
+  xdescribe('Copy Doc', function() {
+    it('should work', function(done) {
+      agent
+        .post('/api/doc/copyDoc')
+        .send({targetUser: 'Sim', name: 'Test Doc', currentUser: 'Tim'})
+        .end(function(err, res) {
+          expect(res.text).to.equal('Copied');
+          done();
+        });
+    });
+  });
+
+  xdescribe('Open Doc', function() {
+    it('should work', function(done) {
+      agent
+        .post('/api/doc/openDoc')
+        .send({username: 'Sim', name: 'Test Doc'})
+        .end(function(err, res) {
+          expect(res.body.docText).to.equal('Overwriting the text 2');
+          done();
+        });
+    });
+  });
 });

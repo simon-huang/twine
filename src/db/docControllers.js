@@ -80,7 +80,7 @@ function createDoc(req, res, next) {
     })
     .done(function(commit) {
       console.log('successful commit ', commit);
-      commitID = commit[0];
+      commitID = commit.tostrS();
       console.log('file made')
       pathToDoc = path.resolve(__dirname, filesFolder, user.username, docName);
       Doc.build({
@@ -110,7 +110,7 @@ function createDoc(req, res, next) {
           })
           .save()
           .then(function(madeDocPermission) { 
-            res.end('Success'); // WHAT SHOULD WE SEND BACK?
+            res.end('Success'); // WHAT SHOULD WE SEND BACK? array, username, email
           })
         })
       })
@@ -134,10 +134,9 @@ function saveDoc(req, res, next) {
     return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
   })
   .then(function(foundDoc){
-  //already exists
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('You already have a doc with that name');
+      res.end('Can\'t find that doc');
     }
     doc = foundDoc.dataValues; 
     console.log('save doc');
@@ -177,7 +176,8 @@ function saveDoc(req, res, next) {
     })
     .done(function(commit) {
       console.log('successful commit ', commit);
-      commitID = commit[0];
+      commitID = commit.tostrS();
+      // console.log(commit.tostrS(), typeof commit.tostrS());
       DocVersion.build({
         commitID: commitID,
         commitMessage: comment,
@@ -192,43 +192,124 @@ function saveDoc(req, res, next) {
   })
 };
 
-export { createDoc, saveDoc };
+function copyDoc(req, res, next) {
+  console.log('req body ', req.body);
+  // {username, username and doc name of target doc}
+  var currentUser, targetUser, targetDoc, copiedDoc;
+  var newFilepath, repo;
+
+  return User.findOne({ where: {username: req.body.targetUser } })
+  .then(function(foundUser){
+    console.log('found user ');
+    targetUser = foundUser.dataValues;
+    // make sure the user doesn't already have a doc with the same name
+    return Doc.findOne({ where: {name: req.body.name, userID: targetUser.id} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\t find that doc');
+    }
+    targetDoc = foundDoc.dataValues; 
+    console.log('found target doc');
+    return User.findOne({ where: {username: req.body.currentUser } })
+  })
+  .then(function(foundUser){
+    console.log('found user ');
+    currentUser = foundUser.dataValues;
+    // make sure the user doesn't already have a doc with the same name
+    return Doc.findOne({ where: {name: req.body.name, userID: currentUser.id} }) 
+  })
+  .then(function(foundDoc){
+    if (foundDoc) {
+      console.log('doc already exists');
+      res.end('You already have a doc with that name');
+    }
+    newFilepath = path.resolve(__dirname, filesFolder, currentUser.username, targetDoc.name);
+    NodeGit.Clone(targetDoc.filepath, newFilepath)
+    .done(function(repository) {
+      console.log('Cloned repo ', repository);
+      repo = repository;
+      Doc.build({
+        name: targetDoc.name,
+        description: targetDoc.description,
+        filepath: newFilepath,
+        public: targetDoc.public,
+        origin: targetDoc.id,
+        userId: currentUser.id
+      })
+      .save()
+      .then(function(madeDoc) { 
+        console.log('put into database');
+        DocPermission.build({
+          docId: madeDoc.id,
+          userId: currentUser.id,
+          type: 'owner'
+        })
+        .save()
+        .then(function(madeDocPermission) { 
+          res.end('Copied'); // WHAT SHOULD WE SEND BACK?
+        })
+      })
+    });
+  })
+};
+
+function openDoc(req, res, next) {
+  console.log('req body ', req.body);
+  // {username, doc name}
+  var user, doc;
+  var text, commits;
+  var repository;
+
+  return User.findOne({ where: {username: req.body.username } })
+  .then(function(foundUser){
+    console.log('found user ');
+    user = foundUser.dataValues;
+    return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\'t find that doc');
+    }
+    // console.log('found doc', foundDoc.dataValues);
+    doc = foundDoc.dataValues; 
+    console.log('get commits');
+    return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
+  })
+  .then(function(foundCommits){
+    console.log('found commits ');
+    commits = foundCommits.map((instance) => {
+      return {
+        id: instance.dataValues.id,
+        commitID: instance.dataValues.commitID,
+        commitMessage: instance.dataValues.commitMessage
+      }
+    });
+    // console.log('reduced commits to send later ', commits);
+    return NodeGit.Repository.open(doc.filepath)
+  })
+  .then(function(repo) {
+    repository = repo;
+    console.log('found repo');
+    return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
+  })
+  .done(function(data) {
+    console.log('read contents ', data);
+    text = data;
+    res.send({
+      docName: doc.name, 
+      docDescription: doc.description,
+      docText: text
+    });
+  })
+
+};
 
 
-/*
-On opening a document to edit:
-receive request with info to find doc in Doc table
-use the path and read the text from the file
-query DocVersion table for relevant commits
-send all of that back
-*/
+export { createDoc, saveDoc, copyDoc, openDoc };
 
-/*
-On clone:
-receive request with documentID or username/ID+doc name
-get path to doc from Doc table
-create a clone at the correct path
-add a new Doc instance, including path
-add a new DocPermission
-add a new DocVersion
-then, send back the doc info (name, text, maybe desc, maybe type)
-*/
-
-
-/*
-On save (including notify clones):
-receive request with info to find doc in database and new text
-retrieve docID if don't already have it, and doc path
-use the path and overwrite the appropriate file with the new text
-commit
-add a new DocVersion
-then, send back an okay
-NOTIFY CLONES
-*/
-
-/*
-On deletion of a doc
-*/
 
 /*
 On pull from origin:

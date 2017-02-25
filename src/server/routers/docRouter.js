@@ -1,20 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
-import { createDoc, saveDoc} from '../../db/docControllers.js';
+import { createDoc, saveDoc, copyDoc, openDoc } from '../../db/docControllers.js';
 
 router.route('/createDoc').post(createDoc);
 router.route('/saveDoc').post(saveDoc);
+router.route('/copyDoc').post(copyDoc);
+router.route('/openDoc').post(openDoc);
+
 
 module.exports = router;
 
 
 /*
+openDoc
 getUpstream === pull upstream master
 reviewUpstream === view differences
 requestMerge === pull request to the master document for merging
-copyDocument === git clone/fork
-saveDocument === git commit
 reviewPullRequest === reviewing pull request (needs to grab origin and the requested merge doc)
 actionPullRequest === accept or reject PR
 */
