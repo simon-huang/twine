@@ -49,7 +49,7 @@ app.use('/api/doc', docRouter);
 app.use(express.static(path.resolve(__dirname, '../public')));
 
 app.use('*', function (request, response){
-  response.sendFile(path.resolve(__dirname, '..', '../public', 'index.html'))
+  response.sendFile(path.resolve(__dirname, '../public', 'index.html'))
 })
 
 // spin up server
