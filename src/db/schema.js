@@ -52,22 +52,67 @@ DocPermission.belongsTo(User);
 var PullRequest = sequelize.define('pullRequest', {
   status: Sequelize.STRING, 
   collaboratorMessage: Sequelize.STRING,
-  ownerMessage: Sequelize.STRING
+  ownerMessage: Sequelize.STRING,
+  requesterName: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'username'
+  },
+  targetUsername: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'username'
+  },
+  requestingDocId: {
+    type: Sequelize.INTEGER,
+    primaryKey: false,
+    model: 'doc',
+    key: 'id'
+  },
+  docName: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'doc',
+    key: 'name'
+  },
+  upstreamDocId: {
+    type: Sequelize.INTEGER,
+    primaryKey: false,
+    model: 'doc',
+    key: 'id'
+  },
+  commitId: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'docVersion',
+    key: 'commitID'
+  }
 });
-PullRequest.belongsTo(User, { as: 'requester', foreignKey: 'requesterId' });
-PullRequest.belongsTo(User, { as: 'target', foreignKey: 'targetUserId' });
-PullRequest.belongsTo(Doc, { as: 'requestDoc', foreignKey: 'requestDocId' });
-PullRequest.belongsTo(Doc, { as: 'upstreamDoc', foreignKey: 'upstreamDocId' });
-PullRequest.belongsTo(DocVersion, { as: 'savepoint', foreignKey: 'commitId' });
+
+User.hasMany(PullRequest);
+Doc.hasMany(PullRequest);
+
+
+// PullRequest.belongsTo(User, { as: 'requester', foreignKey: 'requesterName', targetKey: 'username'});
+// PullRequest.belongsTo(User, { as: 'target', foreignKey: 'targetUsername', targetKey: 'username'});
+// PullRequest.belongsTo(Doc, { as: 'requestDoc', foreignKey: 'requestingDocId' });
+// PullRequest.belongsTo(Doc, { as: 'nameofDoc', foreignKey: 'docName', targetKey: 'name'});
+// PullRequest.belongsTo(Doc, { as: 'upstreamDoc', foreignKey: 'upstreamDocId' });
+// PullRequest.belongsTo(DocVersion, { as: 'savepoint', foreignKey: 'commitId' });
+
 
 // Sync all models and associations
 sequelize.sync();
 // sequelize.sync({force: true});
 
+
 module.exports.User = User;
 module.exports.Doc = Doc;
 module.exports.DocVersion = DocVersion;
 module.exports.DocPermission = DocPermission;
+module.exports.PullRequest = PullRequest;
 
 
 
