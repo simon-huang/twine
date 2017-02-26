@@ -67,8 +67,3 @@ export default connect(state => state)(Doc_details);
 
 
 
-
-
-
-// dummy data for description
-// <p>The diagnosis of pancreatic neuroendocrine tumours (PanNETs) is increasing owing to more sensitive detection methods, and this increase is creating challenges for clinical management.</p>
