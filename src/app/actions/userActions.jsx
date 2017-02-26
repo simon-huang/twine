@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as doc from './docActions.jsx';
 
 export function autoLogin () {
   return function(dispatch, getState) {
@@ -9,10 +10,7 @@ export function autoLogin () {
             type: "AUTO_LOGIN", 
             payload: response.data.username
           });
-          dispatch({
-            type: "EDIT_ALLDOCUMENTS",
-            payload: response.data.allDocuments
-          });
+          dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
         }
       }).catch((err) => {
         console.log('no prior auth');
@@ -43,9 +41,16 @@ export function userLogin (username, password) {
   }
 }
 
-export function handleChange (name, value) {
+export function userCreated (value) {
   return {
-    type: "EDIT_" + name.toUpperCase(),
+    type: "USER_CREATED",
+    payload: value
+  }
+}
+
+export function authReject (value) {
+  return {
+    type: "USER_AUTH_REJECTED",
     payload: value
   }
 }
@@ -58,20 +63,11 @@ export function login () {
       password: user.password
     })
     .then((response) => {
-      dispatch({
-        type: "USER_CREATED", 
-        payload: response.data
-      });
-      dispatch({
-        type: "EDIT_ALLDOCUMENTS",
-        payload: response.data.allDocuments
-      });
+      dispatch(userCreated(response.data));
+      dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
     })
     .catch((err) => {
-      dispatch({
-        type: "USER_LOGIN_REJECTED", 
-        payload: err
-      })
+      dispatch(authReject(err));
     })
   }
 }
@@ -85,20 +81,11 @@ export function signup () {
       password: user.password
     })
     .then((response) => {
-      dispatch({
-        type: "USER_CREATED", 
-        payload: response.data
-      });
-      dispatch({
-        type: "EDIT_ALLDOCUMENTS",
-        payload: response.data.allDocuments
-      });
+      dispatch(userCreated(response.data));
+      dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
     })
     .catch((err) => {
-      dispatch({
-        type: "USER_SIGNUP_REJECTED", 
-        payload: err
-      })
+      dispatch(authReject(err));
     })
   }
 }
@@ -113,10 +100,7 @@ export function userLogout () {
       })
     })
     .catch((err) => {
-      dispatch({
-        type: "USER_LOGOUT_REJECTED",
-        payload: err
-      })
+      dispatch(authReject(err));
     })
   }
 }

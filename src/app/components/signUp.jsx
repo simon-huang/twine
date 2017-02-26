@@ -11,6 +11,7 @@ import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 // Store properties
 import * as user from '../actions/userActions.jsx';
+import * as doc from '../actions/docActions.jsx';
 
 @connect((store) => {
   return {
@@ -34,7 +35,7 @@ export default class SignUp extends React.Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.props.dispatch(user.handleChange(e.target.name, e.target.value));
+    this.props.dispatch(doc.handleChange(e.target.name, e.target.value));
   }
   
   render() {
