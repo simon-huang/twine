@@ -8,7 +8,11 @@ export function autoLogin () {
           dispatch({
             type: "AUTO_LOGIN", 
             payload: response.data.username
-          })
+          });
+          dispatch({
+            type: "EDIT_ALLDOCUMENTS",
+            payload: response.data.allDocuments
+          });
         }
       }).catch((err) => {
         console.log('no prior auth');
@@ -57,7 +61,11 @@ export function login () {
       dispatch({
         type: "USER_CREATED", 
         payload: response.data
-      })
+      });
+      dispatch({
+        type: "EDIT_ALLDOCUMENTS",
+        payload: response.data.allDocuments
+      });
     })
     .catch((err) => {
       dispatch({
@@ -80,7 +88,11 @@ export function signup () {
       dispatch({
         type: "USER_CREATED", 
         payload: response.data
-      })
+      });
+      dispatch({
+        type: "EDIT_ALLDOCUMENTS",
+        payload: response.data.allDocuments
+      });
     })
     .catch((err) => {
       dispatch({

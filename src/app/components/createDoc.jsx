@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import * as create from '../actions/createDocActions.jsx';
 
 
@@ -25,8 +26,8 @@ export default class CreateDoc extends React.Component {
 
 
   createDocSubmit() {
-    console.log('Submitting! Sorta');
     this.props.dispatch(create.createDocument());
+    browserHistory.push('/doc');
   }
 
   componentWillMount() {

@@ -8,13 +8,14 @@ export function handleChange(name, value) {
   }
 }
 
-// API request to server to create a document
+//======= deprecated?=========//
 export function editDocChange(value) {
   return {
     type: "EDIT_EDITCONTENT",
     payload: value
   }
 }
+//============================//
 
 export function loadOriginalContent() {
   return (dispatch, getState) => {
@@ -53,9 +54,25 @@ export function saveDoc() {
   return (dispatch, getState) => {
     var states = getState();
       dispatch({
-        type: "EDIT_PREVIEWCONTENT",
-        payload: states.doc.editContent
+        type: "EDIT_MASTERHTML",
+        payload: states.doc.editsHtml
       });
-    axios.post('/api/doc/saveDoc', {docContent: states.doc.editContent});
+
+    var docSaveInfo = { 
+      username: states.user.user.username,
+      docName: states.doc.docName,
+      docContent: states.doc.editsHtml,
+      commitMessage: states.doc.commitMessage
+    }
+
+    axios.post('/api/doc/saveDoc', docSaveInfo)
+    .then(function(data) {
+      data = data.data;
+      dispatch({
+        type: "EDIT_DOCCOMMITS",
+        payload: data
+      })
+    })
   }
 }
+

@@ -5,6 +5,7 @@ import EditDoc_details from './editDoc_details.jsx';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
+import { browserHistory } from 'react-router';
 
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
@@ -36,11 +37,15 @@ export default class EditDoc extends React.Component {
     this.props.dispatch(doc.loadOriginalContent());
   }
 
+  redirectToDoc() {
+    browserHistory.push('/doc');
+  }
+
   render() {
     return (
       <div className="container">
         <h2>Edit your Document</h2>
-        <div>{this.props.docName}</div>
+        <div className="list-title" onClick={this.redirectToDoc}>{this.props.docName}</div>
         <Editor editorState={this.props.docObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
         <EditDoc_details />
       </div>

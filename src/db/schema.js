@@ -62,6 +62,7 @@ PullRequest.belongsTo(DocVersion, { as: 'savepoint', foreignKey: 'commitId' });
 
 // Sync all models and associations
 sequelize.sync();
+// sequelize.sync({force: true});
 
 module.exports.User = User;
 module.exports.Doc = Doc;
