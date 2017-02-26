@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+
 import * as create from '../actions/createDocActions.jsx';
 
 
@@ -21,7 +22,7 @@ export default class CreateDoc extends React.Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.props.dispatch(create.handleChange(e.target.name, e.target.value));
+    this.props.dispatch(create.handleCreateChange(e.target.name, e.target.value));
   }
 
 
@@ -31,9 +32,9 @@ export default class CreateDoc extends React.Component {
   }
 
   componentWillMount() {
-    this.props.dispatch(create.handleChange('docName', ''));
-    this.props.dispatch(create.handleChange('docDescription', ''));
-    this.props.dispatch(create.handleChange('docType', 'public'));
+    this.props.dispatch(create.handleCreateChange('docName', ''));
+    this.props.dispatch(create.handleCreateChange('docDescription', ''));
+    this.props.dispatch(create.handleCreateChange('docType', 'public'));
   }
 
   render() {

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import * as doc from './docActions.jsx';
 
-export function handleChange(name, value) {
+export function handleCreateChange(name, value) {
   return {
     type: "CREATE_" + name.toUpperCase(),
     payload: value
@@ -20,38 +21,7 @@ export function createDocument() {
     axios.post('/api/doc/createDoc', createRequestInfo)
     .then(function(data){
       data = data.data;
-      dispatch({
-        type: "EDIT_DOCOWNER",
-        payload: data.docOwner
-      });
-      dispatch({
-        type: "EDIT_DOCNAME",
-        payload: data.docName
-      });
-      dispatch({
-        type: "EDIT_DOCDESCRIPTION",
-        payload: data.docDescription
-      });
-      dispatch({
-        type: "EDIT_DOCTYPE",
-        payload: data.docType
-      });
-      dispatch({
-        type: "EDIT_PARENTID",
-        payload: data.parentID
-      });
-      dispatch({
-        type: "EDIT_FILEPATH",
-        payload: data.filePath
-      });
-      dispatch({
-        type: "EDIT_MASTERHTML",
-        payload: data.docContent
-      });
-      dispatch({
-        type: "EDIT_DOCCOMMITS",
-        payload: data.docCommits
-      });
+      dispatch(doc.loadDocInfo(data));
     });
   }
 }

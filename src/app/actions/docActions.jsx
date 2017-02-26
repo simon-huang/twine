@@ -8,15 +8,6 @@ export function handleChange(name, value) {
   }
 }
 
-//======= deprecated?=========//
-export function editDocChange(value) {
-  return {
-    type: "EDIT_EDITCONTENT",
-    payload: value
-  }
-}
-//============================//
-
 export function loadOriginalContent() {
   return (dispatch, getState) => {
     var states = getState();
@@ -53,10 +44,8 @@ export function createHTML(value) {
 export function saveDoc() {
   return (dispatch, getState) => {
     var states = getState();
-      dispatch({
-        type: "EDIT_MASTERHTML",
-        payload: states.doc.editsHtml
-      });
+    
+    dispatch(handleChange('masterHtml', states.doc.editsHtml));
 
     var docSaveInfo = { 
       username: states.user.user.username,
@@ -68,11 +57,20 @@ export function saveDoc() {
     axios.post('/api/doc/saveDoc', docSaveInfo)
     .then(function(data) {
       data = data.data;
-      dispatch({
-        type: "EDIT_DOCCOMMITS",
-        payload: data
-      })
+      dispatch(handleChange('docCommits', data));
     })
   }
 }
 
+export function loadDocInfo(data) {
+  return (dispatch, getState) => {
+    dispatch(handleChange('docOwner', data.docOwner));
+    dispatch(handleChange('docName', data.docName));
+    dispatch(handleChange('docDescription', data.docDescription));
+    dispatch(handleChange('docType', data.docType));
+    dispatch(handleChange('filePath', data.filePath));
+    dispatch(handleChange('parentID', data.parentID));
+    dispatch(handleChange('masterHtml', data.docContent));
+    dispatch(handleChange('docCommits', data.docCommits));
+  }
+}

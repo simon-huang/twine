@@ -73,23 +73,7 @@ export default function reducer(state = {
       }
     }
 
-    case "USER_LOGIN_REJECTED": {
-      return {
-        ...state,
-        fetching: false,
-        error: action.payload
-      }
-    }   
-    
-    case "USER_LOGOUT_REJECTED": {
-      return {
-        ...state,
-        fetching: false,
-        error: action.payload
-      }
-    } 
-    
-    case "USER_SIGNUP_REJECTED": {
+    case "USER_AUTH_REJECTED": {
       return {
         ...state,
         fetching: false,
