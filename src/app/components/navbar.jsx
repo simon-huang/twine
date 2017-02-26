@@ -62,19 +62,20 @@ export default class Navbar extends React.Component {
         <NavContainer.Collapse>
           <Nav pullRight>
             <NavItem onClick={this.updatePath} eventKey={4} name="login">Login</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
+            <NavItem className="signup" onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
       );
     }
   }
   
-  render() { 
+  render() {
+    const pathname = this.props.props.location.pathname;
     return (
-      <NavContainer>
+      <NavContainer className={(pathname === '/' ) ? 'nav-clear' : 'nav-white'}>
         <NavContainer.Header>
           <NavContainer.Brand>
-            <a onClick={this.updatePath} name="/">PublishUs</a>
+            <a className="nav-logo" onClick={this.updatePath} name="/">PublishUs</a>
           </NavContainer.Brand>
           <NavContainer.Toggle />
         </NavContainer.Header>
