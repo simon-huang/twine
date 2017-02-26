@@ -52,7 +52,6 @@ export function createDocument() {
         type: "EDIT_DOCCOMMITS",
         payload: data.docCommits
       });
-      console.log('doc states', getState().doc);
     });
   }
 }
