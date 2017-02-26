@@ -25,6 +25,12 @@ export function setRedirectUrl (url) {
   }
 }
 
+export function toggleLoginModal () {
+  return { 
+    type: "TOGGLE_LOGIN_MODAL"
+  }
+}
+
 export function changeView () {
   return { 
     type: "CHANGE_LOGIN_STATE"

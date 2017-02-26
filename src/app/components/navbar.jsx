@@ -25,10 +25,15 @@ export default class Navbar extends React.Component {
     this.logout = this.logout.bind(this);
     this.navLoggedIn = this.navLoggedIn.bind(this);
     this.updatePath = this.updatePath.bind(this);
+    this.toggleLoginModal = this.toggleLoginModal.bind(this);
   }
   
   logout() {
     this.props.dispatch(user.userLogout());
+  }
+
+  toggleLoginModal() {
+    this.props.dispatch(user.toggleLoginModal())
   }
 
   updatePath(e) {
@@ -61,7 +66,7 @@ export default class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav pullRight>
-            <NavItem onClick={this.updatePath} eventKey={4} name="login">Login</NavItem>
+            <NavItem onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
             <NavItem className="signup" onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>

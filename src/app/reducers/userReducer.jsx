@@ -1,5 +1,6 @@
 export default function reducer(state = {
   login: false,
+  loginModal: false,
   user: {
     username: '',
     email: '',
@@ -18,6 +19,13 @@ export default function reducer(state = {
         ...state,
         user: {...state.user, username: action.payload, password: '', email: ''},
         login: true
+      }
+    }
+
+    case "TOGGLE_LOGIN_MODAL": {
+      return {
+        ...state,
+        loginModal: !state.loginModal
       }
     }
 
