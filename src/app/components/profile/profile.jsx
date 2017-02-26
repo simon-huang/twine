@@ -7,14 +7,7 @@ import * as docSummary from '../../actions/docSummaryActions.jsx';
 import ProfileDocuments from './profile_documents.jsx';
 
 
-@connect((store) => {
-  return {
-    username: store.user.user.username,
-    email: store.user.user.email
-  }
-})
-
-export default class Profile extends React.Component {
+class Profile extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -24,9 +17,11 @@ export default class Profile extends React.Component {
     return (
       <div className="profile">
         <h1>Profile</h1>
-        <div>Username: {this.props.username}</div>
+        <div>Username: {this.props.user.user.username}</div>
         <ProfileDocuments />
       </div>
     )
   }
 }
+
+export default connect(state => state)(Profile);

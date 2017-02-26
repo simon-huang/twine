@@ -1,4 +1,5 @@
 export default function reducer(state = {
+  docOwner: '',
   docName: 'Test Doc Name',
   docDescription: '',
   docType: '',
@@ -8,12 +9,19 @@ export default function reducer(state = {
   editsHtml: '',
   masterHtml: '<h1>This is a title</h1>',
   previewContent: null,
-  showMerge: false,
+  docCommits: [],
+  commitMessage: '',
   error: null
 }, action) {
 
   switch(action.type) {
 
+    case "EDIT_DOCOWNER": {
+      return {
+        ...state,
+        docOwner: action.payload
+      }
+    }
     case "EDIT_DOCNAME": {
       return {
         ...state,
@@ -32,10 +40,34 @@ export default function reducer(state = {
         docType: action.payload
       }
     }
+    case "EDIT_PARENTID": {
+      return {
+        ...state,
+        parentID: action.payload
+      }
+    }
+    case "EDIT_FILEPATH": {
+      return {
+        ...state,
+        filePath: action.payload
+      }
+    }
     case "EDIT_DOC_CONTENT": {
       return {
         ...state,
         editsObject: action.payload
+      }
+    }
+    case "EDIT_MASTERHTML": {
+      return {
+        ...state,
+        masterHtml: action.payload
+      }
+    }
+    case "EDIT_DOCCOMMITS": {
+      return {
+        ...state,
+        docCommits: action.payload
       }
     }
     case "EDIT_PREVIEWCONTENT": {

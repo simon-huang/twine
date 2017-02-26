@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 // UI
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
@@ -7,7 +8,7 @@ import Button from 'react-bootstrap/lib/Button';
 // Components
 import DocContents from './doc_contents.jsx'
 
-export default class Doc_details extends React.Component {
+class Doc_details extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -20,7 +21,7 @@ export default class Doc_details extends React.Component {
             <div className="row mt10">
               <div className="col-sm-12">
                 <div className="doc-desc">
-                  <p>The diagnosis of pancreatic neuroendocrine tumours (PanNETs) is increasing owing to more sensitive detection methods, and this increase is creating challenges for clinical management.</p>
+                  {this.props.doc.docDescription}
                 </div>
               </div>  
             </div>
@@ -62,10 +63,12 @@ export default class Doc_details extends React.Component {
   }
 }
 
+export default connect(state => state)(Doc_details);
 
 
 
 
 
 
-
+// dummy data for description
+// <p>The diagnosis of pancreatic neuroendocrine tumours (PanNETs) is increasing owing to more sensitive detection methods, and this increase is creating challenges for clinical management.</p>

@@ -32,8 +32,8 @@ import * as docSummary from './../../actions/docSummaryActions.jsx';
     docType: store.doc.docType,
     parentID: store.doc.parentID,
     filePath: store.doc.filePath,
-    docContent: store.doc.docContent,
-    username: store.user.user.username
+    username: store.user.user.username,
+    docOwner: store.doc.docOwner
   };
 })
 
@@ -66,10 +66,10 @@ export default class Doc extends React.Component {
               <div className="col-sm-8">
                 <Breadcrumb className="breadcrumb">
                   <BreadcrumbItem href="#" onClick={this.redirectProfile}>
-                    just1jp|||{this.props.username}
+                    {this.props.docOwner}
                   </BreadcrumbItem>
                   <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
-                    Materials science: Organic analogues of graphene|||{this.props.docName}
+                    {this.props.docName}
                   </BreadcrumbItem>
                 </Breadcrumb>
               </div>
@@ -105,3 +105,9 @@ export default class Doc extends React.Component {
     );
   }
 }
+
+// dummay data docName
+// Materials science: Organic analogues of graphene
+
+// dummy data docOwner
+// just1jp
