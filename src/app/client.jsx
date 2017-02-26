@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
+import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 
 import App from './components/app.jsx';
 import store from './store.jsx';
@@ -19,17 +19,17 @@ store.subscribe(() => {
 })
 
 ReactDOM.render(<Provider store={store}>
-  <Router history={hashHistory}>
+  <Router history={browserHistory}>
     <Route component={App}>
       <Route path="/" component={Home}/>
       <Route path="login" component={Login}/>
       <Route path="signup" component={SignUp}/>
       <Route path="logout" component={Home}/>
       <Route component={EnsureLoggedInContainer}>
-        <Route path="/createdoc" component={CreateDoc}/>
-        <Route path="/doc" component={Doc}/>
-        <Route path="/editdoc" component={EditDoc}/>
-        <Route path="/profile" component={Profile}/>
+        <Route path="createdoc" component={CreateDoc}/>
+        <Route path="doc" component={Doc}/>
+        <Route path="editdoc" component={EditDoc}/>
+        <Route path="profile" component={Profile}/>
       </Route>
     </Route>
   </Router>

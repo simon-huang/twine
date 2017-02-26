@@ -24,10 +24,17 @@ export default class Navbar extends React.Component {
     super(props);
     this.logout = this.logout.bind(this);
     this.navLoggedIn = this.navLoggedIn.bind(this);
+    this.updatePath = this.updatePath.bind(this);
   }
   
   logout() {
     this.props.dispatch(user.userLogout());
+  }
+
+  updatePath(e) {
+    e.preventDefault();
+    const url = e.target.name;
+    this.props.props.router.push(url);
   }
 
   navLoggedIn() {
@@ -35,10 +42,10 @@ export default class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav>
-            <NavItem eventKey={1} href="#/createdoc">Create Doc</NavItem>
-            <NavItem eventKey={2} href="#/editdoc">Edit Doc</NavItem>
-            <NavItem eventKey={3} href="#/doc">Document</NavItem>
-            <NavItem eventKey={4} href="#/profile">Profile</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={1} name="createdoc">Create Doc</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={2} name="editdoc">Edit Doc</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={3} name="doc">Document</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={4} name="profile">Profile</NavItem>
           </Nav>
           <Nav pullRight>
             <NavDropdown eventKey={4} title={
@@ -46,7 +53,7 @@ export default class Navbar extends React.Component {
                 <i className="fa fa-user-circle"></i>&nbsp;{this.props.username}
               </span>
             } id="user-settings">
-              <MenuItem eventKey={4.1} href="#/logout" onClick={this.logout}>Logout</MenuItem>
+              <MenuItem eventKey={4.1} name="logout" onClick={this.logout}>Logout</MenuItem>
             </NavDropdown>
           </Nav>
         </NavContainer.Collapse>
@@ -55,8 +62,8 @@ export default class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav pullRight>
-            <NavItem eventKey={4} href="#/login">Login</NavItem>
-            <NavItem eventKey={5} href="#/signup">Signup</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={4} name="login">Login</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
       );
@@ -68,7 +75,7 @@ export default class Navbar extends React.Component {
       <NavContainer>
         <NavContainer.Header>
           <NavContainer.Brand>
-            <a href="#">PublishUs</a>
+            <a onClick={this.updatePath} name="/">PublishUs</a>
           </NavContainer.Brand>
           <NavContainer.Toggle />
         </NavContainer.Header>
