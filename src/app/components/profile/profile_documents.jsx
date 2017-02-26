@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import * as profile from '../../actions/profileActions.jsx';
 import * as allDoc from '../../actions/allDocActions.jsx';
@@ -20,7 +20,7 @@ class ProfileDocuments extends React.Component {
       docName: name,
     }
     this.props.dispatch(allDoc.openDoc(docRequest));
-    hashHistory.push('/doc');
+    browserHistory.push('/doc');
   }
 
   render() {

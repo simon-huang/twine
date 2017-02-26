@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // UI
 import styles from './../styles/style.jsx';
@@ -50,11 +50,11 @@ export default class Doc extends React.Component {
   }
 
   redirectEditDoc() {
-    hashHistory.push('/editdoc');
+    browserHistory.push('/editdoc');
   }
 
   redirectProfile() {
-    hashHistory.push('/profile');
+    browserHistory.push('/profile');
   }
 
   render() {

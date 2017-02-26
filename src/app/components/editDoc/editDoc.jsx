@@ -5,7 +5,7 @@ import EditDoc_details from './editDoc_details.jsx';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
@@ -38,7 +38,7 @@ export default class EditDoc extends React.Component {
   }
 
   redirectToDoc() {
-    hashHistory.push('/doc');
+    browserHistory.push('/doc');
   }
 
   render() {
