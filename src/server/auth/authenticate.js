@@ -5,7 +5,7 @@ var User = require('../../db/schema.js').User;
 
 var bcrypt = Promise.promisifyAll(bcryptOriginal);
 
-var retrieveOwnDocs = require('../../db/docControllers.js').retrieveOwnDocs;
+var retrieveDocsAndPullRequests = require('../../db/docControllers.js').retrieveDocsAndPullRequests;
 
 exports.auth = function (req, res, next) {
   !req.isAuthenticated() ? req.send(401) : next();
@@ -14,8 +14,14 @@ exports.auth = function (req, res, next) {
 exports.login = function (req, res, next) {
   if (req.user) {
     req.session.username = req.user.username;
-    retrieveOwnDocs(req.user.username, function(docsArray) {
-      res.send({ status: 'successful', username: req.user.username, allDocuments: docsArray });
+    retrieveDocsAndPullRequests(req.user.username, function(docsArray, myDocsObject, pullRequestsArray) {
+      res.send({ 
+        status: 'successful', 
+        username: req.user.username, 
+        allDocuments: docsArray,
+        allMyDocuments: myDocsObject,
+        pullRequestsToMe: pullRequestsArray
+      });
     });
   } else {
     res.send({ status: 'unsuccessful login'});
