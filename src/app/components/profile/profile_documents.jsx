@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
-import * as profile from '../../actions/profileActions.jsx';
 import * as allDoc from '../../actions/allDocActions.jsx';
 
 import ProfileDocSummary from './profile_docSummary.jsx';

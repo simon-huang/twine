@@ -1,6 +1,6 @@
-# Project Name
+# PublishUs
 
-> Pithy project description
+> Simple document editing with the power of git.
 
 ## Team
 
@@ -20,31 +20,56 @@
 
 ## Usage
 
-> Some usage instructions
+> Create projects together with organization and structure. Gated process prevents overwritting changes made with each other.
 
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- React 15.4.x
+- MySQL 5.7.x
+- Express 4.10.x
+- nodegit 0.17.x
 
 ## Development
 
 ### Installing Dependencies
 
+Have a MySQL server started:
+```
+mysql.server start
+```
+Upon first run, a database needs to be created:
+Sign into mysql database, by default the command is:
+```
+mysql -u root -p
+```
+With a blank password
+
+Once inside, create a database for use
+```
+CREATE DATABASE publishus;
+```
+
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
-bower install
 ```
+
+Start the server with:
+```
+npm start
+```
+
+Start tests with:
+```
+npm test
+```
+
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/bearded-artichokes/publishus/issues)
 
 
 ## Contributing
