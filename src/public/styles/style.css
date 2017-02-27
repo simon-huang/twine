@@ -349,6 +349,23 @@ h6 { font-size: 14px; line-height: 20px; }
   background: rgba(255, 255, 255, 0.1);
 }
 
+.nav-clear .dropdown-menu,
+.nav-clear .navbar-nav>.open>a,
+.nav-clear .navbar-nav>.open>a:focus,
+.nav-clear .navbar-nav>.open>a:hover {
+  background-color: #5F00FF;
+}
+
+.nav-clear .dropdown-menu > li > a:hover,
+.nav-clear .dropdown-menu > li > a:focus {
+  background-color: #520ACB;
+  color: white;
+}
+
+.nav-clear .dropdown-menu {
+  border: none;
+}
+
 .nav-white {
   background: white;
   border-bottom: 1px solid #f1f1f1;
