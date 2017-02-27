@@ -5,7 +5,7 @@ export default function reducer(state = {
     email: '',
     password: ''
   },
-  redirectUrl: '/doc',
+  redirectUrl: '/profile',
   fetching: false,
   fetched: false,
   error: null
