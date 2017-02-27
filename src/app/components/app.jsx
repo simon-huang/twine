@@ -9,6 +9,7 @@ import Login from './login.jsx';
 import CreateDoc from './createDoc.jsx';
 import Navbar from './navbar.jsx';
 import Theme from 'material-ui/styles/MuiThemeProvider';
+import LoginModal from './modals/loginModal.jsx'
 
 // UI
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -47,6 +48,7 @@ export default class App extends React.Component {
         <div>
           <Navbar props={this.props} />
           {this.props.children}
+          <LoginModal />
         </div>
       </Theme>
     );

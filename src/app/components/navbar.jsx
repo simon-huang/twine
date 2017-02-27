@@ -25,10 +25,15 @@ export default class Navbar extends React.Component {
     this.logout = this.logout.bind(this);
     this.navLoggedIn = this.navLoggedIn.bind(this);
     this.updatePath = this.updatePath.bind(this);
+    this.toggleLoginModal = this.toggleLoginModal.bind(this);
   }
   
   logout() {
     this.props.dispatch(user.userLogout());
+  }
+
+  toggleLoginModal() {
+    this.props.dispatch(user.toggleLoginModal())
   }
 
   updatePath(e) {
@@ -61,20 +66,21 @@ export default class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav pullRight>
-            <NavItem onClick={this.updatePath} eventKey={4} name="login">Login</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
+            <NavItem onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
+            <NavItem className="signup" onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
       );
     }
   }
   
-  render() { 
+  render() {
+    const pathname = this.props.props.location.pathname;
     return (
-      <NavContainer>
+      <NavContainer className={(pathname === '/' ) ? 'nav-clear' : 'nav-white'}>
         <NavContainer.Header>
           <NavContainer.Brand>
-            <a onClick={this.updatePath} name="/">PublishUs</a>
+            <a className="nav-logo" onClick={this.updatePath} name="/">PublishUs</a>
           </NavContainer.Brand>
           <NavContainer.Toggle />
         </NavContainer.Header>
