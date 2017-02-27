@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as profile from '../../actions/profileActions.jsx';
 import * as user from '../../actions/userActions.jsx';
 import * as docSummary from '../../actions/docSummaryActions.jsx';
 
