@@ -43,8 +43,7 @@ export default class Navbar extends React.Component {
         <NavContainer.Collapse>
           <Nav>
             <NavItem onClick={this.updatePath} eventKey={1} name="createdoc">Create Doc</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={2} name="editdoc">Edit Doc</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={3} name="doc">Document</NavItem>
+
             <NavItem onClick={this.updatePath} eventKey={4} name="profile">Profile</NavItem>
           </Nav>
           <Nav pullRight>
@@ -86,6 +85,7 @@ export default class Navbar extends React.Component {
 }
 
 
-
-
+//Removing for presentation. Please keep for dev purposes
+// <NavItem onClick={this.updatePath} eventKey={2} name="editdoc">Edit Doc</NavItem>
+// <NavItem onClick={this.updatePath} eventKey={3} name="doc">Document</NavItem>
 
