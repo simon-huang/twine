@@ -20,10 +20,21 @@ var Doc = sequelize.define('doc', {
   description: Sequelize.STRING,
   filepath: Sequelize.STRING,
   public: Sequelize.BOOLEAN, 
-  timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
+  timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
+  userId: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'id'
+  },
+  docOwner: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'username'
+  }
 });
 Doc.belongsTo(Doc, {as: 'origin', allowNull: true}); // TEST THIS
-Doc.belongsTo(User);
 
 // Create DocVersion model
 // Are we letting the user see all saves (commits) in their version history?
@@ -104,8 +115,8 @@ Doc.hasMany(PullRequest);
 
 
 // Sync all models and associations
-sequelize.sync();
-// sequelize.sync({force: true});
+// sequelize.sync();
+sequelize.sync({force: true});
 
 
 module.exports.User = User;

@@ -14,6 +14,19 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
+  describe('Get All Docs', function() {
+    it('should work', function(done) {
+      agent
+        .get('/api/doc/allDocs')
+        .end(function(err, res) {
+          console.log('res.text ', res.text);
+          console.log('this is the res.body: ', res.body);
+          // expect(res.body).to.equal();
+          done();
+        });
+    });
+  });
+
   xdescribe('New Doc', function() {
     it('should work', function(done) {
       agent
@@ -159,7 +172,7 @@ describe('Doc Tests', function() {
         });
     });
   });
-  describe('Action Pull Request', function() {
+  xdescribe('Action Pull Request', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/actionPullRequest')

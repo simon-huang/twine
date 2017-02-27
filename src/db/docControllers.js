@@ -28,6 +28,29 @@ function escapeHTML(s) {
 
 var filesFolder = 'documents';
 
+function allDocs(req, res, next) {
+  var docs;
+  console.log('requesting all docs');
+  Doc.findAll()
+  .then(function(allD) {
+    console.log('found all docs ');
+    docs = allD.map(instance => {
+      var type = instance.dataValues.public === 1 ? 'public' : 'private';
+      return {
+        docOwner: instance.dataValues.docOwner,
+        docName: instance.dataValues.name, 
+        docDescription: instance.dataValues.description,
+        docType: type,
+        parentID: instance.dataValues.originId,
+        filePath: instance.dataValues.filepath,
+        docContent: '',
+        docCommits: []
+      }
+    });
+    res.send({allDocuments: docs});
+  })
+}
+
 function retrieveDocsAndPullRequests(username, callback) {
   var user, docs, myDocs, pullRequests;
   var myDocsObject = {};
@@ -158,7 +181,8 @@ function createDoc(req, res, next) {
         filepath: pathToDoc,
         public: doc.public,
         origin: null,
-        userId: user.id
+        userId: user.id,
+        docOwner: user.username
       })
       .save()
       .then(function(madeDoc) { 
@@ -325,7 +349,8 @@ function copyDoc(req, res, next) {
         filepath: newFilepath,
         public: targetDoc.public,
         originId: targetDoc.id,
-        userId: currentUser.id
+        userId: currentUser.id,
+        docOwner: currentUser.username
       })
       .save()
       .then(function(madeDoc) { 
@@ -861,4 +886,4 @@ function actionPullRequest(req, res, next) {
 // update PullRequest table in db
 };
 
-export { retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest };
+export { allDocs, retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest };
