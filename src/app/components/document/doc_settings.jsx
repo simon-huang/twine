@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default class Doc_settings extends React.Component {
+class Doc_settings extends React.Component {
 
   render() {
     return (
@@ -10,3 +11,5 @@ export default class Doc_settings extends React.Component {
     );
   }
 }
+
+export default connect(state => state)(Doc_settings);

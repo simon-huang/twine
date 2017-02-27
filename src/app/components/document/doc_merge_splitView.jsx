@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default class Doc_merge_split extends React.Component {
+class Doc_merge_split extends React.Component {
 
   render() {
     return (
@@ -28,3 +29,5 @@ export default class Doc_merge_split extends React.Component {
     );
   }
 }
+
+export default connect(state => state)(Doc_merge_split);

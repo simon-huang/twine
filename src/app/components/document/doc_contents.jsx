@@ -6,11 +6,14 @@ class Doc_contents extends React.Component {
     super(props);
   }
 
+  createMarkup() {
+    return {__html: this.props.doc.masterHtml};
+  }
+
+
   render() {
     return (
-      <div>
-        {this.props.doc.masterHtml}
-      </div>
+      <div dangerouslySetInnerHTML={this.createMarkup()} />
     );
   }
 }

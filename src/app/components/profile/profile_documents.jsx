@@ -26,6 +26,7 @@ class ProfileDocuments extends React.Component {
     return (
       <div className="profile-documents">
         <div>Your Documents!</div>
+        <hr/>
         {this.props.allDoc.allDocuments.map((docs, i) => (
           <ProfileDocSummary key={i} onClick={this.openDoc} doc={docs} />))}
       </div>

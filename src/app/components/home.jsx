@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   render() {
     return (
       <div className="fold_one">
@@ -17,3 +18,5 @@ export default class Home extends React.Component {
     );
   }
 }
+
+export default connect(state => state)(Home);
