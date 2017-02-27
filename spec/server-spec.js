@@ -22,6 +22,8 @@ global.document = doc
 global.window = doc.defaultView
 
 
+/*=== NEED TO REFACTOR TO ACOOMODATE FRONT END CHANGES ====*/
+
 describe('<CreateDoc />', () => {
   it('1 + 1 = 2', () => {
     expect(1 + 1).to.equal(2);
@@ -38,7 +40,6 @@ describe('<CreateDoc />', () => {
   });
 
   it('expects actions to successfully change values', () => {
-    console.log('AAAAAAAAA', wrapper.props().store.getState())
     wrapper.props().store.dispatch(docActions.handleChange('docName', 'test name'));
     wrapper.props().store.dispatch(docActions.handleChange('docDescription', 'details details'))
     wrapper.props().store.dispatch(docActions.handleChange('docType', 'private'));
