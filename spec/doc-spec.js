@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Eighth Test';
+var testName = 'Sixth Test';
 var expect = chai.expect;
 
 describe('Doc Tests', function() {
@@ -14,14 +14,14 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  describe('Get All Docs', function() {
+  describe('Checkout past version', function() {
     it('should work', function(done) {
       agent
-        .get('/api/doc/allDocs')
+        .post('/api/doc/pastVersion')
+        .send({commitID: 'bde46d9e71bbf0671283b0e7597ca7e7bac7c31a'})
         .end(function(err, res) {
-          console.log('res.text ', res.text);
-          console.log('this is the res.body: ', res.body);
-          // expect(res.body).to.equal();
+          console.log('res.body: ', res.body);
+          // expect(res.text).to.equal('Pull request sent');
           done();
         });
     });
@@ -176,10 +176,21 @@ describe('Doc Tests', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/actionPullRequest')
-        .send({commitID: '93ecd7e84eb97202cd272fc4b34e3681a470f4cf', ownerMessage: 'Thanks', mergeStatus: 'accept'})
+        .send({commitID: 'a87728e3ea075cbb9197096f02615e7e8881416b', ownerMessage: 'Thanks', mergeStatus: 'accept'})
         .end(function(err, res) {
           console.log('res.body: ', res.body);
           // expect(res.text).to.equal('Pull request sent');
+          done();
+        });
+    });
+  });
+  xdescribe('Get All Docs', function() {
+    it('should work', function(done) {
+      agent
+        .get('/api/doc/allDocs')
+        .end(function(err, res) {
+          console.log('this is the res.body: ', res.body);
+          // expect(res.body).to.equal();
           done();
         });
     });

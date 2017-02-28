@@ -115,8 +115,8 @@ Doc.hasMany(PullRequest);
 
 
 // Sync all models and associations
-// sequelize.sync();
-sequelize.sync({force: true});
+sequelize.sync();
+// sequelize.sync({force: true});
 
 
 module.exports.User = User;
