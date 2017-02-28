@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
+import { connect, mapStateToProps } from 'react-redux';
 
 // UI
 import NavContainer from 'react-bootstrap/lib/Navbar';
@@ -12,14 +12,7 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 // Store properties
 import * as user from '../actions/userActions.jsx';
 
-@connect((store) => {
-  return {
-    username: store.user.user.username,
-    isLoggedIn: store.user.login
-  };
-})
-
-export default class Navbar extends React.Component {
+export class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
@@ -43,7 +36,7 @@ export default class Navbar extends React.Component {
   }
 
   navLoggedIn() {
-    if (this.props.isLoggedIn) {
+    if (this.props.props.isLoggedIn) {
       return (
         <NavContainer.Collapse>
           <Nav>
@@ -54,7 +47,7 @@ export default class Navbar extends React.Component {
           <Nav pullRight>
             <NavDropdown eventKey={4} title={
               <span>
-                <i className="fa fa-user-circle"></i>&nbsp;{this.props.username}
+                <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.user.username}
               </span>
             } id="user-settings">
               <MenuItem eventKey={4.1} name="logout" onClick={this.logout}>Logout</MenuItem>
@@ -66,7 +59,7 @@ export default class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav pullRight>
-            <NavItem onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
+            <NavItem className="login" onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
             <NavItem className="signup" onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
@@ -89,6 +82,8 @@ export default class Navbar extends React.Component {
     );
   }
 }
+
+export default connect(state => state)(Navbar);
 
 
 //Removing for presentation. Please keep for dev purposes
