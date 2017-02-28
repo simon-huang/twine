@@ -44,7 +44,8 @@ function allDocs(req, res, next) {
         parentID: instance.dataValues.originId,
         filePath: instance.dataValues.filepath,
         docContent: '',
-        docCommits: []
+        docCommits: [],
+        currentCommit: ''
       }
     });
     res.send({allDocuments: docs});
@@ -66,14 +67,15 @@ function retrieveDocsAndPullRequests(username, callback) {
     docs = allDocs.map(instance => {
       var type = instance.dataValues.public === true ? 'public' : 'private';
       return {
-        docOwner: username,
+        docOwner: instance.dataValues.docOwner,
         docName: instance.dataValues.name, 
         docDescription: instance.dataValues.description,
         docType: type,
         parentID: instance.dataValues.originId,
         filePath: instance.dataValues.filepath,
         docContent: '',
-        docCommits: []
+        docCommits: [],
+        currentCommit: ''
       }
     });
     myDocs = docs.filter(doc => {
@@ -101,6 +103,10 @@ function retrieveDocsAndPullRequests(username, callback) {
         ownerMessage: ''
       }
     });
+    console.log({allDocuments: docs,
+        allMyDocuments: myDocsObject,
+        pullRequestsToMe: pullRequests
+      })
     callback(docs, myDocsObject, pullRequests);
   })
 }
@@ -211,7 +217,8 @@ function createDoc(req, res, next) {
               parentID: null,
               filePath: doc.filepath,
               docContent: '',
-              docCommits: [firstCommit]
+              docCommits: [firstCommit],
+              currentCommit: commitID
             }); 
           })
         })
@@ -296,7 +303,10 @@ function saveDoc(req, res, next) {
             commitMessage: instance.dataValues.commitMessage
           }
         });
-        res.send(commits);
+        res.send({
+          docCommits: commits, 
+          currentCommit: commitID
+        });
       })
     });
   })
@@ -374,7 +384,8 @@ function copyDoc(req, res, next) {
               parentID:instance.dataValues.originId,
               filePath: instance.dataValues.filepath,
               docContent: '',
-              docCommits: []
+              docCommits: [],
+              currentCommit: ''
             }
           });
           console.log('found updated list of all docs');
@@ -389,7 +400,7 @@ function openDoc(req, res, next) {
   console.log('req body ', req.body);
   // {username, doc name}
   var user, doc;
-  var text, commits;
+  var text, commits, currentCommit;
   var repository;
 
   return User.findOne({ where: {username: req.body.username } })
@@ -423,6 +434,10 @@ function openDoc(req, res, next) {
   .then(function(repo) {
     repository = repo;
     console.log('found repo');
+    return NodeGit.Reference.nameToId(repository, 'HEAD')
+  })
+  .then(function(oid) {
+    currentCommit = oid.tostrS();
     return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
   })
   .done(function(data) {
@@ -439,6 +454,7 @@ function openDoc(req, res, next) {
       filePath: doc.filepath,
       docContent: text,
       docCommits: commits,
+      currentCommit: currentCommit
     });
   })
 };
@@ -618,7 +634,8 @@ function getUpstream(req, res, next) {
             parentID: doc.originId,
             filePath: doc.filepath,
             docContent: text,
-            docCommits: commits
+            docCommits: commits,
+            currentCommit: commitID
           });
         })
       })
@@ -762,7 +779,10 @@ function actionPullRequest(req, res, next) {
       // res.end('testing end');
       // foundPullRequest.dataValues.status = 'decline';
       // foundPullRequest.setDataValue('status', 'decline')
-      pullRequestInstance.updateAttributes({status: 'decline'})
+      pullRequestInstance.updateAttributes({
+        status: 'decline', 
+        ownerMessage: req.body.ownerMessage
+      })
       .then(function(){
         console.log('Updated table for denial');
         res.end('Pull Request declined');
@@ -867,7 +887,10 @@ function actionPullRequest(req, res, next) {
               commitMessage: instance.dataValues.commitMessage
             }
           });
-            pullRequestInstance.updateAttributes({status: 'accept'})
+            pullRequestInstance.updateAttributes({
+              status: 'accept', 
+              ownerMessage: req.body.ownerMessage
+            })
           .then(function(updatedPR) {
             console.log('PR status changed to accepted ');
             var type = upstreamDoc.public === true ? 'public' : 'private';
@@ -879,7 +902,8 @@ function actionPullRequest(req, res, next) {
               parentID: upstreamDoc.originId,
               filePath: upstreamDoc.filepath,
               docContent: text,
-              docCommits: commits
+              docCommits: commits,
+              currentCommit: commitID
             });
           })
         })
@@ -953,7 +977,8 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
       parentID: doc.originId,
       filePath: doc.filepath,
       docContent: currentText,
-      docCommits: commits
+      docCommits: commits,
+      currentCommit: req.body.commitID
     });
   });
 };

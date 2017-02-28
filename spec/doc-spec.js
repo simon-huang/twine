@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Sixth Test';
+var testName = 'Third Test';
 var expect = chai.expect;
 
 describe('Doc Tests', function() {
@@ -14,20 +14,7 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  describe('Checkout past version', function() {
-    it('should work', function(done) {
-      agent
-        .post('/api/doc/pastVersion')
-        .send({commitID: 'bde46d9e71bbf0671283b0e7597ca7e7bac7c31a'})
-        .end(function(err, res) {
-          console.log('res.body: ', res.body);
-          // expect(res.text).to.equal('Pull request sent');
-          done();
-        });
-    });
-  });
-
-  xdescribe('New Doc', function() {
+  describe('New Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/createDoc')
@@ -39,7 +26,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Save Doc', function() {
+  describe('Save Doc', function() {
     it('should work without commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')
@@ -61,7 +48,7 @@ describe('Doc Tests', function() {
     });
   });
   
-  xdescribe('Copy Doc', function() {
+  describe('Copy Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/copyDoc')
@@ -73,7 +60,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Open Doc', function() {
+  describe('Open Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/openDoc')
@@ -85,7 +72,7 @@ describe('Doc Tests', function() {
         });
     });
   });
-  xdescribe('Review Upstream', function() {
+  describe('Review Upstream', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/reviewUpstream')
@@ -97,7 +84,7 @@ describe('Doc Tests', function() {
         });
     });
   });
-  xdescribe('Get Upstream', function() {
+  describe('Get Upstream', function() {
     it('should work when there\'s no merge conflict', function(done) {
       agent
         .post('/api/doc/saveDoc')
@@ -132,6 +119,19 @@ describe('Doc Tests', function() {
         });
     });
   });
+
+  xdescribe('Get All Docs', function() {
+    it('should work', function(done) {
+      agent
+        .get('/api/doc/allDocs')
+        .end(function(err, res) {
+          console.log('this is the res.body: ', res.body);
+          // expect(res.body).to.equal();
+          done();
+        });
+    });
+  });
+
   xdescribe('Request Merge', function() {
     it('should work without commit message', function(done) {
       agent
@@ -139,7 +139,7 @@ describe('Doc Tests', function() {
         .send({username: 'Tim', docName: testName, docContent: 'Doing an overwrite\nSo that I can \nTry to merge this in', commitMessage: ''})
         .end(function(err, res) {
           console.log('saved ', res.body);
-          var latestCommit = res.body[res.body.length - 1].commitID;
+          var latestCommit = res.body.currentCommit;
           // expect(res.text).to.equal('Saved');
           agent
             .post('/api/doc/requestMerge')
@@ -164,7 +164,7 @@ describe('Doc Tests', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/reviewPullRequest')
-        .send({commitID: 'CHECK DATABASE'})
+        .send({commitID: '31875cbef6fb670c25ae85ea7ca848bb3e65e7f9'})
         .end(function(err, res) {
           console.log('res.body: ', res.body);
           // expect(res.text).to.equal('Pull request sent');
@@ -172,11 +172,21 @@ describe('Doc Tests', function() {
         });
     });
   });
-  xdescribe('Action Pull Request', function() {
-    it('should work', function(done) {
+  describe('Action Pull Request', function() {
+    it('should accept', function(done) {
       agent
         .post('/api/doc/actionPullRequest')
-        .send({commitID: 'a87728e3ea075cbb9197096f02615e7e8881416b', ownerMessage: 'Thanks', mergeStatus: 'accept'})
+        .send({commitID: '31875cbef6fb670c25ae85ea7ca848bb3e65e7f9', ownerMessage: 'Thanks', mergeStatus: 'accept'})
+        .end(function(err, res) {
+          console.log('res.body: ', res.body);
+          // expect(res.text).to.equal('Pull request sent');
+          done();
+        });
+    });
+    xit('should decline', function(done) {
+      agent
+        .post('/api/doc/actionPullRequest')
+        .send({commitID: '4a41c49373204ca91a6ec2a7a392374bd876d85a', ownerMessage: 'Nope', mergeStatus: 'decline'})
         .end(function(err, res) {
           console.log('res.body: ', res.body);
           // expect(res.text).to.equal('Pull request sent');
@@ -184,13 +194,15 @@ describe('Doc Tests', function() {
         });
     });
   });
-  xdescribe('Get All Docs', function() {
+
+  xdescribe('Checkout past version', function() {
     it('should work', function(done) {
       agent
-        .get('/api/doc/allDocs')
+        .post('/api/doc/pastVersion')
+        .send({commitID: 'f912e43ed93ffde7ca4031f1c97e28f2d829948c'})
         .end(function(err, res) {
-          console.log('this is the res.body: ', res.body);
-          // expect(res.body).to.equal();
+          console.log('res.body: ', res.body);
+          // expect(res.text).to.equal('Pull request sent');
           done();
         });
     });
