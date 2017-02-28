@@ -3,18 +3,19 @@ import { connect } from 'react-redux';
 
 // Store properties
 import * as user from '../actions/userActions.jsx';
+import * as auth from '../actions/authActions.jsx';
 
 @connect((store) => {
   return {
-    isLoggedIn: store.user.login,
-    redirectUrl: store.user.redirectUrl
+    isLoggedIn: store.auth.login,
+    redirectUrl: store.auth.redirectUrl
   };
 })
 
 export default class EnsureLoggedInContainer extends React.Component {
   componentDidMount() {
     if (!this.props.isLoggedIn) {
-      this.props.dispatch(user.setRedirectUrl(this.props.location.pathname));
+      this.props.dispatch(auth.setRedirectUrl(this.props.location.pathname));
       this.props.router.push('/login');
     }
   }

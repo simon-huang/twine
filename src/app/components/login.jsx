@@ -10,6 +10,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 // Store properties
 import * as user from '../actions/userActions.jsx';
 import * as doc from '../actions/docActions.jsx';
+import * as auth from '../actions/authActions.jsx';
 
 @connect((store) => {
   return {

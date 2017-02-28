@@ -17,11 +17,12 @@ injectTapEventPlugin();
 
 // Store properties
 import * as user from '../actions/userActions.jsx';
+import * as auth from '../actions/authActions.jsx';
 
 @connect((store) => {
   return {
-    isLoggedIn: store.user.login,
-    redirectUrl: store.user.redirectUrl
+    isLoggedIn: store.auth.login,
+    redirectUrl: store.auth.redirectUrl
   }
 })
 
@@ -31,7 +32,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    this.props.dispatch(user.autoLogin());
+    this.props.dispatch(auth.autoLogin());
   }
 
   componentDidUpdate(prevProps) {
