@@ -6,13 +6,13 @@ import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 import App from './components/app.jsx';
 import store from './store.jsx';
 import CreateDoc from './components/createDoc.jsx';
-import SignUp from './components/signUp.jsx';
-import Login from './components/login.jsx';
+import SignUp from './components/auth/signUp.jsx';
+import Login from './components/auth/login.jsx';
 import Home from './components/home.jsx';
 import Doc from './components/document/doc.jsx';
 import EditDoc from './components/editDoc/editDoc.jsx';
 import Profile from './components/profile/profile.jsx';
-import EnsureLoggedInContainer from './components/ensureLoggedInContainer.jsx';
+import EnsureLoggedInContainer from './components/auth/ensureLoggedInContainer.jsx';
 
 store.subscribe(() => {
   console.log('store changed', store.getState());

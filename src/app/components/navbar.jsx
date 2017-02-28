@@ -11,8 +11,11 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 // Store properties
 import * as user from '../actions/userActions.jsx';
+import * as auth from '../actions/authActions.jsx';
+
 
 export class Navbar extends React.Component {
+
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
@@ -22,11 +25,11 @@ export class Navbar extends React.Component {
   }
   
   logout() {
-    this.props.dispatch(user.userLogout());
+    this.props.dispatch(auth.userLogout());
   }
 
   toggleLoginModal() {
-    this.props.dispatch(user.toggleLoginModal())
+    this.props.dispatch(auth.toggleLoginModal())
   }
 
   updatePath(e) {
@@ -47,7 +50,7 @@ export class Navbar extends React.Component {
           <Nav pullRight>
             <NavDropdown eventKey={4} title={
               <span>
-                <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.user.username}
+                <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.username}
               </span>
             } id="user-settings">
               <MenuItem eventKey={4.1} name="logout" onClick={this.logout}>Logout</MenuItem>

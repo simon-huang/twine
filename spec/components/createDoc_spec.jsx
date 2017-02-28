@@ -1,3 +1,6 @@
+// import CreateDoc from '../../src/app/components/createDoc.jsx';
+// import CreateDoc from '../../src/app/components/profile/profile_docSummary.jsx';
+
 describe('createDoc', function() {
 
   it('should be true', function() {

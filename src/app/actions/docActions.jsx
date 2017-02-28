@@ -48,7 +48,7 @@ export function saveDoc() {
     dispatch(handleChange('masterHtml', states.doc.editsHtml));
 
     var docSaveInfo = { 
-      username: states.user.user.username,
+      username: states.user.username,
       docName: states.doc.docName,
       docContent: states.doc.editsHtml,
       commitMessage: states.doc.commitMessage

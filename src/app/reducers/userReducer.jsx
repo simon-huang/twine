@@ -1,14 +1,7 @@
 export default function reducer(state = {
-  login: false,
-  loginModal: false,
-  user: {
-    username: '',
-    email: '',
-    password: ''
-  },
-  redirectUrl: '/profile',
-  fetching: false,
-  fetched: false,
+  username: '',
+  email: '',
+  password: '',
   error: null
 }, action) {
 
@@ -17,78 +10,51 @@ export default function reducer(state = {
     case "AUTO_LOGIN": {
       return {
         ...state,
-        user: {...state.user, username: action.payload, password: '', email: ''},
-        login: true
-      }
-    }
-
-    case "TOGGLE_LOGIN_MODAL": {
-      return {
-        ...state,
-        loginModal: !state.loginModal
+        username: action.payload,
+        password: '',
+        email: ''
       }
     }
 
     case "USER_LOGOUT": {
       return {
         ...state,
-        user: {...state.user, username: '', password: '', email: ''},
-        login: false
-      }
-    }
-
-    case "USER_LOGOUT": {
-      return {
-        ...state,
-        user: {...state.user, username: '', password: '', email: ''},
-        login: false
-      }
-    }
-
-    case "SET_REDIRECT_URL": {
-      return {
-        ...state,
-        redirectUrl: action.payload
+        username: '',
+        password: '',
+        email: ''
       }
     }
 
     case "EDIT_USERNAME": {
       return {
         ...state,
-        user: {...state.user, username: action.payload}
+        username: action.payload
       }
     }
 
     case "EDIT_EMAIL": {
       return {
         ...state,
-        user: {...state.user, email: action.payload}
+        email: action.payload
       }
     }
 
     case "EDIT_PASSWORD": {
       return {
         ...state,
-        user: {...state.user, password: action.payload}
+        password: action.payload
       }
     }
     
     case "USER_CREATED": {
       return {
         ...state, 
-        user: {...state.user, username: action.payload.username, password: '', email: ''},
-        login: true
+        username: action.payload.username,
+        password: '',
+        email: ''
       }
     }
 
-    case "USER_AUTH_REJECTED": {
-      return {
-        ...state,
-        fetching: false,
-        error: action.payload
-      }
-    }
-    
   }
 
   return state;

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // UI
-import styles from './styles/style.jsx';
+import styles from './../styles/style.jsx';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
@@ -10,14 +10,15 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 
 // Store properties
-import * as user from '../actions/userActions.jsx';
-import * as doc from '../actions/docActions.jsx';
+import * as user from '../../actions/userActions.jsx';
+import * as auth from '../../actions/authActions.jsx';
+import * as doc from '../../actions/docActions.jsx';
 
 @connect((store) => {
   return {
-    username: store.user.user.username,
-    email: store.user.user.email,
-    password: store.user.user.password
+    username: store.user.username,
+    email: store.user.email,
+    password: store.user.password
   };
 })
 
@@ -30,7 +31,7 @@ export default class SignUp extends React.Component {
   
   signup(e) {
     e.preventDefault();
-    this.props.dispatch(user.signup());
+    this.props.dispatch(auth.signup());
   }
 
   handleChange(e) {
