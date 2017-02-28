@@ -16,9 +16,9 @@ import * as doc from '../../actions/docActions.jsx';
 
 @connect((store) => {
   return {
-    username: store.user.user.username,
-    email: store.user.user.email,
-    password: store.user.user.password
+    username: store.user.username,
+    email: store.user.email,
+    password: store.user.password
   };
 })
 

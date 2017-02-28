@@ -14,9 +14,9 @@ import * as auth from '../../actions/authActions.jsx';
 
 @connect((store) => {
   return {
-    username: store.user.user.username,
-    email: store.user.user.email,
-    password: store.user.user.password
+    username: store.user.username,
+    email: store.user.email,
+    password: store.user.password
   };
 })
 
@@ -29,7 +29,7 @@ export default class Login extends React.Component {
 
   login(e) {
     e.preventDefault();
-    this.props.dispatch(user.login());
+    this.props.dispatch(auth.login());
   }
 
   handleChange(e) {

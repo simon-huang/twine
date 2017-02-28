@@ -32,7 +32,7 @@ import * as docSummary from './../../actions/docSummaryActions.jsx';
     docType: store.doc.docType,
     parentID: store.doc.parentID,
     filePath: store.doc.filePath,
-    username: store.user.user.username,
+    username: store.user.username,
     docOwner: store.doc.docOwner
   };
 })

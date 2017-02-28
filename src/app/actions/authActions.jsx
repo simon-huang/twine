@@ -31,16 +31,6 @@ export function toggleLoginModal () {
   }
 }
 
-export function userLogin (username, password) {
-  return {
-    type: "USER_LOGIN",
-    payload: {
-      username: username,
-      password: password
-    }
-  }
-}
-
 export function userCreated (value) {
   return {
     type: "USER_CREATED",
@@ -57,7 +47,7 @@ export function authReject (value) {
 
 export function login () {
   return function(dispatch, getState) {
-    var user = getState().user.user;
+    var user = getState().user;
     axios.post('/api/auth/login', {
       email: user.email,
       password: user.password
@@ -74,7 +64,7 @@ export function login () {
 
 export function signup () {
   return function(dispatch, getState) {
-    var user = getState().user.user;
+    var user = getState().user;
     axios.post('/api/auth/signup', {
       email: user.email,
       username: user.username,

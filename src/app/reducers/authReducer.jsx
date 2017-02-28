@@ -30,13 +30,6 @@ export default function reducer(state = {
       }
     }
 
-    case "USER_LOGOUT": {
-      return {
-        ...state,
-        login: false
-      }
-    }
-
     case "SET_REDIRECT_URL": {
       return {
         ...state,

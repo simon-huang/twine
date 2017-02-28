@@ -13,7 +13,7 @@ export function createDocument() {
   return (dispatch, getState) => {
     var states = getState();
     var createRequestInfo = {
-      username: states.user.user.username,
+      username: states.user.username,
       docName: states.create.docName,
       docDescription: states.create.docDescription,
       docType: states.create.docType

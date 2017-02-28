@@ -50,7 +50,7 @@ export class Navbar extends React.Component {
           <Nav pullRight>
             <NavDropdown eventKey={4} title={
               <span>
-                <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.user.username}
+                <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.username}
               </span>
             } id="user-settings">
               <MenuItem eventKey={4.1} name="logout" onClick={this.logout}>Logout</MenuItem>

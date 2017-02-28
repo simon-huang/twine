@@ -16,7 +16,7 @@ class Profile extends React.Component {
     return (
       <div className="profile">
         <h1>Profile</h1>
-        <div>Username: {this.props.user.user.username}</div>
+        <div>Username: {this.props.user.username}</div>
         <ProfileDocuments />
       </div>
     )
