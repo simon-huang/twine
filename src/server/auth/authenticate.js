@@ -15,7 +15,10 @@ exports.login = function (req, res, next) {
   if (req.user) {
     req.session.username = req.user.username;
     retrieveDocsAndPullRequests(req.user.username, function(docsArray, myDocsObject, pullRequestsArray) {
-      res.send({ 
+      res
+      .status(200)
+      //.status(302)
+      .send({ 
         status: 'successful', 
         username: req.user.username, 
         allDocuments: docsArray,
@@ -24,7 +27,9 @@ exports.login = function (req, res, next) {
       });
     });
   } else {
-    res.send({ status: 'unsuccessful login'});
+    res
+    .status(401)
+    .send({ status: 'unsuccessful login'});
   }
 }
 
@@ -65,8 +70,6 @@ exports.logout = function (req, res, next) {
     res.end('Logged out');
   });
 }
-
-
 
 
 
