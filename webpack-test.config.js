@@ -11,12 +11,11 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        include: path.resolve(__dirname, 'spec/components'),
-        loader: 'babel-loader',
-        query: {
-          presets: ["react", "es2015", "stage-0"],
-          plugins: ["react-html-attrs", "transform-class-properties", "transform-decorators-legacy"]
-        }
+        include: [
+          path.resolve(__dirname, 'src/app'),
+          path.resolve(__dirname, 'spec/components')
+        ],
+        loader: 'babel-loader'
       }
     ]
   },
