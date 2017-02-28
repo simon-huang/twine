@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "webpack --watch | nodemon --ignore node_modules ./src/server/server.js --exec babel-node",
-    "test": "mocha --compilers js:babel-core/register spec/server-spec.js"
+    "test": "webpack --config webpack-test.config.js --watch | live-server --open=./spec/build/specRunner.html --port=8081"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -32,6 +32,7 @@
     "express": "^4.10.1",
     "express-session": "^1.15.1",
     "fs-extra": "^2.0.0",
+    "lodash": "^4.17.4",
     "material-ui": "^0.17.0",
     "mysql": "^2.4.2",
     "nodegit": "^0.17.0",
