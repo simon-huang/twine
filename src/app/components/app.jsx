@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 // Components
-import SignUp from './signUp.jsx';
-import Login from './login.jsx';
+import SignUp from './auth/signUp.jsx';
+import Login from './auth/login.jsx';
 import CreateDoc from './createDoc.jsx';
 import Navbar from './navbar.jsx';
 import Theme from 'material-ui/styles/MuiThemeProvider';

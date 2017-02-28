@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // Store properties
-import * as user from '../actions/userActions.jsx';
-import * as auth from '../actions/authActions.jsx';
+import * as user from '../../actions/userActions.jsx';
+import * as auth from '../../actions/authActions.jsx';
 
 @connect((store) => {
   return {

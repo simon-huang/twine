@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // UI
-import styles from './styles/style.jsx';
+import styles from './../styles/style.jsx';
 import TextField from 'material-ui/TextField';
 import RaisedBtn from 'material-ui/RaisedButton';
 import RaisedButton from 'material-ui/RaisedButton';
 
 // Store properties
-import * as user from '../actions/userActions.jsx';
-import * as doc from '../actions/docActions.jsx';
-import * as auth from '../actions/authActions.jsx';
+import * as user from '../../actions/userActions.jsx';
+import * as doc from '../../actions/docActions.jsx';
+import * as auth from '../../actions/authActions.jsx';
 
 @connect((store) => {
   return {

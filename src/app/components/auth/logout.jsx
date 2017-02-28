@@ -1,8 +1,10 @@
+/* === THIS MAY BE DEPRECATED OR NOT IN USE === */
+
 import React from 'react'
 import { connect } from 'react-redux';
 
 // Store properties
-import * as user from '../actions/userActions.jsx';
+import * as user from '../../actions/userActions.jsx';
 
 @connect((store) => {
   return {
