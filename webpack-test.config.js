@@ -7,6 +7,13 @@ module.exports = {
     path: path.resolve(__dirname, 'spec/build'),
     filename: 'specBundle.js'
   },
+  externals: {
+    jsdom: 'window',
+    cheerio: 'window',
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': 'window',
+    'react/addons': true
+  },
   module: {
     loaders: [
       {
@@ -16,6 +23,10 @@ module.exports = {
           path.resolve(__dirname, 'spec/components')
         ],
         loader: 'babel-loader'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   },

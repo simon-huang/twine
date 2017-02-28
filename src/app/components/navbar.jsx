@@ -59,7 +59,7 @@ export class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav pullRight>
-            <NavItem onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
+            <NavItem className="login" onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
             <NavItem className="signup" onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
