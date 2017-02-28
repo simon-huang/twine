@@ -6,7 +6,7 @@ var passport = require('passport');
 var authentication = require('../auth/authenticate.js');
 
 router.route('/checkAuth').get(
-  authentication.auth
+  authentication.login
 )
 
 router.route('/signup').post(
