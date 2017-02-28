@@ -15,28 +15,48 @@ describe('Navbar', () => {
     }
   }
 
-  const shallowWrapper = shallow (
+  // Shallowly render the connected component to access the store
+  const connectedNavbar = shallow (
+    <connectedNavbar store={store} />
+  );
+
+  // Shallowly render the dumb component to access it's methods
+  const navbar = shallow (
     <Navbar dispatch={store.dispatch} props={dummydata} />
   );
 
-  const mountedWrapper = mount (
-    <Navbar dispatch={store.dispatch} props={dummydata} store={store} />
-  );
 
-  // console.log('store', shallowWrapper);
-  // console.log('.login', shallowWrapper.find('[name="login"]'));
-  // console.log('NavItem.login', shallowWrapper.find('NavItem .login'));
-  // console.log('NavItem[0]', shallowWrapper.find('NavItem'));
-  // console.log('mounted wrapper state', mountedWrapper.props().store.getState());
+  it('should toggle login modal for login', () => {
+    // Simulate click of login button
+    const loginBtn = navbar.find('[name="login"]').node.props;
+    loginBtn.onClick();
+    // Trigger modal state to true
+    const loginModalState = connectedNavbar.props().store.getState().user.loginModal;
+    expect(loginModalState).to.equal(true);
+  });
 
-  it('should toggle login modal', () => {
-    // const loginBtn = shallowWrapper.find('[name="login"]').node.props;
-    // const loginModal = wrapper.props().store.getState().user.loginModal;
-    // loginBtn.onClick();
-    // console.log('after click (state)', mountedWrapper.props().store.getState());
+  it('should show signup screen for signup', () => {
+    
+  });
+
+  it('should update URL path', () => {
+    
+  });
+
+  it('should toggle nav when logged in', () => {
+    
   });
 
 });
+
+
+
+
+
+
+
+
+
 
 
 
