@@ -13,17 +13,27 @@ var User = sequelize.define('user', {
 
 // Create Doc model
 // BIT is truthy. 1/0 instead of true/false
-// maybe Username so I don't have to query for it first
 // type: owner or collaborator
 var Doc = sequelize.define('doc', {
   name: Sequelize.STRING,
   description: Sequelize.STRING,
   filepath: Sequelize.STRING,
   public: Sequelize.BOOLEAN, 
-  timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW}
+  timeCreated: {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
+  userId: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'id'
+  },
+  docOwner: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'username'
+  }
 });
 Doc.belongsTo(Doc, {as: 'origin', allowNull: true}); // TEST THIS
-Doc.belongsTo(User);
 
 // Create DocVersion model
 // Are we letting the user see all saves (commits) in their version history?
@@ -43,10 +53,6 @@ var DocPermission = sequelize.define('docPermission', {
 });
 DocPermission.belongsTo(Doc);
 DocPermission.belongsTo(User);
-
-// I haven't written out the other part of the associations
-  // e.g. Users haveMany Docs, PullRequests, etc.
-  // Is it important to do that? Why?
 
 // (accept/decline = closed, open = pending)
 var PullRequest = sequelize.define('pullRequest', {
@@ -91,22 +97,9 @@ var PullRequest = sequelize.define('pullRequest', {
   }
 });
 
-User.hasMany(PullRequest);
-Doc.hasMany(PullRequest);
-
-
-// PullRequest.belongsTo(User, { as: 'requester', foreignKey: 'requesterName', targetKey: 'username'});
-// PullRequest.belongsTo(User, { as: 'target', foreignKey: 'targetUsername', targetKey: 'username'});
-// PullRequest.belongsTo(Doc, { as: 'requestDoc', foreignKey: 'requestingDocId' });
-// PullRequest.belongsTo(Doc, { as: 'nameofDoc', foreignKey: 'docName', targetKey: 'name'});
-// PullRequest.belongsTo(Doc, { as: 'upstreamDoc', foreignKey: 'upstreamDocId' });
-// PullRequest.belongsTo(DocVersion, { as: 'savepoint', foreignKey: 'commitId' });
-
-
 // Sync all models and associations
 sequelize.sync();
 // sequelize.sync({force: true});
-
 
 module.exports.User = User;
 module.exports.Doc = Doc;

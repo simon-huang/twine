@@ -9,11 +9,11 @@ var path = require('path');
 var schema = require('../db/schema.js')
 var authRouter = require('./routers/authRouter.js');
 var docRouter = require('./routers/docRouter.js');
-
+var profileRouter = require('./routers/profileRouter.js');
+// import { allDocsForUser, specificDoc } from '../db/docControllers.js';
 var port = process.env.PORT || 3000;
 
 var app = express();
-
 
 //=================== Middleware ===================
 //==================================================
@@ -36,14 +36,17 @@ app.use(passport.session()); // persistent login sessions
 require('./auth/passport.js')(passport);
 
 //================== set up routes ==================
-
 // process input routes from the client
+app.use('/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/doc', docRouter);
 
 //====================================================
 //====================================================
 
+// // Users and their docs
+// app.get('/:username', allDocsForUser);
+// app.get('/:username/:docId', specificDoc);
 
 // serve static client-facing files
 app.use(express.static(path.resolve(__dirname, '../public')));
