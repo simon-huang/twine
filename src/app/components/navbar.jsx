@@ -44,7 +44,6 @@ export class Navbar extends React.Component {
         <NavContainer.Collapse>
           <Nav>
             <NavItem onClick={this.updatePath} eventKey={1} name="createdoc">Create Doc</NavItem>
-
             <NavItem onClick={this.updatePath} eventKey={4} name="profile">Profile</NavItem>
           </Nav>
           <Nav pullRight>
@@ -77,6 +76,7 @@ export class Navbar extends React.Component {
         <NavContainer.Header>
           <NavContainer.Brand>
             <a className="nav-logo" onClick={this.updatePath} name="/">PublishUs</a>
+            <a className="nav-logo" onClick={this.updatePath} name="explore">Explore</a>
           </NavContainer.Brand>
           <NavContainer.Toggle />
         </NavContainer.Header>
