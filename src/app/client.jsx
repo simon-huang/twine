@@ -13,6 +13,7 @@ import Doc from './components/document/doc.jsx';
 import EditDoc from './components/editDoc/editDoc.jsx';
 import Profile from './components/profile/profile.jsx';
 import EnsureLoggedInContainer from './components/auth/ensureLoggedInContainer.jsx';
+import Explore from './components/explore/explore.jsx';
 
 store.subscribe(() => {
   console.log('store changed', store.getState());
@@ -25,9 +26,10 @@ ReactDOM.render(<Provider store={store}>
       <Route path="login" component={Login}/>
       <Route path="signup" component={SignUp}/>
       <Route path="logout" component={Home}/>
+      <Route path="explore" component={Explore}/>
+      <Route path="doc" component={Doc}/>
       <Route component={EnsureLoggedInContainer}>
         <Route path="createdoc" component={CreateDoc}/>
-        <Route path="doc" component={Doc}/>
         <Route path="editdoc" component={EditDoc}/>
         <Route path="profile" component={Profile}/>
       </Route>

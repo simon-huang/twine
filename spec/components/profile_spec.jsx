@@ -63,8 +63,21 @@ describe('Profile page', () => {
 
     var docSummary = wrapper.find('.profile-documents').node.children;
 
-    it('expects class "list-title" to be created for docSummary', () => {
-      expect(wrapper.find('list-title')).to.exist;
+    it('expects doc information to display properly', () => {
+      expect(wrapper.find('.profile-documents').node.children[2].children[0].innerHTML).to.equal('TestDoc1');
+      expect(wrapper.find('.profile-documents').node.children[2].children[2].innerHTML).to.equal('TestDoc1 description');
+
+      expect(wrapper.find('.profile-documents').node.children[3].children[0].innerHTML).to.equal('TestDoc2');
+      expect(wrapper.find('.profile-documents').node.children[3].children[2].innerHTML).to.equal('TestDoc2 description');
+
+      expect(wrapper.find('.profile-documents').node.children[4].children[0].innerHTML).to.equal('TestDoc3');
+      expect(wrapper.find('.profile-documents').node.children[4].children[2].innerHTML).to.equal('TestDoc3 description');
+    });
+
+    xit('expects to redirect to doc when clicking on title', () => {
+      // console.log('PROFILE', wrapper.find('.TestDoc1'));
+      // console.log('PROFILE', wrapper.find('.list-title'));
+      // wrapper.find('.TestDoc1').simulate('click');
     });
 
   });

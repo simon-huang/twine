@@ -10,5 +10,16 @@ export function openDoc(docRequest) {
       dispatch(doc.loadDocInfo(data));
     });
   }
-}
+} 
 
+export function retrieveAllDocs () {
+  return function(dispatch, getState) {
+    axios.get('/api/doc/allDocs')
+    .then((response) => {
+      dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
+    })
+    .catch((err) => {
+      dispatch(authReject(err));
+    })
+  }
+}
