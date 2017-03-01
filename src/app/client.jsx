@@ -19,40 +19,31 @@ store.subscribe(() => {
   console.log('store changed', store.getState());
 })
 
-ReactDOM.render(<Provider store={store}>
-  <Router history={browserHistory}>
-    <Route component={App}>
-      <Route path="/" component={Home}/>
-      <Route path="login" component={Login}/>
-      <Route path="signup" component={SignUp}/>
-      <Route path="logout" component={Home}/>
-      <Route path="explore" component={Explore}/>
-      <Route path="doc" component={Doc}/>
-      <Route component={EnsureLoggedInContainer}>
-        <Route path="createdoc" component={CreateDoc}/>
-        <Route path="editdoc" component={EditDoc}/>
-        <Route path="profile" component={Profile}/>
-      </Route>
-    </Route>
-  </Router>
-</Provider>, document.getElementById('app'));
+export class Publishus extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Router history={browserHistory}>
+          <Route component={App}>
+            <Route path="/" component={Home}/>
+            <Route path="login" component={Login}/>
+            <Route path="signup" component={SignUp}/>
+            <Route path="logout" component={Home}/>
+            <Route path="explore" component={Explore}/>
+            <Route path="doc" component={Doc}/>
+            <Route component={EnsureLoggedInContainer}>
+              <Route path="createdoc" component={CreateDoc}/>
+              <Route path="editdoc" component={EditDoc}/>
+              <Route path="profile" component={Profile}/>
+            </Route>
+          </Route>
+        </Router>
+      </Provider>
+    );
+  }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ReactDOM.render(<Publishus />, document.getElementById('app'));
 
 
 
