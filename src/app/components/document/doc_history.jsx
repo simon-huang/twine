@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-class Doc_history extends React.Component {
+export class Doc_history extends React.Component {
 
   render() {
     return (

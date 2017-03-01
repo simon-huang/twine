@@ -4,16 +4,7 @@ import { browserHistory } from 'react-router';
 
 import * as create from '../actions/createDocActions.jsx';
 
-
-@connect((store) => {
-  return {
-    docName: store.create.docName,
-    docDescription: store.create.docDescription,
-    docType: store.create.docType
-  }
-})
-
-export default class CreateDoc extends React.Component {
+export class CreateDoc extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -41,10 +32,10 @@ export default class CreateDoc extends React.Component {
     return (
       <div className="container create_doc" >
         <h2>Create a new doc</h2>
-        <input onChange={this.handleChange} type="text" value={this.props.docName} name="docName" placeholder="Give me a name" /><br/>
-        <textarea onChange={this.handleChange} type="text" value={this.props.docDescription} name="docDescription" placeholder="Add a description (optional)" /><br/>
+        <input onChange={this.handleChange} type="text" value={this.props.create.docName} name="docName" placeholder="Give me a name" /><br/>
+        <textarea onChange={this.handleChange} type="text" value={this.props.create.docDescription} name="docDescription" placeholder="Add a description (optional)" /><br/>
         <div>Type of Doc:</div>
-        <select onChange={this.handleChange} value={this.props.docType} name="docType">
+        <select onChange={this.handleChange} value={this.props.create.docType} name="docType">
           <option value="public">Public</option>
           <option value="private">Private</option>
         </select><br/>
@@ -55,7 +46,4 @@ export default class CreateDoc extends React.Component {
 };
 
 
-
-
-
-
+export default connect(state => state)(CreateDoc);

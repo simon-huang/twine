@@ -6,7 +6,7 @@ import * as docSummary from '../../actions/docSummaryActions.jsx';
 import ProfileDocuments from './profile_documents.jsx';
 
 
-class Profile extends React.Component {
+export class Profile extends React.Component {
   constructor(props) {
     super(props);
   }
