@@ -1,11 +1,12 @@
 import React from 'react';
-import connectedProfile, { Profile } from '../../src/app/components/profile/profile.jsx';
-import { ProfileDocSummary } from '../../src/app/components/profile/profile_docSummary.jsx';
-import { ProfileDocuments } from '../../src/app/components/profile/profile_documents.jsx';
 import store from '../../src/app/store.jsx';
 import { mount, shallow, render } from 'enzyme';
 import { connect, mapStateToProps } from 'react-redux';
 import {expect} from 'chai';
+
+import connectedProfile, { Profile } from '../../src/app/components/profile/profile.jsx';
+import { ProfileDocSummary } from '../../src/app/components/profile/profile_docSummary.jsx';
+import { ProfileDocuments } from '../../src/app/components/profile/profile_documents.jsx';
 
 describe('Profile page', () => {
 

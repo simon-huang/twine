@@ -1,9 +1,10 @@
 import React from 'react';
-import connectedCreateDoc, { CreateDoc } from '../../src/app/components/createDoc.jsx';
 import store from '../../src/app/store.jsx';
 import { mount, shallow, render } from 'enzyme';
 import { connect, mapStateToProps } from 'react-redux';
 import {expect} from 'chai';
+
+import connectedCreateDoc, { CreateDoc } from '../../src/app/components/createDoc.jsx';
 
 describe('CreateDoc page', () => {
 

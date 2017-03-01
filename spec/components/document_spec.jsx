@@ -1,14 +1,15 @@
 import React from 'react';
+import store from '../../src/app/store.jsx';
+import { mount, shallow, render } from 'enzyme';
+import { connect, mapStateToProps } from 'react-redux';
+import {expect} from 'chai';
+
 import connectedDoc, { Doc } from '../../src/app/components/document/doc.jsx';
 import connectedDoc_contents, { Doc_contents } from '../../src/app/components/document/doc_contents.jsx';
 import connectedDoc_details, { Doc_details } from '../../src/app/components/document/doc_details.jsx';
 import connectedDoc_history, { Doc_history } from '../../src/app/components/document/doc_history.jsx';
 import connectedDoc_settings, { Doc_settings } from '../../src/app/components/document/doc_settings.jsx';
 import connectedDoc_merge, { Doc_merge } from '../../src/app/components/document/doc_merge.jsx';
-import store from '../../src/app/store.jsx';
-import { mount, shallow, render } from 'enzyme';
-import { connect, mapStateToProps } from 'react-redux';
-import {expect} from 'chai';
 
 describe('Document page', () => {
 
@@ -143,7 +144,7 @@ describe('Document page', () => {
       <Doc_history dispatch={store.dispatch} doc={docDummyData} store={store} />
     );
 
-    it('', () => {
+    it('expects history of document to be displayed', () => {
     });
   });
 
@@ -153,7 +154,7 @@ describe('Document page', () => {
       <Doc_history dispatch={store.dispatch} doc={docDummyData} store={store} />
     );
 
-    it('', () => {
+    it('expects to display document settings', () => {
     });
   });
 
