@@ -3,16 +3,7 @@ import { connect } from 'react-redux';
 import * as merge from '../../actions/mergeActions.jsx';
 import * as doc from '../../actions/docActions.jsx';
 
-@connect((store) => {
-  return {
-    showMerge: store.merge.showMerge,
-    mergeTitle: store.merge.mergeTitle,
-    mergeMessage: store.merge.mergeMessage,
-    // editContent: store.doc.editContent
-  }
-})
-
-export default class EditDoc_details extends React.Component {
+export class EditDoc_details extends React.Component {
   constructor(props) {
     super(props);
     this.showMergeMenu = this.showMergeMenu.bind(this);
@@ -53,22 +44,24 @@ export default class EditDoc_details extends React.Component {
   }
 
   render() {
-    if (this.props.showMerge) {
+    if (this.props.merge.showMerge) {
       return (
         <div>
           <h2>Merge Menu</h2>
-          <input onChange={this.handleChange} type="text" value={this.props.mergeTitle} name="mergeTitle" placeholder="Name your Merge" /><br/>
-          <textarea onChange={this.handleChange} type="text" value={this.props.mergeMessage} name="mergeMessage" placeholder="Add a comment telling the document owner what you worked on" /><br/>
-          <button className="btn btn-success" onClick={()=>(this.cancelMerge(!this.props.showMerge))}>Cancel</button>
-          <button className="btn btn-success" onClick={()=>(this.mergeRequest(!this.props.showMerge))}>Confirm</button>
+          <input onChange={this.handleChange} type="text" value={this.props.merge.mergeTitle} name="mergeTitle" placeholder="Name your Merge" /><br/>
+          <textarea onChange={this.handleChange} type="text" value={this.props.merge.mergeMessage} name="mergeMessage" placeholder="Add a comment telling the document owner what you worked on" /><br/>
+          <button className="btn btn-success cancel_request" onClick={()=>(this.cancelMerge(!this.props.merge.showMerge))}>Cancel</button>
+          <button className="btn btn-success confirm_merge_request" onClick={()=>(this.mergeRequest(!this.props.merge.showMerge))}>Confirm</button>
         </div>
       );
     }
     return (
       <div>
-        <button className="btn btn-success" onClick={this.saveDoc}>Save</button>
-        <button className="btn btn-success" onClick={()=>(this.showMergeMenu(!this.props.showMerge))}>Merge</button>
+        <button className="btn btn-success save_request" onClick={this.saveDoc}>Save</button>
+        <button className="btn btn-success merge_request" onClick={()=>(this.showMergeMenu(!this.props.merge.showMerge))}>Merge</button>
       </div>
     );
   }
 };
+
+export default connect(state => state)(EditDoc_details);

@@ -15,14 +15,7 @@ import MergeUnified from './doc_merge_unifiedView.jsx';
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 
-@connect((store) => {
-  return {
-    reviewChanges: store.docSummary.reviewChanges,
-    mergeSplitView: store.docSummary.mergeSplitView
-  };
-})
-
-export default class Doc_merge extends React.Component {
+export class Doc_merge extends React.Component {
   constructor(props) {
     super(props);
     this.reviewChanges = this.reviewChanges.bind(this);
@@ -49,7 +42,7 @@ export default class Doc_merge extends React.Component {
   }
 
   commentBox() {
-    if (this.props.reviewChanges.acceptComments) {
+    if (this.props.docSummary.reviewChanges.acceptComments) {
       return (
         <div className="merge-comment text-left">
           <div onClick={this.cancelComment} className="btn-exit">x</div>
@@ -61,7 +54,7 @@ export default class Doc_merge extends React.Component {
           </form>
         </div>
       )
-    } else if (this.props.reviewChanges.declineComments) {
+    } else if (this.props.docSummary.reviewChanges.declineComments) {
       return (
         <div className="merge-comment text-left">
           <div onClick={this.cancelComment} className="btn-exit">x</div>
@@ -114,7 +107,7 @@ export default class Doc_merge extends React.Component {
             <div className="row doc-review-container mt10">
               <div className="col-sm-12">
                 <div className="doc-review">
-                  {this.props.mergeSplitView ? <MergeSplit /> : <MergeUnified />}
+                  {this.props.docSummary.mergeSplitView ? <MergeSplit /> : <MergeUnified />}
                 </div>
               </div>
             </div>
@@ -124,3 +117,5 @@ export default class Doc_merge extends React.Component {
     );
   }
 }
+
+export default connect(state => state)(Doc_merge);

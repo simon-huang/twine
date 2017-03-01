@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/lib/Button';
 // Components
 import DocContents from './doc_contents.jsx'
 
-class Doc_details extends React.Component {
+export class Doc_details extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -39,7 +39,7 @@ class Doc_details extends React.Component {
                       <p>29 contributors</p>
                     </div>
                     <div className="col-sm-3">
-                      <p>Private</p>
+                      {this.props.doc.docType}
                     </div>
                   </div>
                 </div>

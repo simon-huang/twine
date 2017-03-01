@@ -24,20 +24,7 @@ import DocSettings from './doc_settings.jsx'
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 
-@connect((store) => {
-  return {
-    tab: store.docSummary.currentTab,
-    docName: store.doc.docName,
-    docDescription: store.doc.docDescription,
-    docType: store.doc.docType,
-    parentID: store.doc.parentID,
-    filePath: store.doc.filePath,
-    username: store.user.username,
-    docOwner: store.doc.docOwner
-  };
-})
-
-export default class Doc extends React.Component {
+export class Doc extends React.Component {
   constructor(props) {
     super(props);
     this.tabChange = this.tabChange.bind(this);
@@ -66,10 +53,10 @@ export default class Doc extends React.Component {
               <div className="col-sm-8">
                 <Breadcrumb className="breadcrumb">
                   <BreadcrumbItem href="#" onClick={this.redirectProfile}>
-                    {this.props.docOwner}
+                    {this.props.doc.docOwner}
                   </BreadcrumbItem>
                   <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
-                    {this.props.docName}
+                    {this.props.doc.docName}
                   </BreadcrumbItem>
                 </Breadcrumb>
               </div>
@@ -83,7 +70,7 @@ export default class Doc extends React.Component {
             </div>
             <div className="row doc-tabs">
               <div className="col-sm-12">
-                <Tabs defaultActiveKey={this.props.tab} onChange={this.tabChange} id="docTabs">
+                <Tabs defaultActiveKey={this.props.docSummary.currentTab} onChange={this.tabChange} id="docTabs">
                   <Tab title="Document" eventKey="document" >
                     <DocDetails />
                   </Tab>
@@ -106,8 +93,4 @@ export default class Doc extends React.Component {
   }
 }
 
-// dummay data docName
-// Materials science: Organic analogues of graphene
-
-// dummy data docOwner
-// just1jp
+export default connect(state => state)(Doc);
