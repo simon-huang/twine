@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from "react-redux";
-import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import { Provider, connect } from "react-redux";
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 import App from './components/app.jsx';
 import store from './store.jsx';
@@ -44,6 +44,3 @@ export class Publishus extends React.Component {
 }
 
 ReactDOM.render(<Publishus />, document.getElementById('app'));
-
-
-
