@@ -43,7 +43,7 @@ export class Doc extends React.Component {
   }
 
   redirectProfile() {
-    browserHistory.push('/profile');
+    browserHistory.push('/profile' + '/' + this.props.username);
   }
 
   copyDocument() {
