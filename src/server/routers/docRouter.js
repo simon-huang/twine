@@ -1,21 +1,21 @@
 var express = require('express');
-var router = express.Router();
+var dRouter = express.Router();
 
 import { createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, 
   requestMerge, reviewPullRequest, actionPullRequest, allDocs, pastVersion } from '../../db/docControllers.js';
 
-router.route('/allDocs').get(allDocs); 
-router.route('/createDoc').post(createDoc); 
-router.route('/saveDoc').post(saveDoc);
-router.route('/copyDoc').post(copyDoc);
-router.route('/openDoc').post(openDoc);
-router.route('/reviewUpstream').post(reviewUpstream);
-router.route('/getUpstream').post(getUpstream); 
-router.route('/requestMerge').post(requestMerge); //maybe need to figure out how to get commitID or SHA
-router.route('/reviewPullRequest').post(reviewPullRequest); 
-router.route('/actionPullRequest').post(actionPullRequest); 
-router.route('/pastVersion').post(pastVersion); 
+dRouter.route('/allDocs').get(allDocs); 
+dRouter.route('/createDoc').post(createDoc); 
+dRouter.route('/saveDoc').post(saveDoc);
+dRouter.route('/copyDoc').post(copyDoc);
+dRouter.route('/openDoc').post(openDoc);
+dRouter.route('/reviewUpstream').post(reviewUpstream);
+dRouter.route('/getUpstream').post(getUpstream); 
+dRouter.route('/requestMerge').post(requestMerge); //maybe need to figure out how to get commitID or SHA
+dRouter.route('/reviewPullRequest').post(reviewPullRequest); 
+dRouter.route('/actionPullRequest').post(actionPullRequest); 
+dRouter.route('/pastVersion').post(pastVersion); 
 
-module.exports = router;
+module.exports = dRouter;
 
 

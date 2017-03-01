@@ -14,7 +14,6 @@ fse.ensureDir = promisify(fse.ensureDir);
 var exec = require('child_process').exec;
 // exec = promisify(exec);
 
-
 // diff
 var jsdiff = require('diff');
 function escapeHTML(s) {
@@ -27,6 +26,149 @@ function escapeHTML(s) {
 }
 
 var filesFolder = 'documents';
+
+function specificDoc(req, res, next) {
+  // adapted from openDoc
+  console.log('specificDoc params: ', req.params);
+  var user, doc;
+  var text, commits, currentCommit;
+  var repository;
+  if (req.user && req.user.username === req.params.username) {
+
+  }
+
+  return User.findOne({ where: {username: req.body.username } })
+  .then(function(foundUser){
+    console.log('found user ');
+    user = foundUser.dataValues;
+    return Doc.findOne({ where: {name: req.body.docName, userID: user.id} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      res.end('Can\'t find that doc');
+    }
+    // console.log('found doc', foundDoc.dataValues);
+    doc = foundDoc.dataValues; 
+    console.log('get commits');
+    return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
+  })
+  .then(function(foundCommits){
+    console.log('found commits ');
+    commits = foundCommits.map((instance) => {
+      return {
+        id: instance.dataValues.id,
+        commitID: instance.dataValues.commitID,
+        commitMessage: instance.dataValues.commitMessage
+      }
+    });
+    // console.log('reduced commits to send later ', commits);
+    return NodeGit.Repository.open(doc.filepath)
+  })
+  .then(function(repo) {
+    repository = repo;
+    console.log('found repo');
+    return NodeGit.Reference.nameToId(repository, 'HEAD')
+  })
+  .then(function(oid) {
+    currentCommit = oid.tostrS();
+    return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
+  })
+  .done(function(data) {
+    console.log('read contents ', data);
+    text = data;
+    var type = doc.public === true ? 'public' : 'private';
+    console.log('confirm doctype');
+    res.send({
+      docOwner: user.username,
+      docName: doc.name, 
+      docDescription: doc.description,
+      docType: type,
+      parentID: doc.originId,
+      filePath: doc.filepath,
+      docContent: text,
+      docCommits: commits,
+      currentCommit: currentCommit
+    });
+  })
+}
+
+function allDocsForUser(req, res, next) {
+  //req.params
+  var user, docs;
+  var docsObject = {};
+  console.log('in the route handler', req.params);
+  if (req.user && req.user.username === req.params.username) {
+    console.log('this is you');
+    User.findOne({ where: {username: req.params.username } })
+    .then(function(foundUser) {
+      user = foundUser;
+      console.log('found user in db ');
+      return Doc.findAll({ where: {docOwner: req.params.username } })
+    })
+    .then(function(foundDocs) {
+      console.log('found')
+      docs = foundDocs.map(instance => {
+        var type = instance.dataValues.public === true ? 'public' : 'private';
+        return {
+          docOwner: instance.dataValues.docOwner,
+          docName: instance.dataValues.name, 
+          docDescription: instance.dataValues.description,
+          docType: type,
+          parentID: instance.dataValues.originId,
+          filePath: instance.dataValues.filepath,
+          docContent: '',
+          docCommits: [],
+          currentCommit: ''
+        }
+      });
+      docsObject.owned = docs.filter(doc => {
+        return doc.parentID === null;
+      });
+      docsObject.contributing = docs.filter(doc => {
+        return doc.parentID !== null;
+      });
+      res.send({userDocuments: docsObject, maybePullRequesets: ['in which case put this in later']});
+    })
+  } else {
+    console.log('not yours');
+    User.findOne({ where: {username: req.params.username } })
+    .then(function(foundUser) {
+      if (!foundUser) {
+        // res.status().end()
+        console.log('user doesn\'t exist');
+        res.end('User doesn\'t exist');
+      } 
+      user = foundUser;
+      console.log('found user in db ');
+      return Doc.findAll({ where: {docOwner: req.params.username } })
+    })
+    .then(function(foundDocs) {
+      console.log('queried for docs')
+      docs = foundDocs.map(instance => {
+        var type = instance.dataValues.public === true ? 'public' : 'private';
+        return {
+          docOwner: instance.dataValues.docOwner,
+          docName: instance.dataValues.name, 
+          docDescription: instance.dataValues.description,
+          docType: type,
+          parentID: instance.dataValues.originId,
+          filePath: instance.dataValues.filepath,
+          docContent: '',
+          docCommits: [],
+          currentCommit: ''
+        }
+      });
+      docsObject.owned = docs.filter(doc => {
+        return doc.parentID === null;
+      });
+      docsObject.contributing = docs.filter(doc => {
+        return doc.parentID !== null;
+      });
+      res.send({userDocuments: docsObject});
+    })
+  }
+}
 
 function allDocs(req, res, next) {
   var docs;
@@ -103,10 +245,10 @@ function retrieveDocsAndPullRequests(username, callback) {
         ownerMessage: ''
       }
     });
-    console.log({allDocuments: docs,
-        allMyDocuments: myDocsObject,
-        pullRequestsToMe: pullRequests
-      })
+    // console.log({allDocuments: docs,
+    //     allMyDocuments: myDocsObject,
+    //     pullRequestsToMe: pullRequests
+    //   })
     callback(docs, myDocsObject, pullRequests);
   })
 }
@@ -983,4 +1125,4 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
   });
 };
 
-export { allDocs, retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest, pastVersion };
+export { specificDoc, allDocsForUser, allDocs, retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest, pastVersion };

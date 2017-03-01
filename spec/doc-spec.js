@@ -6,7 +6,63 @@ import app from '../src/server/server.js';
 var testName = 'Third Test';
 var expect = chai.expect;
 
-describe('Doc Tests', function() {
+describe('Profile and Doc Route Tests', function() {
+  var agent = request.agent(app);
+  var testSession;
+
+  beforeEach(function() {
+    testSession = session(app);
+  });
+
+  describe('Get all docs from a user', function() {
+    it('should grab a profile', function(done) {
+      testSession
+        .get('/profile/Sim')
+        .end(function(err, res) {
+          console.log('is there an error ?', err);
+          console.log('response ', res.body)
+          done();
+        });       
+    });
+    it('should grab my profile', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+          } else {
+            console.log('no error');
+            testSession
+              .get('/profile/Sim/')
+              .end(function(err, res) {
+                console.log('response ', res.body)
+                done();
+              });
+          }
+        });        
+    });
+    it('should grab someone else\'s profile', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+          } else {
+            console.log('no error');
+            testSession
+              .get('/profile/Sim/')
+              .end(function(err, res) {
+                console.log('response ', res.body)
+                done();
+              });
+          }
+        });        
+    });
+  });
+
+});
+
+xdescribe('Doc Tests', function() {
   var agent = request.agent(app);
   var testSession;
 

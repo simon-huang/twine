@@ -9,11 +9,11 @@ var path = require('path');
 var schema = require('../db/schema.js')
 var authRouter = require('./routers/authRouter.js');
 var docRouter = require('./routers/docRouter.js');
+var profileRouter = require('./routers/profileRouter.js');
 
 var port = process.env.PORT || 3000;
 
 var app = express();
-
 
 //=================== Middleware ===================
 //==================================================
@@ -36,10 +36,20 @@ app.use(passport.session()); // persistent login sessions
 require('./auth/passport.js')(passport);
 
 //================== set up routes ==================
-
 // process input routes from the client
+app.use('/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/doc', docRouter);
+
+// for debugging:
+app.all('*', function (req, res, next) {
+  // for all other routes
+  res.status(404).send({success: false, message: 'Route + ' + req.url + ' is invalid.'});
+});
+app.use(function(err, req, res, next) {
+  // if there are errors using the above specified routes
+  res.status(500).send({err: err});
+}); 
 
 //====================================================
 //====================================================
