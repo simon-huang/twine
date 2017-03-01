@@ -114,8 +114,26 @@ describe('Document page', () => {
       <Doc_merge dispatch={store.dispatch} docSummary={docSummaryDummyData} store={store} />
     );
 
-    it('', () => {
+    it('expects MergeUnified component to exist on the page', () => {
+      expect(wrapper.find('MergUnified')).to.exist;
     });
+
+    it('expects MergeSplit component to exist on the page', () => {
+      expect(wrapper.find('MergeSplit')).to.exist;
+    });
+
+    xdescribe('Doc Merge Split', () => {
+
+      it('', () => {
+      });
+    });
+
+    xdescribe('Doc Merge Unified', () => {
+    
+      it('', () => {
+      });
+    });
+
   });
 
 
