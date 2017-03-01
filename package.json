@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "webpack --watch | nodemon --ignore node_modules ./src/server/server.js --exec babel-node",
-    "testb": "mocha --compilers js:babel-core/register spec/auth-spec.js"
+    "testb": "mocha --compilers js:babel-core/register spec/auth-spec.js",
     "testf": "webpack --config webpack-test.config.js --watch | live-server --open=./spec/specRunner.html --port=8081"
   },
   "dependencies": {
