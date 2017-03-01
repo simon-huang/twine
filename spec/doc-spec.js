@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Fourth Test';
+var testName = 'Fifth Test';
 var expect = chai.expect;
 
 describe('Profile and Doc Route Tests', function() {
@@ -26,14 +26,14 @@ describe('Profile and Doc Route Tests', function() {
             testSession
               .get('/profile/Sim/7')
               .end(function(err, res) {
-                expect(res.body.who).to.equal('not me');
+                expect(res.text).to.equal('You don\'t have permission to view this doc');
                 console.log('response ', res.body)
                 done();
               });
           }
         });        
     });
-    xit('should grab my private doc', function(done) {
+    it('should grab my private doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -44,7 +44,7 @@ describe('Profile and Doc Route Tests', function() {
             testSession
               .get('/profile/Sim/7')
               .end(function(err, res) {
-                expect(res.body.who).to.equal('me');
+                expect(res.body.docOwner).to.equal('Sim');
                 console.log('response ', res.body)
                 done();
               });
@@ -53,13 +53,12 @@ describe('Profile and Doc Route Tests', function() {
     });
   });
 
-  xdescribe('Get all docs from a user', function() {
+  describe('Get all docs from a user', function() {
     it('should grab a profile', function(done) {
       testSession
         .get('/profile/Sim')
         .end(function(err, res) {
           console.log('is there an error ?', err);
-          expect(res.body.who).to.equal('not me');
           console.log('response ', res.body)
           done();
         });       
@@ -75,7 +74,6 @@ describe('Profile and Doc Route Tests', function() {
             testSession
               .get('/profile/Sim')
               .end(function(err, res) {
-                expect(res.body.who).to.equal('me');
                 console.log('response ', res.body)
                 done();
               });
@@ -93,7 +91,6 @@ describe('Profile and Doc Route Tests', function() {
             testSession
               .get('/profile/Sim')
               .end(function(err, res) {
-                expect(res.body.who).to.equal('not me');
                 console.log('response ', res.body)
                 done();
               });
@@ -112,7 +109,7 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  xdescribe('New Doc', function() {
+  describe('New Doc', function() {
     xit('should make a public doc', function(done) {
       agent
         .post('/api/doc/createDoc')
@@ -133,7 +130,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Save Doc', function() {
+  describe('Save Doc', function() {
     it('should work without commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')
@@ -155,7 +152,7 @@ describe('Doc Tests', function() {
     });
   });
   
-  xdescribe('Copy Doc', function() {
+  describe('Copy Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/copyDoc')
@@ -167,7 +164,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Open Doc', function() {
+  describe('Open Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/openDoc')
@@ -179,7 +176,7 @@ describe('Doc Tests', function() {
         });
     });
   });
-  xdescribe('Review Upstream', function() {
+  describe('Review Upstream', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/reviewUpstream')
@@ -191,7 +188,7 @@ describe('Doc Tests', function() {
         });
     });
   });
-  xdescribe('Get Upstream', function() {
+  describe('Get Upstream', function() {
     it('should work when there\'s no merge conflict', function(done) {
       agent
         .post('/api/doc/saveDoc')
@@ -227,7 +224,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Get All Docs', function() {
+  describe('Get All Docs', function() {
     it('should work', function(done) {
       agent
         .get('/api/doc/allDocs')
@@ -239,7 +236,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Request Merge', function() {
+  describe('Request Merge', function() {
     it('should work without commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')

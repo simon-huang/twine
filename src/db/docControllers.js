@@ -38,14 +38,14 @@ function specificDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
     console.log('here is the doc ', doc);
     if (doc.public === false && !(req.user && req.user.username === req.params.username)) {
       console.log('You don\'t have permission to view this doc');
-      res.send({who: 'not me'});
+      return res.end('You don\'t have permission to view this doc');
     } else {
       console.log('get commits');
       DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
@@ -84,8 +84,7 @@ function specificDoc(req, res, next) {
           filePath: doc.filepath,
           docContent: text,
           docCommits: commits,
-          currentCommit: currentCommit,
-          who: 'me'
+          currentCommit: currentCommit
         });
       })
     }
@@ -127,7 +126,7 @@ function allDocsForUser(req, res, next) {
       docsObject.contributing = docs.filter(doc => {
         return doc.parentID !== null;
       });
-      res.send({userDocuments: docsObject, who: 'me', maybePullRequesets: ['in which case put this in later']});
+      res.send({username: req.params.username, userDocuments: docsObject});
     })
   } else {
     console.log('not yours');
@@ -136,7 +135,7 @@ function allDocsForUser(req, res, next) {
       if (!foundUser) {
         // res.status().end()
         console.log('user doesn\'t exist');
-        res.end('User doesn\'t exist');
+        return res.end('User doesn\'t exist');
       } 
       user = foundUser;
       console.log('found user in db ');
@@ -164,7 +163,7 @@ function allDocsForUser(req, res, next) {
       docsObject.contributing = docs.filter(doc => {
         return doc.parentID !== null;
       });
-      res.send({userDocuments: docsObject, who: 'not me'});
+      res.send({username: req.params.username, userDocuments: docsObject});
     })
   }
 }
@@ -279,7 +278,7 @@ function createDoc(req, res, next) {
     if (foundDoc) {
       // res.status().end()
       console.log('doc already exists');
-      res.end('You already have a doc with that name');
+      return res.end('You already have a doc with that name');
     } 
     console.log('make doc');
     var docName = doc.name;
@@ -385,7 +384,7 @@ function saveDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     doc = foundDoc.dataValues; 
     console.log('save doc');
@@ -470,7 +469,7 @@ function copyDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\t find that doc');
+      return res.end('Can\t find that doc');
     }
     targetDoc = foundDoc.dataValues; 
     console.log('found target doc');
@@ -485,7 +484,7 @@ function copyDoc(req, res, next) {
   .then(function(foundDoc){
     if (foundDoc) {
       console.log('doc already exists');
-      res.end('You already have a doc with that name');
+      return res.end('You already have a doc with that name');
     }
     newFilepath = path.resolve(__dirname, filesFolder, currentUser.username, targetDoc.name);
     NodeGit.Clone(targetDoc.filepath, newFilepath)
@@ -553,7 +552,7 @@ function openDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
@@ -617,7 +616,7 @@ function reviewUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -626,7 +625,7 @@ function reviewUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find upstream doc');
+      return res.end('Can\'t find upstream doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -683,7 +682,7 @@ function getUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -692,7 +691,7 @@ function getUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find upstream doc');
+      return res.end('Can\'t find upstream doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -801,7 +800,7 @@ function requestMerge(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -810,7 +809,7 @@ function requestMerge(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find upstream doc');
+      return res.end('Can\'t find upstream doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -819,7 +818,7 @@ function requestMerge(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('log: Can\'t find upstream user');
-      res.end('Can\'t find upstream user');
+      return res.end('Can\'t find upstream user');
     }
     console.log('found upstream user ');
     upstreamUser = foundUser.dataValues;
@@ -842,7 +841,7 @@ function requestMerge(req, res, next) {
       return NodeGit.Clone(doc.filepath, pathToClonedRequester);
     })
     .then(function(repo) {
-      res.end('Pull request sent');
+      return res.end('Pull request sent');
     })
   })
 };
@@ -917,7 +916,7 @@ function actionPullRequest(req, res, next) {
     console.log(pullRequest);
     if (req.body.mergeStatus === 'decline') {
       //BRIEF INSERT
-      // res.end('testing end');
+      // return res.end('testing end');
       // foundPullRequest.dataValues.status = 'decline';
       // foundPullRequest.setDataValue('status', 'decline')
       pullRequestInstance.updateAttributes({
@@ -926,7 +925,7 @@ function actionPullRequest(req, res, next) {
       })
       .then(function(){
         console.log('Updated table for denial');
-        res.end('Pull Request declined');
+        return res.end('Pull Request declined');
       })
     }
     return Doc.findOne({ where: {id: pullRequest.upstreamDocId} }) 
@@ -1074,7 +1073,7 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      res.end('Can\'t find that doc');
+      return res.end('Can\'t find that doc');
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
