@@ -26,8 +26,6 @@ module.exports = function(passport) {
   
   passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true },
     function(req, email, password, done) {
-      console.log('email: ', email);
-      console.log('passwrod:  ', password);
       User.findOne({ where: {email: email} })
       .then(function(user) {
         if (user) {

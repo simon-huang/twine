@@ -17,7 +17,6 @@ exports.login = function (req, res, next) {
     retrieveDocsAndPullRequests(req.user.username, function(docsArray, myDocsObject, pullRequestsArray) {
       res
       .status(200)
-      //.status(302)
       .send({ 
         status: 'successful', 
         username: req.user.username, 
@@ -27,8 +26,6 @@ exports.login = function (req, res, next) {
       });
     });
   } else {
-    console.log('UNSUCCESSFUL');
-    console.log('REQ.USER  ', req.user);
     res
     .status(401)
     .send({ status: 'unsuccessful login'});
