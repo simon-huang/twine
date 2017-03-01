@@ -10,7 +10,7 @@ var schema = require('../db/schema.js')
 var authRouter = require('./routers/authRouter.js');
 var docRouter = require('./routers/docRouter.js');
 var profileRouter = require('./routers/profileRouter.js');
-
+// import { allDocsForUser, specificDoc } from '../db/docControllers.js';
 var port = process.env.PORT || 3000;
 
 var app = express();
@@ -41,19 +41,12 @@ app.use('/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/doc', docRouter);
 
-// for debugging:
-app.all('*', function (req, res, next) {
-  // for all other routes
-  res.status(404).send({success: false, message: 'Route + ' + req.url + ' is invalid.'});
-});
-app.use(function(err, req, res, next) {
-  // if there are errors using the above specified routes
-  res.status(500).send({err: err});
-}); 
-
 //====================================================
 //====================================================
 
+// // Users and their docs
+// app.get('/:username', allDocsForUser);
+// app.get('/:username/:docId', specificDoc);
 
 // serve static client-facing files
 app.use(express.static(path.resolve(__dirname, '../public')));

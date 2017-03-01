@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Third Test';
+var testName = 'Fourth Test';
 var expect = chai.expect;
 
 describe('Profile and Doc Route Tests', function() {
@@ -13,13 +13,53 @@ describe('Profile and Doc Route Tests', function() {
   beforeEach(function() {
     testSession = session(app);
   });
+  // write tests trying to grab a private doc as both the correct logged in user and not
+  describe('Get a doc', function() {
+    it('someone else should not grab my private doc', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+          } else {
+            console.log('no error');
+            testSession
+              .get('/profile/Sim/7')
+              .end(function(err, res) {
+                expect(res.body.who).to.equal('not me');
+                console.log('response ', res.body)
+                done();
+              });
+          }
+        });        
+    });
+    xit('should grab my private doc', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+          } else {
+            console.log('no error');
+            testSession
+              .get('/profile/Sim/7')
+              .end(function(err, res) {
+                expect(res.body.who).to.equal('me');
+                console.log('response ', res.body)
+                done();
+              });
+          }
+        });        
+    });
+  });
 
-  describe('Get all docs from a user', function() {
+  xdescribe('Get all docs from a user', function() {
     it('should grab a profile', function(done) {
       testSession
         .get('/profile/Sim')
         .end(function(err, res) {
           console.log('is there an error ?', err);
+          expect(res.body.who).to.equal('not me');
           console.log('response ', res.body)
           done();
         });       
@@ -33,8 +73,9 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim/')
+              .get('/profile/Sim')
               .end(function(err, res) {
+                expect(res.body.who).to.equal('me');
                 console.log('response ', res.body)
                 done();
               });
@@ -50,8 +91,9 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim/')
+              .get('/profile/Sim')
               .end(function(err, res) {
+                expect(res.body.who).to.equal('not me');
                 console.log('response ', res.body)
                 done();
               });
@@ -62,7 +104,7 @@ describe('Profile and Doc Route Tests', function() {
 
 });
 
-xdescribe('Doc Tests', function() {
+describe('Doc Tests', function() {
   var agent = request.agent(app);
   var testSession;
 
@@ -70,8 +112,8 @@ xdescribe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  describe('New Doc', function() {
-    it('should work', function(done) {
+  xdescribe('New Doc', function() {
+    xit('should make a public doc', function(done) {
       agent
         .post('/api/doc/createDoc')
         .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'public'})
@@ -80,9 +122,18 @@ xdescribe('Doc Tests', function() {
           done();
         });
     });
+    it('should make a private doc', function(done) {
+      agent
+        .post('/api/doc/createDoc')
+        .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'private'})
+        .end(function(err, res) {
+          expect(res.body.docName).to.equal(testName);
+          done();
+        });
+    });
   });
 
-  describe('Save Doc', function() {
+  xdescribe('Save Doc', function() {
     it('should work without commit message', function(done) {
       agent
         .post('/api/doc/saveDoc')
@@ -104,7 +155,7 @@ xdescribe('Doc Tests', function() {
     });
   });
   
-  describe('Copy Doc', function() {
+  xdescribe('Copy Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/copyDoc')
@@ -116,7 +167,7 @@ xdescribe('Doc Tests', function() {
     });
   });
 
-  describe('Open Doc', function() {
+  xdescribe('Open Doc', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/openDoc')
@@ -128,7 +179,7 @@ xdescribe('Doc Tests', function() {
         });
     });
   });
-  describe('Review Upstream', function() {
+  xdescribe('Review Upstream', function() {
     it('should work', function(done) {
       agent
         .post('/api/doc/reviewUpstream')
@@ -140,7 +191,7 @@ xdescribe('Doc Tests', function() {
         });
     });
   });
-  describe('Get Upstream', function() {
+  xdescribe('Get Upstream', function() {
     it('should work when there\'s no merge conflict', function(done) {
       agent
         .post('/api/doc/saveDoc')
@@ -228,7 +279,7 @@ xdescribe('Doc Tests', function() {
         });
     });
   });
-  describe('Action Pull Request', function() {
+  xdescribe('Action Pull Request', function() {
     it('should accept', function(done) {
       agent
         .post('/api/doc/actionPullRequest')

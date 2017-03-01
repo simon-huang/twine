@@ -33,16 +33,8 @@ function specificDoc(req, res, next) {
   var user, doc;
   var text, commits, currentCommit;
   var repository;
-  if (req.user && req.user.username === req.params.username) {
 
-  }
-
-  return User.findOne({ where: {username: req.body.username } })
-  .then(function(foundUser){
-    console.log('found user ');
-    user = foundUser.dataValues;
-    return Doc.findOne({ where: {name: req.body.docName, userID: user.id} }) 
-  })
+  Doc.findOne({ where: {id: req.params.docId, docOwner: req.params.username} })
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
@@ -50,46 +42,53 @@ function specificDoc(req, res, next) {
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
-    console.log('get commits');
-    return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
-  })
-  .then(function(foundCommits){
-    console.log('found commits ');
-    commits = foundCommits.map((instance) => {
-      return {
-        id: instance.dataValues.id,
-        commitID: instance.dataValues.commitID,
-        commitMessage: instance.dataValues.commitMessage
-      }
-    });
-    // console.log('reduced commits to send later ', commits);
-    return NodeGit.Repository.open(doc.filepath)
-  })
-  .then(function(repo) {
-    repository = repo;
-    console.log('found repo');
-    return NodeGit.Reference.nameToId(repository, 'HEAD')
-  })
-  .then(function(oid) {
-    currentCommit = oid.tostrS();
-    return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
-  })
-  .done(function(data) {
-    console.log('read contents ', data);
-    text = data;
-    var type = doc.public === true ? 'public' : 'private';
-    console.log('confirm doctype');
-    res.send({
-      docOwner: user.username,
-      docName: doc.name, 
-      docDescription: doc.description,
-      docType: type,
-      parentID: doc.originId,
-      filePath: doc.filepath,
-      docContent: text,
-      docCommits: commits,
-      currentCommit: currentCommit
-    });
+    console.log('here is the doc ', doc);
+    if (doc.public === false && !(req.user && req.user.username === req.params.username)) {
+      console.log('You don\'t have permission to view this doc');
+      res.send({who: 'not me'});
+    } else {
+      console.log('get commits');
+      DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
+      .then(function(foundCommits){
+        console.log('found commits ');
+        commits = foundCommits.map((instance) => {
+          return {
+            id: instance.dataValues.id,
+            commitID: instance.dataValues.commitID,
+            commitMessage: instance.dataValues.commitMessage
+          }
+        });
+        // console.log('reduced commits to send later ', commits);
+        return NodeGit.Repository.open(doc.filepath)
+      })
+      .then(function(repo) {
+        repository = repo;
+        console.log('found repo');
+        return NodeGit.Reference.nameToId(repository, 'HEAD')
+      })
+      .then(function(oid) {
+        currentCommit = oid.tostrS();
+        return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
+      })
+      .done(function(data) {
+        console.log('read contents ', data);
+        text = data;
+        var type = doc.public === true ? 'public' : 'private';
+        console.log('confirm doctype');
+        res.send({
+          docOwner: doc.docOwner,
+          docName: doc.name, 
+          docDescription: doc.description,
+          docType: type,
+          parentID: doc.originId,
+          filePath: doc.filepath,
+          docContent: text,
+          docCommits: commits,
+          currentCommit: currentCommit,
+          who: 'me'
+        });
+      })
+    }
   })
 }
 
@@ -128,7 +127,7 @@ function allDocsForUser(req, res, next) {
       docsObject.contributing = docs.filter(doc => {
         return doc.parentID !== null;
       });
-      res.send({userDocuments: docsObject, maybePullRequesets: ['in which case put this in later']});
+      res.send({userDocuments: docsObject, who: 'me', maybePullRequesets: ['in which case put this in later']});
     })
   } else {
     console.log('not yours');
@@ -165,7 +164,7 @@ function allDocsForUser(req, res, next) {
       docsObject.contributing = docs.filter(doc => {
         return doc.parentID !== null;
       });
-      res.send({userDocuments: docsObject});
+      res.send({userDocuments: docsObject, who: 'not me'});
     })
   }
 }
