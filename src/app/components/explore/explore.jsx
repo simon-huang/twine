@@ -15,7 +15,7 @@ export class Explore extends React.Component {
 
   openDoc(name, owner) {
     var docRequest = {
-      docOwner: owner,
+      username: owner, //hardcoding to send out the owner for explore
       docName: name,
     }
     this.props.dispatch(allDoc.openDoc(docRequest));
