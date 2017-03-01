@@ -16,7 +16,7 @@ import EnsureLoggedInContainer from './components/auth/ensureLoggedInContainer.j
 import Explore from './components/explore/explore.jsx';
 
 store.subscribe(() => {
-  console.log('store changed', store.getState());
+  //console.log('store changed', store.getState());
 })
 
 export class Publishus extends React.Component {
@@ -34,7 +34,8 @@ export class Publishus extends React.Component {
             <Route component={EnsureLoggedInContainer}>
               <Route path="createdoc" component={CreateDoc}/>
               <Route path="editdoc" component={EditDoc}/>
-              <Route path="profile" component={Profile}/>
+              // <Route path="profile" component={Profile}/>
+              <Route path="profile/:username" component={Profile}/>
             </Route>
           </Route>
         </Router>

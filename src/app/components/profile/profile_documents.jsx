@@ -9,6 +9,7 @@ import ProfileDocSummary from './profile_docSummary.jsx';
 
 export class ProfileDocuments extends React.Component {
   constructor(props) {
+    //console.log(props);
     super(props);
     this.openDoc = this.openDoc.bind(this);
   }
