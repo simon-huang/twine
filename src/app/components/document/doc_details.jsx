@@ -8,6 +8,10 @@ import Button from 'react-bootstrap/lib/Button';
 // Components
 import DocContents from './doc_contents.jsx'
 
+// componentWillMount() {
+//   //this.props.dispath(funciton you've brought in)
+// }
+
 export class Doc_details extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +25,7 @@ export class Doc_details extends React.Component {
             <div className="row mt10">
               <div className="col-sm-12">
                 <div className="doc-desc">
+                  {console.log('this.props.username', this.props.user.username)}                
                   {this.props.doc.docDescription}
                 </div>
               </div>  
