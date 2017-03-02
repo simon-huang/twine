@@ -1,5 +1,7 @@
 export default function reducer(state = {
   allDocuments: [],
+  ownedDocs: [],
+  contributingDocs: [],
   error: null
 }, action) {
 
@@ -11,6 +13,21 @@ export default function reducer(state = {
         allDocuments: action.payload
       }
     }
+
+    case "EDIT_OWNEDDOCS": {
+      return {
+        ...state,
+        ownedDocs: action.payload
+      }
+    }
+
+    case "EDIT_CONTRIBUTINGDOCS": {
+      return {
+        ...state,
+        contributingDocs: action.payload
+      }
+    }
+
   }
 
   return state;
