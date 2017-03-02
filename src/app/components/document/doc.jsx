@@ -46,7 +46,7 @@ export class Doc extends React.Component {
 
   render() {
     return (
-      <div className="container mt25 mb25">
+      <div className="mt25 mb25">
         <div className="row">
           <div className="col-sm-12">
             <div className="row doc-title mb20">
