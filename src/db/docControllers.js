@@ -82,6 +82,7 @@ function specificDoc(req, res, next) {
           docDescription: doc.description,
           docType: type,
           parentID: doc.originId,
+          originOwner: doc.originOwner,
           filePath: doc.filepath,
           docContent: text,
           docCommits: commits,
@@ -120,6 +121,7 @@ function allDocsForUser(req, res, next) {
           docDescription: instance.dataValues.description,
           docType: type,
           parentID: instance.dataValues.originId,
+          originOwner: instance.dataValues.originOwner,
           filePath: instance.dataValues.filepath,
           docContent: '',
           docCommits: [],
@@ -158,6 +160,7 @@ function allDocsForUser(req, res, next) {
           docDescription: instance.dataValues.description,
           docType: type,
           parentID: instance.dataValues.originId,
+          originOwner: instance.dataValues.originOwner,
           filePath: instance.dataValues.filepath,
           docContent: '',
           docCommits: [],
@@ -190,6 +193,7 @@ function allDocs(req, res, next) {
         docDescription: instance.dataValues.description,
         docType: type,
         parentID: instance.dataValues.originId,
+        originOwner: instance.dataValues.originOwner,
         filePath: instance.dataValues.filepath,
         docContent: '',
         docCommits: [],
@@ -225,6 +229,7 @@ function retrieveDocsAndPullRequests(username, callback) {
         docDescription: instance.dataValues.description,
         docType: type,
         parentID: instance.dataValues.originId,
+        originOwner: instance.dataValues.originOwner,
         filePath: instance.dataValues.filepath,
         docContent: '',
         docCommits: [],
@@ -344,9 +349,10 @@ function createDoc(req, res, next) {
         description: doc.description,
         filepath: pathToDoc,
         public: doc.public,
-        origin: null,
         userId: user.id,
-        docOwner: user.username
+        docOwner: user.username,
+        originId: null,
+        originOwner: null
       })
       .save()
       .then(function(madeDoc) { 
@@ -376,6 +382,7 @@ function createDoc(req, res, next) {
               docDescription: doc.description,
               docType: type,
               parentID: null,
+              originOwner: doc.originOwner,
               filePath: doc.filepath,
               docContent: '',
               docCommits: [firstCommit],
@@ -538,9 +545,10 @@ function copyDoc(req, res, next) {
         description: targetDoc.description,
         filepath: newFilepath,
         public: targetDoc.public,
-        originId: targetDoc.id,
         userId: currentUser.id,
-        docOwner: currentUser.username
+        docOwner: currentUser.username,
+        originId: targetDoc.id,
+        originOwner: targetDoc.docOwner
       })
       .save()
       .then(function(madeDoc) { 
@@ -687,6 +695,7 @@ function openDoc(req, res, next) {
       docDescription: doc.description,
       docType: type,
       parentID: doc.originId,
+      originOwner: doc.originOwner,
       filePath: doc.filepath,
       docContent: text,
       docCommits: commits,
@@ -886,6 +895,7 @@ function getUpstream(req, res, next) {
             docDescription: doc.description,
             docType: type,
             parentID: doc.originId,
+            originOwner: doc.originOwner,
             filePath: doc.filepath,
             docContent: text,
             docCommits: commits,
@@ -1196,6 +1206,7 @@ function actionPullRequest(req, res, next) {
               docDescription: upstreamDoc.description,
               docType: type,
               parentID: upstreamDoc.originId,
+              originOwner: upstreamDoc.originOwner,
               filePath: upstreamDoc.filepath,
               docContent: text,
               docCommits: commits,
@@ -1285,6 +1296,7 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
       docDescription: doc.description,
       docType: type,
       parentID: doc.originId,
+      originOwner: doc.originOwner,
       filePath: doc.filepath,
       docContent: currentText,
       docCommits: commits,

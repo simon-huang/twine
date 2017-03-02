@@ -31,9 +31,20 @@ var Doc = sequelize.define('doc', {
     primaryKey: false,
     model: 'user',
     key: 'username'
+  },
+  originId: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'doc',
+    key: 'id'
+  },
+  originOwner: {
+    type: Sequelize.STRING,
+    primaryKey: false,
+    model: 'user',
+    key: 'username'
   }
 });
-Doc.belongsTo(Doc, {as: 'origin', allowNull: true}); // TEST THIS
 
 // Create DocVersion model
 // Are we letting the user see all saves (commits) in their version history?
