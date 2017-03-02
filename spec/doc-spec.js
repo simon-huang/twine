@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Fifteenth Test';
+var testName = 'Third Test';
 var expect = chai.expect;
 
 describe('Profile and Doc Route Tests', function() {
@@ -14,8 +14,8 @@ describe('Profile and Doc Route Tests', function() {
     testSession = session(app);
   });
   // write tests trying to grab a private doc as both the correct logged in user and not
-  xdescribe('Get a doc', function() {
-    it('someone else should not grab my private doc', function(done) {
+  describe('Get a doc', function() {
+    xit('someone else should not grab my private doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
         .end(function(err, res) {
@@ -33,7 +33,7 @@ describe('Profile and Doc Route Tests', function() {
           }
         });        
     });
-    it('should grab my private doc', function(done) {
+    xit('should grab my private doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -51,6 +51,51 @@ describe('Profile and Doc Route Tests', function() {
               });
           }
         });        
+    });
+    it('someone else can grab my public doc', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+          } else {
+            console.log('no error');
+            testSession
+              .get('/profile/Sim/1')
+              .end(function(err, res) {
+                expect(res.body.docOwner).to.equal('Sim');
+                console.log('response ', res.body)
+                done();
+              });
+          }
+        });        
+    });
+    it('I can grab my public doc', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+          } else {
+            console.log('no error');
+            testSession
+              .get('/profile/Sim/1')
+              .end(function(err, res) {
+                expect(res.body.docOwner).to.equal('Sim');
+                console.log('response ', res.body)
+                done();
+              });
+          }
+        });        
+    });
+    it('Anyone can grab my public doc', function(done) {
+      testSession
+        .get('/profile/Sim/1')
+        .end(function(err, res) {
+          expect(res.body.docOwner).to.equal('Sim');
+          console.log('response ', res.body)
+          done();
+        });     
     });
   });
 
@@ -110,7 +155,7 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  xdescribe('New Doc', function() {
+  describe('New Doc', function() {
     it('should make a public doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -123,7 +168,10 @@ describe('Doc Tests', function() {
             .post('/api/doc/createDoc')
             .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'public'})
             .end(function(err, res) {
+              console.log('sent on creation of new doc ', res.body);
               expect(res.body.docName).to.equal(testName);
+              expect(res.body.originOwner).to.equal(null);
+              expect(res.body.docOwner).to.equal('Sim');
               done();
             });
         });  
@@ -148,7 +196,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Save Doc', function() {
+  describe('Save Doc', function() {
     it('should work without commit message', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -188,7 +236,7 @@ describe('Doc Tests', function() {
     });
   });
   
-  xdescribe('Copy Doc', function() {
+  describe('Copy Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -203,6 +251,7 @@ describe('Doc Tests', function() {
             .end(function(err, res) {
               console.log('res.body ', res.body)
               expect(res.body.originOwner).to.equal('Sim');
+              expect(res.body.docOwner).to.equal('Tim');
               done();
             });
         });
@@ -210,10 +259,10 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Open Doc', function() {
+  describe('Open Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
-        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
         .end(function(err, res) {
           if (res.error) {
             console.log('login error ', res.error);
@@ -221,7 +270,7 @@ describe('Doc Tests', function() {
           }
           testSession
             .post('/api/doc/openDoc')
-            .send({username: 'Sim', docName: testName})
+            .send({username: 'Tim', docName: testName})
             .end(function(err, res) {
               console.log('opened ', res.body);
               // expect(res.body.docText).to.equal('Overwriting the text 2');
@@ -506,7 +555,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  describe('Checkout past version', function() {
+  xdescribe('Checkout past version', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
