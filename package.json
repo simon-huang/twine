@@ -71,6 +71,7 @@
     "jsdom": "^9.11.0",
     "json-loader": "^0.5.4",
     "mocha": "^2.3.3",
+    "moxios": "^0.3.0",
     "react-addons-test-utils": "^15.4.2",
     "react-tap-event-plugin": "^2.0.1",
     "sinon": "1.17.3",
