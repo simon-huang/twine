@@ -7,7 +7,7 @@ import * as allDoc from '../../actions/allDocActions.jsx';
 import ProfileDocSummary from './profile_docSummary.jsx';
 
 
-export class ProfileMyDocuments extends React.Component {
+export class ProfileOwnedDocuments extends React.Component {
   constructor(props) {
     super(props);
     this.openDoc = this.openDoc.bind(this);
@@ -34,5 +34,5 @@ export class ProfileMyDocuments extends React.Component {
   }
 }
 
-export default connect(state => state)(ProfileMyDocuments);
+export default connect(state => state)(ProfileOwnedDocuments);
 

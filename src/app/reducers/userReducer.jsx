@@ -2,8 +2,7 @@ export default function reducer(state = {
   username: '',
   email: '',
   password: '',
-  // ownedDocs: [],
-  // contributingDocs: [],
+  currentTab: 'all',
   error: null
 }, action) {
 
@@ -34,20 +33,6 @@ export default function reducer(state = {
       }
     }
 
-    // case "EDIT_OWNEDDOCS": {
-    //   return {
-    //     ...state,
-    //     ownedDocs: action.payload
-    //   }
-    // }
-
-    // case "EDIT_CONTRIBUTINGDOCS": {
-    //   return {
-    //     ...state,
-    //     contributingDocs: action.payload
-    //   }
-    // }
-
     case "EDIT_EMAIL": {
       return {
         ...state,
@@ -68,6 +53,13 @@ export default function reducer(state = {
         username: action.payload.username,
         password: '',
         email: ''
+      }
+    }
+
+    case "PROFILE_TAB_CHANGE": {
+      return {
+        ...state,
+        currentTab: action.payload
       }
     }
 

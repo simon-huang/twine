@@ -2,6 +2,7 @@ export default function reducer(state = {
   allDocuments: [],
   ownedDocs: [],
   contributingDocs: [],
+  associatedDocs: [],
   error: null
 }, action) {
 
@@ -25,6 +26,13 @@ export default function reducer(state = {
       return {
         ...state,
         contributingDocs: action.payload
+      }
+    }
+    
+    case "EDIT_ASSOCIATEDDOCS": {
+      return {
+        ...state,
+        associatedDocs: action.payload
       }
     }
 
