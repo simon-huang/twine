@@ -128,6 +128,7 @@ function allDocsForUser(req, res, next) {
           currentCommit: ''
         }
       });
+      docsObject.both = docs;
       docsObject.owned = docs.filter(doc => {
         return doc.parentID === null;
       });
@@ -167,13 +168,14 @@ function allDocsForUser(req, res, next) {
           currentCommit: ''
         }
       });
+      docsObject.both = docs;
       docsObject.owned = docs.filter(doc => {
         return doc.parentID === null;
       });
       docsObject.contributing = docs.filter(doc => {
         return doc.parentID !== null;
       });
-      res.send({username: req.params.username, userDocuments: docsObject});
+      res.send({username: req.params.username, allMyDocuments: docsObject});
     })
   }
 }
@@ -239,6 +241,8 @@ function retrieveDocsAndPullRequests(username, callback) {
     myDocs = docs.filter(doc => {
       return doc.docOwner === user.username;
     });
+    myDocsObject.both = docs;
+
     myDocsObject.owned = myDocs.filter(doc => {
       return doc.parentID === null;
     });
