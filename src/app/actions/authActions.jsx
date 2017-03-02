@@ -10,7 +10,7 @@ export function autoLogin () {
             type: "AUTO_LOGIN", 
             payload: response.data.username
           });
-          dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
+          dispatch(loadDocStorage(response.data));
         }
       }).catch((err) => {
         console.log('no prior auth');
@@ -45,6 +45,15 @@ export function authReject (value) {
   }
 }
 
+export function loadDocStorage(data) {
+  return function(dispatch, getState) {
+    dispatch(doc.handleChange('allDocuments', data.allDocuments));
+    dispatch(doc.handleChange('ownedDocs', data.allMyDocuments.owned));
+    dispatch(doc.handleChange('contributingDocs', data.allMyDocuments.contributing));
+    dispatch(doc.handleChange('associatedDocs', data.allMyDocuments.both));
+  }
+}
+
 export function login () {
   return function(dispatch, getState) {
     var user = getState().user;
@@ -54,10 +63,10 @@ export function login () {
     })
     .then((response) => {
       dispatch(userCreated(response.data));
-      dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
-      dispatch(doc.handleChange('ownedDocs', response.data.allMyDocuments.owned));
-      dispatch(doc.handleChange('contributingDocs', response.data.allMyDocuments.contributing));
-      dispatch(doc.handleChange('associatedDocs', response.data.allMyDocuments.both));
+      dispatch(loadDocStorage(response.data));
+      // dispatch(doc.handleChange('ownedDocs', response.data.allMyDocuments.owned));
+      // dispatch(doc.handleChange('contributingDocs', response.data.allMyDocuments.contributing));
+      // dispatch(doc.handleChange('associatedDocs', response.data.allMyDocuments.both));
     })
     .catch((err) => {
       dispatch(authReject(err));

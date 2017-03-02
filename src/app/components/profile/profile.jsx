@@ -30,7 +30,7 @@ export class Profile extends React.Component {
             <div className="col-sm-12">
               <Tabs defaultActiveKey={this.props.user.currentTab} onChange={this.tabChange} id="docTabs">
                 <Tab title="My Documents" eventKey="all" >
-                  <ProfileDocuments tab={'All My Documents'} docList={this.props.allDoc.ownedDocs}/>
+                  <ProfileDocuments tab={'All My Documents'} docList={this.props.allDoc.associatedDocs}/>
                 </Tab>
                 <Tab title="My Documents" eventKey="owned" >
                   <ProfileDocuments tab={'Owned Documents'} docList={this.props.allDoc.ownedDocs}/>
