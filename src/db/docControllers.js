@@ -175,7 +175,7 @@ function allDocsForUser(req, res, next) {
       docsObject.contributing = docs.filter(doc => {
         return doc.parentID !== null;
       });
-      res.send({username: req.params.username, userDocuments: docsObject});
+      res.send({username: req.params.username, allMyDocuments: docsObject});
     })
   }
 }
