@@ -37,7 +37,7 @@ export class EditDoc extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         <h2>Edit your Document</h2>
         <div className="list-title" onClick={this.redirectToDoc}>{this.props.doc.docName}</div>
         <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />

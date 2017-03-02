@@ -48,7 +48,9 @@ export default class App extends React.Component {
       <Theme>
         <div>
           <Navbar props={this.props} />
-          {this.props.children}
+          <div className="mt20 container">
+            {this.props.children}
+          </div>
           <LoginModal />
         </div>
       </Theme>

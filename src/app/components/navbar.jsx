@@ -43,8 +43,9 @@ export class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav>
-            <NavItem onClick={this.updatePath} eventKey={1} name="createdoc">Create Doc</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={4} name="profile">Profile</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={1} name="explore">Explore</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={2} name="createdoc">Create Doc</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={3} name="profile">Profile</NavItem>
           </Nav>
           <Nav pullRight>
             <NavDropdown eventKey={4} title={
@@ -60,9 +61,12 @@ export class Navbar extends React.Component {
     } else {
       return (
         <NavContainer.Collapse>
+          <Nav>
+            <NavItem onClick={this.updatePath} eventKey={1} name="explore">Explore</NavItem>
+          </Nav>
           <Nav pullRight>
-            <NavItem className="login" onClick={this.toggleLoginModal} eventKey={4} name="login">Login</NavItem>
-            <NavItem className="signup" onClick={this.updatePath} eventKey={5} name="signup">Signup</NavItem>
+            <NavItem className="login" onClick={this.toggleLoginModal} eventKey={5} name="login">Login</NavItem>
+            <NavItem className="signup" onClick={this.updatePath} eventKey={6} name="signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
       );
@@ -76,7 +80,6 @@ export class Navbar extends React.Component {
         <NavContainer.Header>
           <NavContainer.Brand>
             <a className="nav-logo" onClick={this.updatePath} name="/">PublishUs</a>
-            <a className="nav-logo" onClick={this.updatePath} name="explore">Explore</a>
           </NavContainer.Brand>
           <NavContainer.Toggle />
         </NavContainer.Header>

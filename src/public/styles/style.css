@@ -87,6 +87,14 @@ h6 { font-size: 14px; line-height: 20px; }
 /*============ Styling =============*/
 /*==================================*/
 
+.home-page {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+
 .hr-label {
   position: relative;
   text-align: center;
