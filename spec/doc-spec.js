@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Fifth Test';
+var testName = 'Fifteenth Test';
 var expect = chai.expect;
 
 describe('Profile and Doc Route Tests', function() {
@@ -14,7 +14,7 @@ describe('Profile and Doc Route Tests', function() {
     testSession = session(app);
   });
   // write tests trying to grab a private doc as both the correct logged in user and not
-  describe('Get a doc', function() {
+  xdescribe('Get a doc', function() {
     it('someone else should not grab my private doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -39,6 +39,7 @@ describe('Profile and Doc Route Tests', function() {
         .end(function(err, res) {
           if (res.error) {
             console.log('login error ', res.error);
+            done()
           } else {
             console.log('no error');
             testSession
@@ -53,7 +54,7 @@ describe('Profile and Doc Route Tests', function() {
     });
   });
 
-  describe('Get all docs from a user', function() {
+  xdescribe('Get all docs from a user', function() {
     it('should grab a profile', function(done) {
       testSession
         .get('/profile/Sim')
@@ -109,124 +110,254 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  describe('New Doc', function() {
-    xit('should make a public doc', function(done) {
-      agent
-        .post('/api/doc/createDoc')
-        .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'public'})
+  xdescribe('New Doc', function() {
+    it('should make a public doc', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          expect(res.body.docName).to.equal(testName);
-          done();
-        });
-    });
-    it('should make a private doc', function(done) {
-      agent
-        .post('/api/doc/createDoc')
-        .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'private'})
-        .end(function(err, res) {
-          expect(res.body.docName).to.equal(testName);
-          done();
-        });
-    });
-  });
-
-  describe('Save Doc', function() {
-    it('should work without commit message', function(done) {
-      agent
-        .post('/api/doc/saveDoc')
-        .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text 1', commitMessage: ''})
-        .end(function(err, res) {
-          console.log('saved ', res.body);
-          // expect(res.text).to.equal('Saved');
-          done();
-        });
-    });
-    xit('should work with commit message', function(done) {
-      agent
-        .post('/api/doc/saveDoc')
-        .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text 2', commitMessage: 'Testing commit'})
-        .end(function(err, res) {
-          // expect(res.text).to.equal('Saved');
-          done();
-        });
-    });
-  });
-  
-  describe('Copy Doc', function() {
-    it('should work', function(done) {
-      agent
-        .post('/api/doc/copyDoc')
-        .send({docOwner: 'Sim', docName: testName, username: 'Tim'})
-        .end(function(err, res) {
-          expect(Array.isArray(res.body.allDocuments)).to.equal(true);
-          done();
-        });
-    });
-  });
-
-  describe('Open Doc', function() {
-    it('should work', function(done) {
-      agent
-        .post('/api/doc/openDoc')
-        .send({username: 'Sim', docName: testName})
-        .end(function(err, res) {
-          console.log('opened ', res.body);
-          // expect(res.body.docText).to.equal('Overwriting the text 2');
-          done();
-        });
-    });
-  });
-  describe('Review Upstream', function() {
-    it('should work', function(done) {
-      agent
-        .post('/api/doc/reviewUpstream')
-        .send({username: 'Tim', docName: testName})
-        .end(function(err, res) {
-          console.log('res.body: ', res.body);
-          // expect(res.body.docText).to.equal('Overwriting the text 2');
-          done();
-        });
-    });
-  });
-  describe('Get Upstream', function() {
-    it('should work when there\'s no merge conflict', function(done) {
-      agent
-        .post('/api/doc/saveDoc')
-        .send({username: 'Sim', docName: testName, docContent: 'Overwriting the origin for something to be pulled', commitMessage: ''})
-        .end(function(err, res) {
-          agent
-            .post('/api/doc/getUpstream')
-            .send({username: 'Tim', docName: testName})
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/createDoc')
+            .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'public'})
             .end(function(err, res) {
-              console.log('res.text: ', res.text, res. body);
+              expect(res.body.docName).to.equal(testName);
+              done();
+            });
+        });  
+    });
+    xit('should make a private doc', function(done) {
+      
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/createDoc')
+            .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'private'})
+            .end(function(err, res) {
+              expect(res.body.docName).to.equal(testName);
               done();
             });
         });
     });
-    it('should work despite merge conflict', function(done) {
-      agent
-        .post('/api/doc/saveDoc')
-        .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text a \nasdfth time', commitMessage: ''})
+  });
+
+  xdescribe('Save Doc', function() {
+    it('should work without commit message', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          agent
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
             .post('/api/doc/saveDoc')
-            .send({username: 'Tim', docName: testName, docContent: 'drones \nThis is it \nAgain time', commitMessage: ''})
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text 1', commitMessage: ''})
             .end(function(err, res) {
-              agent
-                .post('/api/doc/getUpstream')
-                .send({username: 'Tim', docName: testName})
-                .end(function(err, res) {
-                  console.log('res.text: ', res.text, res.body);
-                  done();
-                });
+              console.log('saved ', res.body);
+              // expect(res.text).to.equal('Saved');
+              done();
+            });
+        });
+      
+    });
+    xit('should work with commit message', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text 2', commitMessage: 'Testing commit'})
+            .end(function(err, res) {
+              // expect(res.text).to.equal('Saved');
+              done();
+            });
+        });
+      
+    });
+  });
+  
+  xdescribe('Copy Doc', function() {
+    it('should work', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/copyDoc')
+            .send({docOwner: 'Sim', docName: testName, username: 'Tim'})
+            .end(function(err, res) {
+              console.log('res.body ', res.body)
+              expect(res.body.originOwner).to.equal('Sim');
+              done();
+            });
+        });
+      
+    });
+  });
+
+  xdescribe('Open Doc', function() {
+    it('should work', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/openDoc')
+            .send({username: 'Sim', docName: testName})
+            .end(function(err, res) {
+              console.log('opened ', res.body);
+              // expect(res.body.docText).to.equal('Overwriting the text 2');
+              done();
+            });
+        });
+      
+    });
+  });
+  xdescribe('Review Upstream', function() {
+    it('should work', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/reviewUpstream')
+            .send({username: 'Tim', docName: testName})
+            .end(function(err, res) {
+              console.log('res.body: ', res.body);
+              // expect(res.body.docText).to.equal('Overwriting the text 2');
+              done();
+            });
+        });
+      
+    });
+  });
+  xdescribe('Get Upstream', function() {
+    xit('should work when there\'s no merge conflict', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('sim login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the origin for something to be pulled', commitMessage: ''})
+            .end(function(err, res) {
+              if (res.error) {
+                console.log('update doc error ', res.error);
+                done()
+              }
+              testSession.get('/api/auth/logout')
+              .end(function(err, res) {
+                if (res.error) {
+                  console.log('sim logout error ', res.error);
+                  done()
+                }
+                testSession.post('/api/auth/login')
+                  .send({ email: 'Tim@gmail.com', password: 'Tim' })
+                  .end(function(err, res) {
+                    if (res.error) {
+                      console.log('tim login error ', res.error);
+                      done()
+                    }
+                    testSession
+                      .post('/api/doc/getUpstream')
+                      .send({username: 'Tim', docName: testName})
+                      .end(function(err, res) {
+                        if (res.error) {
+                          console.log('tim pull upstream error ', res.error);
+                          done()
+                        }
+                        console.log('res.text: ', res.text, res. body);
+                        done();
+                      });
+                  });
+              });  
+            });
+        });
+    });
+
+    it('should work despite merge conflicts', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('sim login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text a \nasdfth time', commitMessage: ''})
+            .end(function(err, res) {
+              if (res.error) {
+                console.log('update doc error ', res.error);
+                done()
+              }
+              testSession.get('/api/auth/logout')
+              .end(function(err, res) {
+                if (res.error) {
+                  console.log('sim logout error ', res.error);
+                  done()
+                }
+                testSession.post('/api/auth/login')
+                  .send({ email: 'Tim@gmail.com', password: 'Tim' })
+                  .end(function(err, res) {
+                    if (res.error) {
+                      console.log('tim login error ', res.error);
+                      done()
+                    }
+                    testSession
+                      .post('/api/doc/saveDoc')
+                      .send({username: 'Tim', docName: testName, docContent: 'drones \nThis is it \nAgain time', commitMessage: ''})
+                      .end(function(err, res) {
+                        if (res.error) {
+                          console.log('tim update doc error ', res.error);
+                          done()
+                        }
+                        testSession
+                          .post('/api/doc/getUpstream')
+                          .send({username: 'Tim', docName: testName})
+                          .end(function(err, res) {
+                            if (res.error) {
+                              console.log('tim pull upstream error ', res.error);
+                              done()
+                            }
+                            console.log('res.text: ', res.text, res. body);
+                            done();
+                          });
+                      });
+                  });
+              });  
             });
         });
     });
   });
 
-  describe('Get All Docs', function() {
+  xdescribe('Get All Docs', function() {
     it('should work', function(done) {
-      agent
+      testSession
         .get('/api/doc/allDocs')
         .end(function(err, res) {
           console.log('this is the res.body: ', res.body);
@@ -236,59 +367,135 @@ describe('Doc Tests', function() {
     });
   });
 
-  describe('Request Merge', function() {
-    it('should work without commit message', function(done) {
-      agent
-        .post('/api/doc/saveDoc')
-        .send({username: 'Tim', docName: testName, docContent: 'Doing an overwrite\nSo that I can \nTry to merge this in', commitMessage: ''})
+  xdescribe('Request Merge', function() {
+    it('should make a merge request', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          console.log('saved ', res.body);
-          var latestCommit = res.body.currentCommit;
-          // expect(res.text).to.equal('Saved');
-          agent
-            .post('/api/doc/requestMerge')
-            .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+          if (res.error) {
+            console.log('sim login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text a \nasdfth time', commitMessage: ''})
             .end(function(err, res) {
-              expect(res.text).to.equal('Pull request sent');
-              done();
+              if (res.error) {
+                console.log('update doc error ', res.error);
+                done()
+              }
+              testSession.get('/api/auth/logout')
+              .end(function(err, res) {
+                if (res.error) {
+                  console.log('sim logout error ', res.error);
+                  done()
+                }
+                testSession.post('/api/auth/login')
+                  .send({ email: 'Tim@gmail.com', password: 'Tim' })
+                  .end(function(err, res) {
+                    if (res.error) {
+                      console.log('tim login error ', res.error);
+                      done()
+                    }
+                    testSession
+                      .post('/api/doc/saveDoc')
+                      .send({username: 'Tim', docName: testName, docContent: 'drones \nThis is it \nAgain time', commitMessage: ''})
+                      .end(function(err, res) {
+                        if (res.error) {
+                          console.log('tim update doc error ', res.error);
+                          done()
+                        }
+                        var latestCommit = res.body.currentCommit;
+
+                        testSession
+                          .post('/api/doc/requestMerge')
+                          .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+                          .end(function(err, res) {
+                            if (res.error) {
+                              console.log('tim request merge error ', res.error);
+                              done()
+                            }
+                            console.log('merge request successfully made');
+                            console.log('res.text: ', res.text, res. body);
+                            done();
+                          });
+                      });
+                  });
+              });  
             });
         });
     });
-    xit('should work', function(done) {
-      agent
-        .post('/api/doc/requestMerge')
-        .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: 'INSERT'})
+
+    xit('OLD VERSION', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          expect(res.text).to.equal('Pull request sent');
-          done();
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Tim', docName: testName, docContent: 'Doing an overwrite\nSo that I can \nTry to merge this in', commitMessage: ''})
+            .end(function(err, res) {
+              console.log('saved ', res.body);
+              var latestCommit = res.body.currentCommit;
+              // expect(res.text).to.equal('Saved');
+              testSession
+                .post('/api/doc/requestMerge')
+                .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+                .end(function(err, res) {
+                  expect(res.text).to.equal('Pull request sent');
+                  done();
+                });
+            });
         });
+      
     });
   });
   xdescribe('Review Pull Request', function() {
     it('should work', function(done) {
-      agent
-        .post('/api/doc/reviewPullRequest')
-        .send({commitID: '31875cbef6fb670c25ae85ea7ca848bb3e65e7f9'})
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          console.log('res.body: ', res.body);
-          // expect(res.text).to.equal('Pull request sent');
-          done();
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/reviewPullRequest')
+            .send({commitID: 'bd60c99fdf6b0ea3d52f3946030b9bccd5913033'})
+            .end(function(err, res) {
+              console.log('res.body: ', res.body);
+              // expect(res.text).to.equal('Pull request sent');
+              done();
+            });
         });
+      
     });
   });
   xdescribe('Action Pull Request', function() {
     it('should accept', function(done) {
-      agent
-        .post('/api/doc/actionPullRequest')
-        .send({commitID: '31875cbef6fb670c25ae85ea7ca848bb3e65e7f9', ownerMessage: 'Thanks', mergeStatus: 'accept'})
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          console.log('res.body: ', res.body);
-          // expect(res.text).to.equal('Pull request sent');
-          done();
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/actionPullRequest')
+            .send({commitID: 'bd60c99fdf6b0ea3d52f3946030b9bccd5913033', ownerMessage: 'Thanks', mergeStatus: 'accept'})
+            .end(function(err, res) {
+              console.log('res.body: ', res.body);
+              // expect(res.text).to.equal('Pull request sent');
+              done();
+            });
         });
+      
     });
     xit('should decline', function(done) {
-      agent
+      testSession
         .post('/api/doc/actionPullRequest')
         .send({commitID: '4a41c49373204ca91a6ec2a7a392374bd876d85a', ownerMessage: 'Nope', mergeStatus: 'decline'})
         .end(function(err, res) {
@@ -299,16 +506,25 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Checkout past version', function() {
+  describe('Checkout past version', function() {
     it('should work', function(done) {
-      agent
-        .post('/api/doc/pastVersion')
-        .send({commitID: 'f912e43ed93ffde7ca4031f1c97e28f2d829948c'})
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          console.log('res.body: ', res.body);
-          // expect(res.text).to.equal('Pull request sent');
-          done();
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/pastVersion')
+            .send({commitID: '532cf12b49bc0d9f8d284612df66ecf382f3341f'})
+            .end(function(err, res) {
+              console.log('res.body: ', res.body);
+              // expect(res.text).to.equal('Pull request sent');
+              done();
+            });
         });
+      
     });
   });
 });
