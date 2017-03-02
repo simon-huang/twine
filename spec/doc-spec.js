@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Third Test';
+var testName = 'Fourth Test';
 var expect = chai.expect;
 
 describe('Profile and Doc Route Tests', function() {
@@ -14,7 +14,7 @@ describe('Profile and Doc Route Tests', function() {
     testSession = session(app);
   });
   // write tests trying to grab a private doc as both the correct logged in user and not
-  describe('Get a doc', function() {
+  xdescribe('Get a doc', function() {
     xit('someone else should not grab my private doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -99,7 +99,7 @@ describe('Profile and Doc Route Tests', function() {
     });
   });
 
-  xdescribe('Get all docs from a user', function() {
+  describe('Get all docs from a user', function() {
     it('should grab a profile', function(done) {
       testSession
         .get('/profile/Sim')
@@ -155,7 +155,7 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  describe('New Doc', function() {
+  xdescribe('New Doc', function() {
     it('should make a public doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -196,7 +196,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  describe('Save Doc', function() {
+  xdescribe('Save Doc', function() {
     it('should work without commit message', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -236,7 +236,7 @@ describe('Doc Tests', function() {
     });
   });
   
-  describe('Copy Doc', function() {
+  xdescribe('Copy Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -259,7 +259,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  describe('Open Doc', function() {
+  xdescribe('Open Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
