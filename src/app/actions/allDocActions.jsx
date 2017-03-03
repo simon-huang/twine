@@ -4,7 +4,7 @@ import * as doc from './docActions.jsx';
 export function openDoc(docRequest) {
   return (dispatch, getState) => {
     var states = getState();
-    axios.post('api/doc/openDoc', docRequest)
+    axios.post('/api/doc/openDoc', docRequest)
     .then(function(data) {
       data = data.data;
       dispatch(doc.loadDocInfo(data));
@@ -24,15 +24,3 @@ export function retrieveAllDocs () {
   }
 }
 
-export function retrieveSpecificDoc (username, docID) {
-  return function(dispatch, getState) {
-    axios.get(`/profile/${username}/${docID}`)
-    .then((response) => {
-      console.log('RESPONSE FROM AXIOS:  ', response.data);
-      dispatch({
-        type: 'RETRIEVE_DOC',
-        payload: response.data
-      })
-    })
-  }
-}
