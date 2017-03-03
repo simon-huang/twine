@@ -37,7 +37,7 @@ require('./auth/passport.js')(passport);
 
 //================== set up routes ==================
 // process input routes from the client
-app.use('/profile', profileRouter);
+app.use('/api/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/doc', docRouter);
 
