@@ -44,7 +44,7 @@ export class Navbar extends React.Component {
         <NavContainer.Collapse>
           <Nav>
             <NavItem onClick={this.updatePath} eventKey={1} name="/explore">Explore</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={2} name={`/createdoc/${this.props.user.username}`}>Create Doc</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={2} name="/createdoc">Create Doc</NavItem>
             <NavItem onClick={this.updatePath} eventKey={3} name={`/profile/${this.props.user.username}`}>Profile</NavItem>
           </Nav>
           <Nav pullRight>
