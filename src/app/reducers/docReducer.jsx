@@ -105,6 +105,16 @@ export default function reducer(state = {
         editsHtml: action.payload.editsHtml
       }
     }
+    
+    case "RETRIEVE_DOC": {
+      return {
+        ...state,
+        docName: action.payload.docName,
+        docDescription: action.payload.docDescription,
+        masterHtml: action.payload.docContent,
+        
+      }
+    }
 
   }
 
