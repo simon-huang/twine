@@ -19,6 +19,21 @@ describe('Profile page', () => {
       {docName: 'TestDoc1', docDescription: 'TestDoc1 description'},
       {docName: 'TestDoc2', docDescription: 'TestDoc2 description'},
       {docName: 'TestDoc3', docDescription: 'TestDoc3 description'},
+    ],
+    ownedDocs: [
+      {docName: 'TestDoc1', docDescription: 'TestDoc1 description'},
+      {docName: 'TestDoc2', docDescription: 'TestDoc2 description'},
+      {docName: 'TestDoc3', docDescription: 'TestDoc3 description'},
+    ],
+    contributingDocs: [
+      {docName: 'TestDoc1', docDescription: 'TestDoc1 description'},
+      {docName: 'TestDoc2', docDescription: 'TestDoc2 description'},
+      {docName: 'TestDoc3', docDescription: 'TestDoc3 description'},
+    ],
+    associatedDocs: [
+      {docName: 'TestDoc1', docDescription: 'TestDoc1 description'},
+      {docName: 'TestDoc2', docDescription: 'TestDoc2 description'},
+      {docName: 'TestDoc3', docDescription: 'TestDoc3 description'},
     ]
   };
 
@@ -31,7 +46,7 @@ describe('Profile page', () => {
   describe('Profile (parent page)', () => {
 
     const wrapper = shallow (
-      <Profile dispatch={store.dispatch} user={dummyUserData} store={store} />
+      <Profile dispatch={store.dispatch} user={dummyUserData} store={store} allDoc={dummyDocData}/>
     );
 
     it('expects ProfileDocuments to exist on the page', () => {
@@ -42,7 +57,7 @@ describe('Profile page', () => {
   describe('Profile documents', () => {
 
     const wrapper = mount (
-      <ProfileDocuments dispatch={store.dispatch} user={dummyUserData} allDoc={dummyDocData} store={store} />
+      <ProfileDocuments dispatch={store.dispatch} user={dummyUserData} docList={dummyDocData.allDocuments} store={store} />
     );
 
     it('expects ProfileDocSummary to exist', () => {
@@ -58,7 +73,7 @@ describe('Profile page', () => {
   describe('Profile doc summary', () => {
 
     const wrapper = mount (
-      <ProfileDocuments dispatch={store.dispatch} user={dummyUserData} allDoc={dummyDocData} store={store} />
+      <ProfileDocuments dispatch={store.dispatch} user={dummyUserData} docList={dummyDocData.allDocuments} store={store} />
     );
 
     var docSummary = wrapper.find('.profile-documents').node.children;

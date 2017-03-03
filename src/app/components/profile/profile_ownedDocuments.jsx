@@ -7,7 +7,7 @@ import * as allDoc from '../../actions/allDocActions.jsx';
 import ProfileDocSummary from './profile_docSummary.jsx';
 
 
-export class ProfileDocuments extends React.Component {
+export class ProfileOwnedDocuments extends React.Component {
   constructor(props) {
     super(props);
     this.openDoc = this.openDoc.bind(this);
@@ -25,14 +25,14 @@ export class ProfileDocuments extends React.Component {
   render() {
     return (
       <div className="profile-documents">
-        <div>{this.props.tab}</div>
+        <div>My Documents</div>
         <hr/>
-        {this.props.docList.map((docs, i) => (
+        {this.props.allDoc.ownedDocs.map((docs, i) => (
           <ProfileDocSummary className="doc_summary" key={i} onClick={this.openDoc} doc={docs} />))}
       </div>
     )
   }
 }
 
-export default connect(state => state)(ProfileDocuments);
+export default connect(state => state)(ProfileOwnedDocuments);
 

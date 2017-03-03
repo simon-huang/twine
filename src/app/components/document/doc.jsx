@@ -23,6 +23,7 @@ import DocSettings from './doc_settings.jsx'
 
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
+import * as doc from './../../actions/docActions.jsx';
 
 export class Doc extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ export class Doc extends React.Component {
     this.tabChange = this.tabChange.bind(this);
     this.redirectEditDoc = this.redirectEditDoc.bind(this);
     this.redirectProfile = this.redirectProfile.bind(this);
+    this.copyDocument = this.copyDocument.bind(this);
   }
 
   tabChange(tab) {
@@ -42,6 +44,11 @@ export class Doc extends React.Component {
 
   redirectProfile() {
     browserHistory.push('/profile');
+  }
+
+  copyDocument() {
+    this.props.dispatch(doc.copyDoc());
+    browserHistory.push('/doc');
   }
 
   render() {
@@ -64,7 +71,7 @@ export class Doc extends React.Component {
                 <ButtonGroup>
                   <Button>Watch</Button>
                   <Button>Star</Button>
-                  <Button>Copy</Button>
+                  <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
                 </ButtonGroup>
               </div>
             </div>

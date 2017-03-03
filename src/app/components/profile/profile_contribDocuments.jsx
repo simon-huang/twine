@@ -25,9 +25,9 @@ export class ProfileDocuments extends React.Component {
   render() {
     return (
       <div className="profile-documents">
-        <div>{this.props.tab}</div>
+        <div>Contributing Documents</div>
         <hr/>
-        {this.props.docList.map((docs, i) => (
+        {this.props.allDoc.contributingDocs.map((docs, i) => (
           <ProfileDocSummary className="doc_summary" key={i} onClick={this.openDoc} doc={docs} />))}
       </div>
     )

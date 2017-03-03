@@ -2,6 +2,7 @@ export default function reducer(state = {
   username: '',
   email: '',
   password: '',
+  currentTab: 'all',
   error: null
 }, action) {
 
@@ -52,6 +53,13 @@ export default function reducer(state = {
         username: action.payload.username,
         password: '',
         email: ''
+      }
+    }
+
+    case "PROFILE_TAB_CHANGE": {
+      return {
+        ...state,
+        currentTab: action.payload
       }
     }
 

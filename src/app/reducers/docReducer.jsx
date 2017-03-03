@@ -4,6 +4,7 @@ export default function reducer(state = {
   docDescription: '',
   docType: '',
   parentID: null,
+  originOwner: null,
   filePath: '',
   editsObject: null,
   editsHtml: '',
@@ -50,6 +51,12 @@ export default function reducer(state = {
       return {
         ...state,
         filePath: action.payload
+      }
+    }
+    case "EDIT_ORIGINOWNER": {
+      return {
+        ...state,
+        originOwner: action.payload
       }
     }
     case "EDIT_DOC_CONTENT": {
