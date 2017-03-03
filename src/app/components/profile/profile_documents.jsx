@@ -9,7 +9,6 @@ import ProfileDocSummary from './profile_docSummary.jsx';
 
 export class ProfileDocuments extends React.Component {
   constructor(props) {
-    //console.log(props);
     super(props);
     this.openDoc = this.openDoc.bind(this);
   }
@@ -20,7 +19,12 @@ export class ProfileDocuments extends React.Component {
       docName: name,
     }
     this.props.dispatch(allDoc.openDoc(docRequest));
-    browserHistory.push('/doc');
+    console.log('***********************')
+    console.log(this.props.user.username)
+    console.log(this.props.doc.docId)
+    console.log('***********************')
+    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
+    // `/createdoc/${this.props.user.username}`
   }
 
   render() {

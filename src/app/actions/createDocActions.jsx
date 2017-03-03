@@ -21,6 +21,7 @@ export function createDocument() {
     axios.post('/api/doc/createDoc', createRequestInfo)
     .then(function(data){
       data = data.data;
+      console.log('**********createDocActions:  *******', data);
       dispatch(doc.loadDocInfo(data));
     });
   }

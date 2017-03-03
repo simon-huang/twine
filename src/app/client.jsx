@@ -30,11 +30,13 @@ export class Publishus extends React.Component {
             <Route path="signup" component={SignUp}/>
             <Route path="logout" component={Home}/>
             <Route path="explore" component={Explore}/>
-            <Route path="doc" component={Doc}/>
+            <Route path="profile/:username/:docId" component={Doc}/>
+            {/*<Route path="doc" component={Doc}/>*/}
             <Route component={EnsureLoggedInContainer}>
-              <Route path="createdoc" component={CreateDoc}/>
+              {/*<Route path="createdoc" component={CreateDoc}/>*/}
+              <Route path="createdoc/a" component={CreateDoc}/>
               <Route path="editdoc" component={EditDoc}/>
-              // <Route path="profile" component={Profile}/>
+              {/*<Route path="profile" component={Profile}/>*/}
               <Route path="profile/:username" component={Profile}/>
             </Route>
           </Route>

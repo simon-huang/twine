@@ -8,13 +8,17 @@ import Button from 'react-bootstrap/lib/Button';
 // Components
 import DocContents from './doc_contents.jsx'
 
-// componentWillMount() {
-//   //this.props.dispath(funciton you've brought in)
-// }
+//actions
+import { retrieveSpecificDoc } from '../../actions/allDocActions.jsx'
 
 export class Doc_details extends React.Component {
   constructor(props) {
     super(props);
+  }
+  componentDidMount() {
+    const username = this.props.user.username;
+    const docID = this.props.doc.docId || 5;
+    this.props.dispatch(retrieveSpecificDoc(username, docID));
   }
 
   render() {
@@ -26,6 +30,8 @@ export class Doc_details extends React.Component {
               <div className="col-sm-12">
                 <div className="doc-desc">
                   {console.log('this.props.username', this.props.user.username)}                
+                  {console.log('this.props.docID', this.props.doc.docId)}  
+                  {console.log('this.props.doc.docDescription', this.props.doc.docDescription)}              
                   {this.props.doc.docDescription}
                 </div>
               </div>  

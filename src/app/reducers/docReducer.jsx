@@ -1,4 +1,5 @@
 export default function reducer(state = {
+  docId: '',
   docOwner: '',
   docName: '',
   docDescription: '',
@@ -16,6 +17,13 @@ export default function reducer(state = {
 }, action) {
 
   switch(action.type) {
+    
+    case "EDIT_DOCID": {
+      return {
+        ...state,
+        docId: action.payload
+      }
+    }
 
     case "EDIT_DOCOWNER": {
       return {
