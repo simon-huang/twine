@@ -1,7 +1,7 @@
 export default function reducer(state = {
   login: false,
   loginModal: false,
-  redirectUrl: '/profile',
+  redirectUrl: '',
   fetching: false,
   fetched: false,
   error: null
@@ -12,7 +12,8 @@ export default function reducer(state = {
     case "AUTO_LOGIN": {
       return {
         ...state,
-        login: true
+        login: true,
+        redirectUrl: '/profile/' + action.payload,
       }
     }
 
@@ -40,7 +41,8 @@ export default function reducer(state = {
     case "USER_CREATED": {
       return {
         ...state, 
-        login: true
+        login: true,
+        redirectUrl: '/profile/' + action.payload.username
       }
     }
 
