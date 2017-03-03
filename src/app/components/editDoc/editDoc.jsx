@@ -15,6 +15,7 @@ export class EditDoc extends React.Component {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
+    this.redirectToDoc = this.redirectToDoc.bind(this);
   }
 
   componentWillMount() {
