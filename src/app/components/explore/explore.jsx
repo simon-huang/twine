@@ -28,7 +28,7 @@ export class Explore extends React.Component {
 
   render() {
     return (
-      <div className="explore-documents">
+      <div className="mt20 container explore-documents">
         <h1>Explore</h1>
         <hr/>
         {this.props.allDoc.allDocuments.map((docs, i) => (

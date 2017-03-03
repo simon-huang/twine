@@ -22,7 +22,7 @@ export class Profile extends React.Component {
 
   render() {
     return (
-      <div className="profile">
+      <div className="container mt20 profile">
         <h1>Profile</h1>
         <div>Username: {this.props.user.username}</div>
           <div className="row doc-tabs">
