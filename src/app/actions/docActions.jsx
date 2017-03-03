@@ -8,6 +8,21 @@ export function handleChange(name, value) {
   }
 }
 
+
+export function retrieveSpecificDoc (username, docID) {
+  return function(dispatch, getState) {
+    axios.get(`/api/profile/${username}/${docID}`)
+    .then((response) => {
+      dispatch({
+        type: 'RETRIEVE_DOC',
+        payload: response.data
+      })
+    })
+  }
+}
+
+
+
 export function loadOriginalContent() {
   return (dispatch, getState) => {
     var states = getState();
