@@ -43,7 +43,7 @@ export class EditDoc_details extends React.Component {
     this.props.dispatch(doc.saveDoc());
   }
 
-  render() {
+  toggleMerge() {
     if (this.props.merge.showMerge) {
       return (
         <div>
@@ -54,14 +54,28 @@ export class EditDoc_details extends React.Component {
           <button className="btn btn-success confirm_merge_request" onClick={()=>(this.mergeRequest(!this.props.merge.showMerge))}>Confirm</button>
         </div>
       );
+    } else {
+      return (
+        <div>
+          <button className="btn btn-success save_request" onClick={this.saveDoc}>Save</button>
+          <button className="btn btn-success merge_request" onClick={()=>(this.showMergeMenu(!this.props.merge.showMerge))}>Merge</button>      
+        </div>
+      );
     }
+  }
+
+  render() {
     return (
-      <div>
-        <button className="btn btn-success save_request" onClick={this.saveDoc}>Save</button>
-        <button className="btn btn-success merge_request" onClick={()=>(this.showMergeMenu(!this.props.merge.showMerge))}>Merge</button>
+      <div className="editDoc-details">
+        {this.toggleMerge()}
       </div>
     );
   }
 };
 
 export default connect(state => state)(EditDoc_details);
+
+
+
+
+

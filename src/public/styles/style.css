@@ -1,5 +1,5 @@
 /*==================================*/
-/*============ RESET =============*/
+/*========== STYLE RESET ===========*/
 /*==================================*/
 
 html, body, div, span, applet, object, iframe,
@@ -45,7 +45,7 @@ table {
 }
 
 /*==================================*/
-/*============ Fonts =============*/
+/*============= Fonts ==============*/
 /*==================================*/
 
 html, body, div, span, applet, object, iframe, p, 
@@ -86,6 +86,17 @@ h6 { font-size: 14px; line-height: 20px; }
 /*==================================*/
 /*============ Styling =============*/
 /*==================================*/
+
+.radioActive,
+.radioActive:hover,
+.radioActive:focus,
+.radioActive:active {
+  background-color: #5F00FF !important;
+  color: white !important;
+  border-color: #5F00FF !important;
+  cursor: default !important;
+  outline: none !important;
+}
 
 .home-page {
   position: absolute;
@@ -312,6 +323,57 @@ h6 { font-size: 14px; line-height: 20px; }
   border: 1px solid #BABABA;
   padding: 30px 40px;
   height: 1056px;
+}
+
+.doc-editor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #F9F9F9;
+  padding-top: 70px;
+  width: 100%;
+  z-index: -1;
+}
+
+.editDoc-details {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .rdw-editor-main {
+      width: 750px;
+  }
+  .rdw-editor-toolbar {
+      width: 768px;
+  }
+}
+
+@media (min-width: 992px) {
+  .rdw-editor-main {
+      width: 970px;
+  }
+  .rdw-editor-toolbar {
+      width: 992px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .rdw-editor-main {
+      width: 1170px;
+  }
+  .rdw-editor-toolbar {
+      width: 1200px;
+  }
+}
+
+.rdw-editor-toolbar,
+.rdw-editor-main {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .navbar {

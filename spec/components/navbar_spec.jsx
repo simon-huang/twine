@@ -67,7 +67,7 @@ describe('Navbar', () => {
       navbar_loggedout.find('NavItem').forEach(navItem => {
         loggedOutNav.push(navItem.node.props.name);
       })
-      expect(loggedOutNav).to.eql(['login', 'signup']);
+      expect(loggedOutNav).to.eql(['explore', 'login', 'signup']);
     });
 
     it('should display logged in nav items', () => {
@@ -81,7 +81,7 @@ describe('Navbar', () => {
       loggedInNav.push(navbar_loggedin.find('[title]').node.props.title.props.children[2]);
       loggedInNav.push(navbar_loggedin.find('MenuItem').node.props.name);
 
-      expect(loggedInNav).to.eql(['createdoc', 'profile', 'user-settings', 'iamgroot', 'logout']);
+      expect(loggedInNav).to.eql(['explore', 'createdoc', 'profile', 'user-settings', 'iamgroot', 'logout']);
     });
   });
 

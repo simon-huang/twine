@@ -10,12 +10,15 @@ import { browserHistory } from 'react-router';
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
 
-
 export class EditDoc extends React.Component {
   constructor(props) {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.dispatch(doc.loadOriginalContent());
   }
 
   createHTML(contents) {
@@ -27,9 +30,6 @@ export class EditDoc extends React.Component {
     this.props.dispatch(doc.editingDoc(editorState));
   }
 
-  componentWillMount() {
-    this.props.dispatch(doc.loadOriginalContent());
-  }
 
   redirectToDoc() {
     browserHistory.push('/doc');
@@ -37,9 +37,8 @@ export class EditDoc extends React.Component {
 
   render() {
     return (
-      <div>
-        <h2>Edit your Document</h2>
-        <div className="list-title" onClick={this.redirectToDoc}>{this.props.doc.docName}</div>
+      <div className="doc-editor">
+        <h2 className="list-title text-center mt20 mb20" onClick={this.redirectToDoc}>{this.props.doc.docName}</h2>
         <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
         <EditDoc_details />
       </div>

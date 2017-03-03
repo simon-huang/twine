@@ -115,24 +115,40 @@ describe('Document page', () => {
       <Doc_merge dispatch={store.dispatch} docSummary={docSummaryDummyData} store={store} />
     );
 
-    it('expects MergeUnified component to exist on the page', () => {
-      expect(wrapper.find('MergUnified')).to.exist;
+    xit('onmount defaults to split view', () => {
+      
     });
 
-    it('expects MergeSplit component to exist on the page', () => {
-      expect(wrapper.find('MergeSplit')).to.exist;
-    });
-
-    xdescribe('Doc Merge Split', () => {
-
-      it('', () => {
-      });
-    });
-
-    xdescribe('Doc Merge Unified', () => {
+    xit('action buttons exist', () => {
     
-      it('', () => {
+    });
+
+    xit('review changes options exist', () => {
+    
+    });
+
+    xit('review changes options exist', () => {
+    
+    });
+
+    describe('Merge Review', () => {
+
+      xit('onmount edit mode is off', () => {
+
       });
+
+      xit('split vs. unified view toggle switches view', () => {
+
+      });
+
+      xit('edit mode opens WYSIWYG', () => {
+
+      });
+
+      xit('edit mode opens WYSIWYG', () => {
+
+      });
+
     });
 
   });

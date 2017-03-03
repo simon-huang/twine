@@ -9,10 +9,10 @@ import DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 // Components
-import MergeSplit from './doc_merge_splitView.jsx';
-import MergeUnified from './doc_merge_unifiedView.jsx';
+import MergeReview from './doc_merge_review.jsx';
 
 // Store properties
+import * as doc from '../../actions/docActions.jsx';
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 
 export class Doc_merge extends React.Component {
@@ -22,6 +22,11 @@ export class Doc_merge extends React.Component {
     this.cancelComment = this.cancelComment.bind(this);
     this.submitMergeComment = this.submitMergeComment.bind(this);
     this.switchSplitOrUnified = this.switchSplitOrUnified.bind(this);
+    this.editMerge = this.editMerge.bind(this);
+  }
+
+  componentWillMount() {    
+    this.props.dispatch(docSummary.switchSplitOrUnified('split'));
   }
 
   reviewChanges(e) {
@@ -37,8 +42,14 @@ export class Doc_merge extends React.Component {
     console.log('merge comment!', e.target.name, e.target);
   }
 
-  switchSplitOrUnified() {
-    this.props.dispatch(docSummary.switchSplitOrUnified())
+  switchSplitOrUnified(e) {
+    e.preventDefault();
+    this.props.dispatch(docSummary.switchSplitOrUnified(e.target.value));
+  }
+
+  editMerge() {
+    this.props.dispatch(doc.loadOriginalContent());
+    this.props.dispatch(docSummary.editMerge())
   }
 
   commentBox() {
@@ -90,8 +101,11 @@ export class Doc_merge extends React.Component {
                     </div>
                     <div className="col-sm-9 text-right">
                       <ButtonGroup className="mr10">
-                        <Button onClick={this.switchSplitOrUnified} bsSize="small">Split</Button>
-                        <Button onClick={this.switchSplitOrUnified} bsSize="small">Unified</Button>
+                        <Button className={(this.props.docSummary.mergeSplitView === 'split') ? 'radioActive' : ''} onClick={this.switchSplitOrUnified} value="split" bsSize="small">Split</Button>
+                        <Button className={(this.props.docSummary.mergeSplitView === 'unified') ? 'radioActive' : ''} onClick={this.switchSplitOrUnified} value="unified" bsSize="small">Unified</Button>
+                      </ButtonGroup>
+                      <ButtonGroup className="mr10">
+                        <Button onClick={this.editMerge} bsSize="small"><i className="fa fa-pencil"></i></Button>
                       </ButtonGroup>
                       <DropdownButton onSelect={this.reviewChanges} bsSize="small" title="Review changes" id="review-merge">
                         <MenuItem eventKey="acceptQuick">Quick Accept</MenuItem>
@@ -107,7 +121,7 @@ export class Doc_merge extends React.Component {
             <div className="row doc-review-container mt10">
               <div className="col-sm-12">
                 <div className="doc-review">
-                  {this.props.docSummary.mergeSplitView ? <MergeSplit /> : <MergeUnified />}
+                  <MergeReview />
                 </div>
               </div>
             </div>

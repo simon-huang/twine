@@ -1,6 +1,7 @@
 export default function reducer(state = {
   currentTab: 'document',
-  mergeSplitView: true,
+  mergeSplitView: 'split',
+  editMerge: false,
   reviewChanges: {
     acceptQuick: false,
     acceptComments: false,
@@ -12,7 +13,25 @@ export default function reducer(state = {
     case "SWITCH_SPLIT_UNIFIED": {
       return {
         ...state,
-        mergeSplitView: !state.mergeSplitView
+        mergeSplitView: action.payload
+      }
+    }
+  }
+
+  switch(action.type) {
+    case "EDIT_MERGE": {
+      return {
+        ...state,
+        editMerge: !state.editMerge
+      }
+    }
+  }
+
+  switch(action.type) {
+    case "TURN_OFF_EDITS": {
+      return {
+        ...state,
+        editMerge: false
       }
     }
   }

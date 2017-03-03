@@ -1,6 +1,19 @@
-export function switchSplitOrUnified () {
+export function switchSplitOrUnified (view) {
   return {
-    type: "SWITCH_SPLIT_UNIFIED"
+    type: "SWITCH_SPLIT_UNIFIED",
+    payload: view
+  }
+}
+
+export function editMerge () {
+  return {
+    type: "EDIT_MERGE"
+  }
+}
+
+export function turnOffEdits () {
+  return {
+    type: "TURN_OFF_EDITS"
   }
 }
 
