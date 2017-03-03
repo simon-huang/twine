@@ -5,10 +5,10 @@
 }
 
 .rdw-option-wrapper {
-  border: 1px solid #F1F1F1;
+  border: 1px solid #C6C6C6;
   padding: 5px;
   min-width: 25px;
-  height: 20px;
+  height: 30px;
   border-radius: 2px;
   margin: 0 4px;
   display: -webkit-box;
@@ -24,7 +24,7 @@
   background: white;
   text-transform: capitalize;
 }
-.rdw-option-wrapper:hover {
+/*.rdw-option-wrapper:hover {
   box-shadow: 1px 1px 0px #BFBDBD;
 }
 .rdw-option-wrapper:active {
@@ -32,7 +32,7 @@
 }
 .rdw-option-active {
   box-shadow: 1px 1px 0px #BFBDBD inset;
-}
+}*/
 .rdw-option-disabled {
   opacity: 0.3;
   cursor: default;
@@ -41,13 +41,13 @@
   height: 30px;
   background: white;
   cursor: pointer;
-  border: 1px solid #F1F1F1;
+  border: 1px solid #C6C6C6;
   border-radius: 2px;
   margin: 0 3px;
   text-transform: capitalize;
   background: white;
 }
-.rdw-dropdown-wrapper:focus {
+/*.rdw-dropdown-wrapper:focus {
   outline: none;
 }
 .rdw-dropdown-wrapper:hover {
@@ -56,7 +56,7 @@
 }
 .rdw-dropdown-wrapper:active {
   box-shadow: 1px 1px 0px #BFBDBD inset;
-}
+}*/
 .rdw-dropdown-carettoopen {
   height: 0px;
   width: 0px;
@@ -126,7 +126,6 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-bottom: 6px;
 }
 .rdw-inline-dropdown {
   width: 50px;
@@ -147,7 +146,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
 }
 .rdw-block-dropdown {
   width: 110px;
@@ -159,7 +157,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
 }
 .rdw-fontsize-dropdown {
   min-width: 40px;
@@ -179,7 +176,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
 }
 .rdw-fontfamily-dropdown {
   width: 115px;
@@ -200,7 +196,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
 }
 .rdw-list-dropdown {
   width: 50px;
@@ -222,7 +217,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
 }
 .rdw-text-align-dropdown {
   width: 50px;
@@ -268,7 +262,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
   position: relative;
 }
 .rdw-colorpicker-modal {
@@ -347,7 +340,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
   position: relative;
 }
 .rdw-link-dropdown {
@@ -443,7 +435,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
   position: relative;
 }
 .rdw-embedded-modal {
@@ -576,7 +567,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
   position: relative;
 }
 .rdw-emoji-modal {
@@ -665,7 +655,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
   position: relative;
 }
 .rdw-image-modal {
@@ -825,7 +814,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
   position: relative;
 }
 .rdw-history-wrapper {
@@ -835,7 +823,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 6px;
 }
 .rdw-history-dropdownoption {
   height: 40px;
@@ -946,14 +933,12 @@
 .rdw-editor-main {
   background-color: white;
   border: 1px solid #BABABA;
-  padding: 30px 40px;
+  padding: 50px;
   height: 1056px;
   overflow: auto;
   box-sizing: content-box;
 }
 .rdw-editor-toolbar {
-  padding: 6px 5px 0;
-  border-radius: 2px;
   border: 1px solid #F1F1F1;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -961,11 +946,10 @@
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  background: white;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   font-size: 15px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
