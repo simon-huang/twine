@@ -3,7 +3,6 @@ export default function reducer(state = {
   ownedDocs: [],
   contributingDocs: [],
   associatedDocs: [],
-  oneDocument: {}, 
   error: null
 }, action) {
 
@@ -37,12 +36,6 @@ export default function reducer(state = {
       }
     }
 
-    case "RETRIEVE_DOC": {
-      return {
-        ...state,
-        oneDocument: action.payload
-      }
-    }
   }
 
   return state;
