@@ -49,19 +49,6 @@ export class Doc extends React.Component {
   copyDocument() {
     this.props.dispatch(doc.copyDoc());
     browserHistory.push('/doc');
-
-  /*
-    copyDoc 
-      receiving: {
-        username: '',
-        docOwner: '',
-        docName: ''
-      }
-      sending:{
-        allDocuments = [{doc stuff minus docContent and docCommits}]
-      }
-  */
-
   }
 
   render() {

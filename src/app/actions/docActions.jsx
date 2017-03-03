@@ -89,6 +89,6 @@ export function loadDocInfo(data) {
     dispatch(handleChange('parentID', data.parentID));
     dispatch(handleChange('masterHtml', data.docContent));
     dispatch(handleChange('docCommits', data.docCommits));
-    // dispatch(handleChange('originOwner', data.originOwner));
+    dispatch(handleChange('originOwner', data.originOwner));
   }
 }
