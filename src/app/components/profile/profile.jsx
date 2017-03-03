@@ -20,7 +20,6 @@ export class Profile extends React.Component {
     this.props.dispatch(user.tabChange(tab));
   }
 
-// NEED TO UPDATE ASSOCIATED DOCS FOR FIRST TAB
   render() {
     return (
       <div className="profile">
