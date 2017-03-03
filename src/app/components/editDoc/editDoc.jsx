@@ -32,7 +32,7 @@ export class EditDoc extends React.Component {
 
 
   redirectToDoc() {
-    browserHistory.push('/doc');
+    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
   }
 
   render() {
