@@ -128,7 +128,8 @@ function allDocsForUser(req, res, next) {
           currentCommit: ''
         }
       });
-      docsObject.both = docs;
+      myDocsObject.both = myDocs;
+      
       docsObject.owned = docs.filter(doc => {
         return doc.parentID === null;
       });
@@ -241,7 +242,7 @@ function retrieveDocsAndPullRequests(username, callback) {
     myDocs = docs.filter(doc => {
       return doc.docOwner === user.username;
     });
-    myDocsObject.both = docs;
+    myDocsObject.both = myDocs;
 
     myDocsObject.owned = myDocs.filter(doc => {
       return doc.parentID === null;
@@ -269,6 +270,9 @@ function retrieveDocsAndPullRequests(username, callback) {
     //   allMyDocuments: myDocsObject,
     //   pullRequestsToMe: pullRequests
     // })
+    console.log('these are the both docs', myDocsObject.both);
+    console.log('these are the owned docs', myDocsObject.owned);
+    console.log('these are the contributing docs', myDocsObject.contributing);
     callback(docs, myDocsObject, pullRequests);
   })
 }

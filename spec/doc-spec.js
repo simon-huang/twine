@@ -24,7 +24,7 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim/7')
+              .get('/api/profile/Sim/7')
               .end(function(err, res) {
                 expect(res.text).to.equal('You don\'t have permission to view this doc');
                 console.log('response ', res.body)
@@ -43,7 +43,7 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim/7')
+              .get('/api/profile/Sim/7')
               .end(function(err, res) {
                 expect(res.body.docOwner).to.equal('Sim');
                 console.log('response ', res.body)
@@ -61,7 +61,7 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim/1')
+              .get('/api/profile/Sim/1')
               .end(function(err, res) {
                 expect(res.body.docOwner).to.equal('Sim');
                 console.log('response ', res.body)
@@ -79,7 +79,7 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim/1')
+              .get('/api/profile/Sim/1')
               .end(function(err, res) {
                 expect(res.body.docOwner).to.equal('Sim');
                 console.log('response ', res.body)
@@ -90,7 +90,7 @@ describe('Profile and Doc Route Tests', function() {
     });
     it('Anyone can grab my public doc', function(done) {
       testSession
-        .get('/profile/Sim/1')
+        .get('/api/profile/Sim/1')
         .end(function(err, res) {
           expect(res.body.docOwner).to.equal('Sim');
           console.log('response ', res.body)
@@ -102,7 +102,7 @@ describe('Profile and Doc Route Tests', function() {
   describe('Get all docs from a user', function() {
     it('should grab a profile', function(done) {
       testSession
-        .get('/profile/Sim')
+        .get('/api/profile/Sim')
         .end(function(err, res) {
           console.log('is there an error ?', err);
           console.log('response ', res.body)
@@ -118,7 +118,7 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim')
+              .get('/api/profile/Sim')
               .end(function(err, res) {
                 console.log('response ', res.body)
                 done();
@@ -135,7 +135,7 @@ describe('Profile and Doc Route Tests', function() {
           } else {
             console.log('no error');
             testSession
-              .get('/profile/Sim')
+              .get('/api/profile/Sim')
               .end(function(err, res) {
                 console.log('response ', res.body)
                 done();
