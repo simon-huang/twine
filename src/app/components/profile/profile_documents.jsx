@@ -19,7 +19,8 @@ export class ProfileDocuments extends React.Component {
       docName: name,
     }
     this.props.dispatch(allDoc.openDoc(docRequest));
-    browserHistory.push('/doc');
+    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
+    // `/createdoc/${this.props.user.username}`
   }
 
   render() {

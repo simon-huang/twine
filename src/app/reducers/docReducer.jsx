@@ -1,4 +1,5 @@
 export default function reducer(state = {
+  docId: '',
   docOwner: '',
   docName: '',
   docDescription: '',
@@ -16,6 +17,13 @@ export default function reducer(state = {
 }, action) {
 
   switch(action.type) {
+    
+    case "EDIT_DOCID": {
+      return {
+        ...state,
+        docId: action.payload
+      }
+    }
 
     case "EDIT_DOCOWNER": {
       return {
@@ -95,6 +103,16 @@ export default function reducer(state = {
         ...state,
         editsObject: action.payload.editorState,
         editsHtml: action.payload.editsHtml
+      }
+    }
+    
+    case "RETRIEVE_DOC": {
+      return {
+        ...state,
+        docName: action.payload.docName,
+        docDescription: action.payload.docDescription,
+        masterHtml: action.payload.docContent,
+        
       }
     }
 

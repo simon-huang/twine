@@ -8,6 +8,21 @@ export function handleChange(name, value) {
   }
 }
 
+
+export function retrieveSpecificDoc (username, docID) {
+  return function(dispatch, getState) {
+    axios.get(`/api/profile/${username}/${docID}`)
+    .then((response) => {
+      dispatch({
+        type: 'RETRIEVE_DOC',
+        payload: response.data
+      })
+    })
+  }
+}
+
+
+
 export function loadOriginalContent() {
   return (dispatch, getState) => {
     var states = getState();
@@ -84,6 +99,7 @@ export function copyDoc() {
 
 export function loadDocInfo(data) {
   return (dispatch, getState) => {
+    dispatch(handleChange('docID', data.docID));
     dispatch(handleChange('docOwner', data.docOwner));
     dispatch(handleChange('docName', data.docName));
     dispatch(handleChange('docDescription', data.docDescription));
@@ -93,5 +109,7 @@ export function loadDocInfo(data) {
     dispatch(handleChange('masterHtml', data.docContent));
     dispatch(handleChange('docCommits', data.docCommits));
     dispatch(handleChange('originOwner', data.originOwner));
+    dispatch(handleChange('docContents', data.docContent));
+    dispatch(handleChange('currentCommit', data.commitID));
   }
 }

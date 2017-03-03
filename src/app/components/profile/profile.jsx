@@ -40,6 +40,7 @@ export class Profile extends React.Component {
               </Tabs>
             </div>
           </div>
+
       </div>
     )
   }

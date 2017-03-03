@@ -33,6 +33,10 @@ export class Doc extends React.Component {
     this.redirectProfile = this.redirectProfile.bind(this);
     this.copyDocument = this.copyDocument.bind(this);
   }
+  
+  componentWillMount() {
+    // dispatch for the loading of the document
+  }
 
   tabChange(tab) {
     this.props.dispatch(docSummary.tabChange(tab));
@@ -43,7 +47,7 @@ export class Doc extends React.Component {
   }
 
   redirectProfile() {
-    browserHistory.push('/profile');
+    browserHistory.push('/profile' + '/' + this.props.username);
   }
 
   copyDocument() {

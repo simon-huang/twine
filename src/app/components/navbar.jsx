@@ -43,9 +43,9 @@ export class Navbar extends React.Component {
       return (
         <NavContainer.Collapse>
           <Nav>
-            <NavItem onClick={this.updatePath} eventKey={1} name="explore">Explore</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={2} name="createdoc">Create Doc</NavItem>
-            <NavItem onClick={this.updatePath} eventKey={3} name="profile">Profile</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={1} name="/explore">Explore</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={2} name={`/createdoc/${this.props.user.username}`}>Create Doc</NavItem>
+            <NavItem onClick={this.updatePath} eventKey={3} name={`/profile/${this.props.user.username}`}>Profile</NavItem>
           </Nav>
           <Nav pullRight>
             <NavDropdown eventKey={4} title={
@@ -53,7 +53,7 @@ export class Navbar extends React.Component {
                 <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.username}
               </span>
             } id="user-settings">
-              <MenuItem eventKey={4.1} name="logout" onClick={this.logout}>Logout</MenuItem>
+              <MenuItem eventKey={4.1} name="/logout" onClick={this.logout}>Logout</MenuItem>
             </NavDropdown>
           </Nav>
         </NavContainer.Collapse>
@@ -65,8 +65,8 @@ export class Navbar extends React.Component {
             <NavItem onClick={this.updatePath} eventKey={1} name="explore">Explore</NavItem>
           </Nav>
           <Nav pullRight>
-            <NavItem className="login" onClick={this.toggleLoginModal} eventKey={5} name="login">Login</NavItem>
-            <NavItem className="signup" onClick={this.updatePath} eventKey={6} name="signup">Signup</NavItem>
+            <NavItem className="login" onClick={this.toggleLoginModal} eventKey={5} name="/login">Login</NavItem>
+            <NavItem className="signup" onClick={this.updatePath} eventKey={6} name="/signup">Signup</NavItem>
           </Nav>
         </NavContainer.Collapse>
       );

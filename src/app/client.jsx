@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from "react-redux";
-import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import { Provider, connect } from "react-redux";
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 import App from './components/app.jsx';
 import store from './store.jsx';
@@ -30,11 +30,11 @@ export class Publishus extends React.Component {
             <Route path="signup" component={SignUp}/>
             <Route path="logout" component={Home}/>
             <Route path="explore" component={Explore}/>
-            <Route path="doc" component={Doc}/>
+            <Route path="profile/:username/:docId" component={Doc}/>
             <Route component={EnsureLoggedInContainer}>
               <Route path="createdoc" component={CreateDoc}/>
               <Route path="editdoc" component={EditDoc}/>
-              <Route path="profile" component={Profile}/>
+              <Route path="profile/:username" component={Profile}/>
             </Route>
           </Route>
         </Router>
@@ -44,6 +44,3 @@ export class Publishus extends React.Component {
 }
 
 ReactDOM.render(<Publishus />, document.getElementById('app'));
-
-
-
