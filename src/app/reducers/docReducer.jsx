@@ -1,6 +1,6 @@
 export default function reducer(state = {
   docOwner: '',
-  docName: 'Test Doc Name',
+  docName: '',
   docDescription: '',
   docType: '',
   parentID: null,
@@ -8,7 +8,7 @@ export default function reducer(state = {
   filePath: '',
   editsObject: null,
   editsHtml: '',
-  masterHtml: '<h1>This is a title</h1>',
+  masterHtml: '',
   previewContent: null,
   docCommits: [],
   commitMessage: '',

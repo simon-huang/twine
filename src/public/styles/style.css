@@ -87,6 +87,17 @@ h6 { font-size: 14px; line-height: 20px; }
 /*============ Styling =============*/
 /*==================================*/
 
+.radioActive,
+.radioActive:hover,
+.radioActive:focus,
+.radioActive:active {
+  background-color: #5F00FF !important;
+  color: white !important;
+  border-color: #5F00FF !important;
+  cursor: default !important;
+  outline: none !important;
+}
+
 .home-page {
   position: absolute;
   z-index: -1;

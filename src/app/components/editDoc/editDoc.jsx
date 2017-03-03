@@ -10,12 +10,15 @@ import { browserHistory } from 'react-router';
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
 
-
 export class EditDoc extends React.Component {
   constructor(props) {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.dispatch(doc.loadOriginalContent());
   }
 
   createHTML(contents) {
@@ -27,9 +30,6 @@ export class EditDoc extends React.Component {
     this.props.dispatch(doc.editingDoc(editorState));
   }
 
-  componentWillMount() {
-    this.props.dispatch(doc.loadOriginalContent());
-  }
 
   redirectToDoc() {
     browserHistory.push('/doc');
