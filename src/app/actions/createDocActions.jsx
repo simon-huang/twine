@@ -1,6 +1,5 @@
 import axios from 'axios';
 import * as doc from './docActions.jsx';
-import { browserHistory } from 'react-router';
 
 export function handleCreateChange(name, value) {
   return {
@@ -10,7 +9,7 @@ export function handleCreateChange(name, value) {
 }
 
 // API request to server to create a document
-export function createDocument(path) {
+export function createDocument() {
   return (dispatch, getState) => {
     var states = getState();
     var createRequestInfo = {
@@ -22,8 +21,10 @@ export function createDocument(path) {
     axios.post('/api/doc/createDoc', createRequestInfo)
     .then(function(data){
       data = data.data;
-      dispatch(doc.loadDocInfo(data, path));
-      // browserHistory.push(`/profile/${path}`);
+      dispatch(doc.loadDocInfo(data));
+    })
+    .catch(function(err) {
+      console.log(err);
     });
   }
 }
