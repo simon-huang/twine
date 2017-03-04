@@ -14,6 +14,7 @@ export default function reducer(state = {
   docCommits: [],
   currentCommit: '',
   commitMessage: '',
+  pullRequests: [],
   error: null
 }, action) {
 
@@ -86,6 +87,15 @@ export default function reducer(state = {
         docCommits: action.payload
       }
     }
+
+    case "EDIT_PULLREQUESTS": {
+      console.log('grabbing PRs');
+      return {
+        ...state,
+        pullRequests: action.payload
+      }
+    }
+
     case "EDIT_PREVIEWCONTENT": {
       return {
         ...state,
@@ -121,6 +131,7 @@ export default function reducer(state = {
         masterHtml: action.payload.docContent,
         docCommits: action.payload.docCommits,
         currentCommit: action.payload.currentCommit,
+        pullRequests: action.payload.pullRequests,
       }
     }
 

@@ -114,5 +114,6 @@ export function loadDocInfo(data) {
     dispatch(handleChange('originOwner', data.originOwner));
     dispatch(handleChange('docContents', data.docContent));
     dispatch(handleChange('currentCommit', data.commitID));
+    dispatch(handleChange('pullRequests', data.pullRequests));
   }
 }
