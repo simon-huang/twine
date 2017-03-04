@@ -41,7 +41,7 @@ export class Doc_details extends React.Component {
               <div className="col-sm-4 text-right">
                 <ButtonGroup>
                   <Button>Merge</Button>
-                  <Button>Copy</Button>
+                  <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
                 </ButtonGroup>
               </div>
             </div>*/}

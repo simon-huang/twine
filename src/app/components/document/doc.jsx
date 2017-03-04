@@ -21,6 +21,7 @@ import DocHistory from './doc_history.jsx'
 import DocMerge from './doc_merge.jsx'
 import DocSettings from './doc_settings.jsx'
 import ProgressBar from '../modals/progressBar.jsx';
+import ForkedFrom from './forkedFrom.jsx'
 
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
@@ -94,6 +95,7 @@ export class Doc extends React.Component {
                     </BreadcrumbItem>
                     {this.props.doc.docDescription ? ' (' + this.props.doc.docDescription + ')' : ''}
                   </Breadcrumb>
+                  <ForkedFrom />
                 </div>
                 <div className="col-sm-4 text-right">
                   <ButtonGroup>
