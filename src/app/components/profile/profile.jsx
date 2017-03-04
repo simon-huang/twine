@@ -11,9 +11,15 @@ import BreadcrumbItem from 'react-bootstrap/lib/BreadcrumbItem';
 
 import ProfileDocuments from './profile_documents.jsx';
 
+import * as allDoc from '../../actions/allDocActions.jsx';
+
 export class Profile extends React.Component {
   constructor(props) {
     super(props);
+  }
+  
+  componentWillMount() {
+    this.props.dispatch(allDoc.retrieveAllDocs());
   }
 
   tabChange(tab) {

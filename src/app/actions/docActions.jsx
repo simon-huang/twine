@@ -26,6 +26,7 @@ export function retrieveSpecificDoc (username, docID) {
   }
 }
 
+
 export function loadOriginalContent() {
   return (dispatch, getState) => {
     var states = getState();
@@ -35,8 +36,8 @@ export function loadOriginalContent() {
     const contentState = ContentState.createFromBlockArray(blocksFromHTML);
     const editorState = EditorState.createWithContent(contentState);
 
-    console.log('states.doc.masterHtml', states.doc.masterHtml);
-    console.log('contentState', convertToRaw(contentState));
+    // console.log('states.doc.masterHtml', states.doc.masterHtml);
+    // console.log('contentState', convertToRaw(contentState));
 
     dispatch({
       type: "POPULATE_EDITOR",
