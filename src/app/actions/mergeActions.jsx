@@ -7,10 +7,9 @@ export function handleChange(name, value) {
   }
 }
 
-export function showMergeMenu(value) {
+export function showMergeMenu() {
   return {
-    type: "SHOWMERGEMENU",
-    payload: value
+    type: "SHOWMERGEMENU"
   }
 }
 
@@ -18,10 +17,32 @@ export function showMergeMenu(value) {
 export function mergeDocument() {
   return (dispatch, getState) => {
     var states = getState();
+    var res;
     var mergeRequest = {
-      docInfo: states.doc.editDoc,
-      mergeInfo: states.merge
+      username: states.user.username,
+      docName: states.doc.docName,
+      collaboratorMessage: states.merge.mergeTitle,
+      commitID: states.doc.currentCommit
     }
-    axios.post('/api/doc/mergeDoc', mergeRequest);
+    axios.post('/api/doc/requestMerge', mergeRequest);
+  }
+}
+
+
+// to validate of Merge Menu should be shown (if the person has made changes)
+export function validateMerge () {
+  return (dispatch, getState) => {
+    var states = getState();
+    var validateMergeInfo = {
+      commitID: states.doc.currentCommit
+    }
+    axios.post('/api/doc/validateMerge', validateMergeInfo)
+    .then(function(response) {
+      if (response.data) {
+        dispatch(showMergeMenu());
+      } else {
+        //update message for toast
+      }
+    });
   }
 }

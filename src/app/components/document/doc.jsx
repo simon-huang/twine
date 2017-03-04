@@ -21,6 +21,9 @@ import DocHistory from './doc_history.jsx'
 import DocMerge from './doc_merge.jsx'
 import DocSettings from './doc_settings.jsx'
 import ProgressBar from '../modals/progressBar.jsx';
+import ForkedFrom from './forkedFrom.jsx'
+import DocMergeButton from './doc_merge_button.jsx'
+import MergeModal from './../modals/mergeModal.jsx'
 
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
@@ -94,10 +97,11 @@ export class Doc extends React.Component {
                     </BreadcrumbItem>
                     {this.props.doc.docDescription ? ' (' + this.props.doc.docDescription + ')' : ''}
                   </Breadcrumb>
+                  <ForkedFrom />
                 </div>
                 <div className="col-sm-4 text-right">
                   <ButtonGroup>
-                    <Button>Merge</Button>
+                    <DocMergeButton />
                     <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
                   </ButtonGroup>
                 </div>
@@ -122,6 +126,7 @@ export class Doc extends React.Component {
               </div>
             </div>  
           </div>
+          <MergeModal />
         </div>
       );
     }
