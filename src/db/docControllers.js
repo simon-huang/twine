@@ -30,7 +30,7 @@ var filesFolder = 'documents';
 function specificDoc(req, res, next) {
   // adapted from openDoc
   console.log('specificDoc params: ', req.params);
-  var user, doc;
+  var user, doc, pullRequests;
   var text, commits, currentCommit;
   var repository;
 
@@ -47,8 +47,24 @@ function specificDoc(req, res, next) {
       console.log('You don\'t have permission to view this doc');
       return res.end('You don\'t have permission to view this doc');
     } else {
-      console.log('get commits');
-      DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
+      
+      PullRequest.findAll({ where: {status: 'open', docName: req.body.docName, targetUsername: user.username} }) 
+      .then(function(foundPullRequests){
+        console.log('found open pull requests');
+        pullRequests = foundPullRequests.map(instance => {
+          return {
+            docOwner: instance.dataValues.targetUsername, 
+            username: instance.dataValues.requesterName, 
+            docName: instance.dataValues.docName,  
+            collaboratorMessage: instance.dataValues.collaboratorMessage, 
+            mergeStatus: instance.dataValues.status, 
+            commitID: instance.dataValues.commitId, 
+            ownerMessage: ''
+          }
+        });
+        console.log('get commits');
+        return DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
+      })
       .then(function(foundCommits){
         console.log('found commits ');
         commits = foundCommits.map((instance) => {
@@ -270,9 +286,9 @@ function retrieveDocsAndPullRequests(username, callback) {
     //   allMyDocuments: myDocsObject,
     //   pullRequestsToMe: pullRequests
     // })
-    console.log('these are the both docs', myDocsObject.both);
-    console.log('these are the owned docs', myDocsObject.owned);
-    console.log('these are the contributing docs', myDocsObject.contributing);
+    // console.log('these are the both docs', myDocsObject.both);
+    // console.log('these are the owned docs', myDocsObject.owned);
+    // console.log('these are the contributing docs', myDocsObject.contributing);
     callback(docs, myDocsObject, pullRequests);
   })
 }
@@ -930,6 +946,83 @@ function getUpstream(req, res, next) {
   })
 };
 
+function validateMerge(req, res, next) { 
+  console.log('req body ', req.body);
+  // {username, docName, collaboratorMessage, commitID}
+  var user, doc, upstreamDoc, upstreamUser, text, upstreamText;
+  var repository, index, oid, comment, commitID;
+  var pathToClonedRequester;
+  var commit;
+
+
+  return DocVersion.findOne({ where: {commitID: req.body.commitID} })
+  .then(function(foundDocVersion){
+    if (!foundDocVersion) {
+      console.log('Commit doesn\'t exist');
+      return res.end('Commit doesn\'t exist');
+    } 
+    console.log('found commit');
+    commit = foundDocVersion.dataValues;
+    return User.findOne({ where: {id: commit.userId } })
+  })
+  .then(function(foundUser){
+    if (!foundUser) {
+      console.log('user doesn\'t exist');
+      return res.end('User doesn\'t exist');
+    } 
+    console.log('found user ');
+    user = foundUser.dataValues;
+    if (!(req.user && req.user.username === user.username)) {
+      console.log('You are not logged in at this username');
+      return res.end('You are not logged in at this username');
+    }
+    return Doc.findOne({ where: {id: commit.docId, userID: user.id} }) 
+  })  
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      return res.end('Can\'t find that doc');
+    }
+    console.log('found my doc');
+    doc = foundDoc.dataValues; 
+    return Doc.findOne({ where: {id: doc.originId} }) 
+  })
+  .then(function(foundDoc){
+    if (!foundDoc) {
+      console.log('doc doesn\'t exist');
+      return res.end('Can\'t find upstream doc');
+    }
+    console.log('found upstream doc');
+    upstreamDoc = foundDoc.dataValues; 
+    return User.findOne({ where: {id: upstreamDoc.userId } })
+  })
+  .then(function(foundUser){
+    if (!foundUser) {
+      console.log('log: Can\'t find upstream user');
+      return res.end('Can\'t find upstream user');
+    }
+    console.log('found upstream user ');
+    upstreamUser = foundUser.dataValues;
+    return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
+  })
+  .then(function(data) {
+    // console.log('collaborator text ', data);
+    text = data;
+    return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
+  })
+  .then(function(data) {
+    // console.log('upstream text ', data);
+    upstreamText = data;
+    if (text === upstreamText + '\n' || text === upstreamText) {
+      console.log('no differences to merge')
+      return res.send(false);
+    } else {
+      res.send(true);
+    }
+  })
+};
+
+
 function requestMerge(req, res, next) { 
   console.log('req body ', req.body);
   // {username, docName, collaboratorMessage, commitID}
@@ -977,21 +1070,7 @@ function requestMerge(req, res, next) {
     }
     console.log('found upstream user ');
     upstreamUser = foundUser.dataValues;
-    return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
-  })
-  .then(function(data) {
-    // console.log('collaborator text ', data);
-    text = data;
-    return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
-  })
-  .then(function(data) {
-    // console.log('upstream text ', data);
-    upstreamText = data;
-    if (text === upstreamText + '\n' || text === upstreamText) {
-      console.log('no differences to merge')
-      return res.send(false);
-    }
-    console.log('you can merge');
+    
     PullRequest.build({
       status: 'open',
       collaboratorMessage: req.body.collaboratorMessage,
@@ -1343,4 +1422,4 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
   });
 };
 
-export { specificDoc, allDocsForUser, allDocs, retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, requestMerge, reviewPullRequest, actionPullRequest, pastVersion };
+export { specificDoc, allDocsForUser, allDocs, retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, validateMerge, requestMerge, reviewPullRequest, actionPullRequest, pastVersion };
