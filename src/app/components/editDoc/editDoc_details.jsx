@@ -6,7 +6,7 @@ import * as doc from '../../actions/docActions.jsx';
 export class EditDoc_details extends React.Component {
   constructor(props) {
     super(props);
-    this.showMergeMenu = this.showMergeMenu.bind(this);
+    this.toggleMergeMenu = this.toggleMergeMenu.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.mergeRequest = this.mergeRequest.bind(this);
     this.clearMergeInfo = this.clearMergeInfo.bind(this);
@@ -14,7 +14,7 @@ export class EditDoc_details extends React.Component {
     this.saveDoc = this.saveDoc.bind(this);
   }
 
-  showMergeMenu(value) {
+  toggleMergeMenu(value) {
     return this.props.dispatch(merge.showMergeMenu(value));
   }
 
@@ -44,20 +44,20 @@ export class EditDoc_details extends React.Component {
   }
 
   // toggleMerge() {
-  //   if (this.props.merge.showMerge) {
+  //   if (this.props.merge.showMergeMenu) {
   //     return (
   //       <div>
   //         <h2>Merge Menu</h2>
   //         <input onChange={this.handleChange} type="text" value={this.props.merge.mergeTitle} name="mergeTitle" placeholder="Name your Merge" /><br/>
   //         <textarea onChange={this.handleChange} type="text" value={this.props.merge.mergeMessage} name="mergeMessage" placeholder="Add a comment telling the document owner what you worked on" /><br/>
-  //         <button className="btn btn-success cancel_request" onClick={()=>(this.cancelMerge(!this.props.merge.showMerge))}>Cancel</button>
-  //         <button className="btn btn-success confirm_merge_request" onClick={()=>(this.mergeRequest(!this.props.merge.showMerge))}>Confirm</button>
+  //         <button className="btn btn-success cancel_request" onClick={()=>(this.cancelMerge(!this.props.merge.showMergeMenu))}>Cancel</button>
+  //         <button className="btn btn-success confirm_merge_request" onClick={()=>(this.mergeRequest(!this.props.merge.showMergeMenu))}>Confirm</button>
   //       </div>
   //     );
   //   } else {
   //     return (
   //       <div>
-  //         <button className="btn btn-success merge_request" onClick={()=>(this.showMergeMenu(!this.props.merge.showMerge))}>Merge</button>      
+  //         <button className="btn btn-success merge_request" onClick={()=>(this.toggleMergeMenu(!this.props.merge.showMergeMenu))}>Merge</button>      
   //       </div>
   //     );
   //   }

@@ -1,5 +1,5 @@
 export default function reducer(state = {
-  showMerge: false,
+  showMergeMenu: false,
   mergeTitle: '',
   mergeMessage: '',
   validateMerge: false, //do we need this? Or can we directly manupulate showMerge?
@@ -11,7 +11,7 @@ export default function reducer(state = {
     case "SHOWMERGEMENU": {
       return {
         ...state,
-        showMerge: !state.showMerge
+        showMergeMenu: !state.showMergeMenu
       }
     }
     case "EDIT_MERGETITLE": {

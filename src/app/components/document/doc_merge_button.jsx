@@ -21,15 +21,18 @@ export class DocMergeButton extends React.Component {
   }
 
   render() {
-    return (
-      <button className="btn btn-success merge_request" onClick={this.showMergeMenu}>Merge</button>
-    );
+    if (this.props.doc.originOwner !== this.props.user.username) {
+      return (
+        <button className="btn btn-success merge_request" onClick={this.showMergeMenu}>Merge</button>
+      );
+    } else {
+      return (
+        <div></div>
+      );
+    }
   }
 };
 
 export default connect(state => state)(DocMergeButton);
-
-
-
 
 
