@@ -102,7 +102,8 @@ function specificDoc(req, res, next) {
           filePath: doc.filepath,
           docContent: text,
           docCommits: commits,
-          currentCommit: currentCommit
+          currentCommit: currentCommit,
+          pullRequests: pullRequests
         });
       })
     }
