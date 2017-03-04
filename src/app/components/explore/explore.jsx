@@ -1,25 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
-import * as allDoc from '../../actions/allDocActions.jsx';
-
+// Components
 import ExploreDocuments from './explore_documents.jsx';
+
+// Store properties
+import * as allDoc from '../../actions/allDocActions.jsx';
 
 
 export class Explore extends React.Component {
   constructor(props) {
     super(props);
-    this.openDoc = this.openDoc.bind(this);
-  }
-
-  openDoc(name, owner) {
-    var docRequest = {
-      username: owner, //hardcoding to send out the owner for explore
-      docName: name,
-    }
-    this.props.dispatch(allDoc.openDoc(docRequest));
-    browserHistory.push('/doc');
   }
 
   componentWillMount() {
@@ -32,7 +23,7 @@ export class Explore extends React.Component {
         <h1>Explore</h1>
         <hr/>
         {this.props.allDoc.allDocuments.map((docs, i) => (
-          <ExploreDocuments className="doc_summary" key={i} onClick={this.openDoc} doc={docs} />))}
+          <ExploreDocuments key={i} docData={docs} />))}
       </div>
     )
   }

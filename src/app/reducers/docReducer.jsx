@@ -12,6 +12,7 @@ export default function reducer(state = {
   masterHtml: '',
   previewContent: null,
   docCommits: [],
+  currentCommit: '',
   commitMessage: '',
   error: null
 }, action) {
@@ -109,10 +110,17 @@ export default function reducer(state = {
     case "RETRIEVE_DOC": {
       return {
         ...state,
+        docId: action.payload.docID,
+        docOwner: action.payload.docOwner,
         docName: action.payload.docName,
         docDescription: action.payload.docDescription,
+        docType: action.payload.docType,
+        parentID: action.payload.parentID,
+        originOwner: action.payload.originOwner,
+        filePath: action.payload.filePath,
         masterHtml: action.payload.docContent,
-        
+        docCommits: action.payload.docCommits,
+        currentCommit: action.payload.currentCommit,
       }
     }
 

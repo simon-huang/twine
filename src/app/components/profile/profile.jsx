@@ -23,19 +23,18 @@ export class Profile extends React.Component {
   render() {
     return (
       <div className="container mt20 profile">
-        <h1>Profile</h1>
-        <div>Username: {this.props.user.username}</div>
+        <h4 className="mt10 mb20 bold">Your documents</h4>
           <div className="row doc-tabs">
             <div className="col-sm-12">
               <Tabs defaultActiveKey={this.props.user.currentTab} onChange={this.tabChange} id="docTabs">
-                <Tab title="My Documents" eventKey="all" >
-                  <ProfileDocuments tab={'All My Documents'} docList={this.props.allDoc.associatedDocs}/>
+                <Tab title="All docs" eventKey="all" >
+                  <ProfileDocuments tab={'All docs'} docList={this.props.allDoc.associatedDocs}/>
                 </Tab>
-                <Tab title="My Documents" eventKey="owned" >
-                  <ProfileDocuments tab={'Owned Documents'} docList={this.props.allDoc.ownedDocs}/>
+                <Tab title="Owned by me" eventKey="owned" >
+                  <ProfileDocuments tab={'Owned by me'} docList={this.props.allDoc.ownedDocs}/>
                 </Tab>
-                <Tab title="Contributing Documents" eventKey="contrib">
-                  <ProfileDocuments tab={'Contributing Documents'} docList={this.props.allDoc.contributingDocs}/>
+                <Tab title="Contributing to" eventKey="contrib">
+                  <ProfileDocuments tab={'Contributing to'} docList={this.props.allDoc.contributingDocs}/>
                 </Tab>
               </Tabs>
             </div>
