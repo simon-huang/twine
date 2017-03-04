@@ -32,10 +32,20 @@ export class Doc extends React.Component {
     this.redirectEditDoc = this.redirectEditDoc.bind(this);
     this.redirectProfile = this.redirectProfile.bind(this);
     this.copyDocument = this.copyDocument.bind(this);
+    this.returnUrlParams = this.returnUrlParams.bind(this);
   }
   
   componentWillMount() {
-    // dispatch for the loading of the document
+    var params = this.returnUrlParams();
+    this.props.dispatch(doc.retrieveSpecificDoc(params.username, params.docID));
+  }
+
+  returnUrlParams() {
+    var path = this.props.location.pathname;
+    var splitPath = path.split(/[\\\/]/);
+    const username = splitPath[splitPath.length - 2];
+    const docID = splitPath[splitPath.length - 1];
+    return {username, docID}
   }
 
   tabChange(tab) {
@@ -69,12 +79,12 @@ export class Doc extends React.Component {
                   <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
                     {this.props.doc.docName}
                   </BreadcrumbItem>
+                  {this.props.doc.docDescription ? ' (' + this.props.doc.docDescription + ')' : ''}
                 </Breadcrumb>
               </div>
               <div className="col-sm-4 text-right">
                 <ButtonGroup>
-                  <Button>Watch</Button>
-                  <Button>Star</Button>
+                  <Button>Merge</Button>
                   <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
                 </ButtonGroup>
               </div>
@@ -88,12 +98,12 @@ export class Doc extends React.Component {
                   <Tab title="Merge Requests" eventKey="merge">
                     <DocMerge />
                   </Tab>
-                  <Tab title="History" eventKey="history">
+                {/*<Tab title="History" eventKey="history">
                     <DocHistory />
                   </Tab>
                   <Tab title="Settings" eventKey="settings">
                     <DocSettings />
-                  </Tab>
+                  </Tab>*/}
                 </Tabs>
               </div>
             </div>

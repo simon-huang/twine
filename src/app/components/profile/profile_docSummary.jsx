@@ -1,12 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
-export default function ProfileDocSummary (props) {
-  return (
-    <div>
-      <div className={"list-title " + props.doc.docName} onClick={() => (props.onClick(props.doc.docName))}>{props.doc.docName}</div>
-      <br/>
-      <div>{props.doc.docDescription}</div>
-      <hr/>
-    </div>
-  );
+export class ProfileDocSummary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openDoc = this.openDoc.bind(this);
+  }
+
+  openDoc(e) {
+    // this.props.dispatch(allDoc.openDoc(docRequest));
+    e.preventDefault();
+    browserHistory.push(`/profile/${this.props.docData.docOwner}/${this.props.docData.docID}`);
+  }
+
+  render() {
+    return (
+      <div>
+        <h4 className="doc-list-title bold" onClick={this.openDoc}>{this.props.docData.docName}</h4>
+        <br/>
+        <div>{this.props.docData.docDescription}</div>
+        <hr/>
+      </div>
+    );
+  }
 };
+
+export default connect(state => state)(ProfileDocSummary);

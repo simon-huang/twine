@@ -87,6 +87,18 @@ h6 { font-size: 14px; line-height: 20px; }
 /*============ Styling =============*/
 /*==================================*/
 
+.doc-list-title {
+  color: #2A97FF;
+}
+
+.doc-list-title:hover,
+.doc-list-title:focus {
+  color: #2A97FF;
+  outline: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .radioActive,
 .radioActive:hover,
 .radioActive:focus,

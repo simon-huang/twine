@@ -1,35 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
 
-import * as allDoc from '../../actions/allDocActions.jsx';
-
+// Components
 import ProfileDocSummary from './profile_docSummary.jsx';
+
+// Store properties
+import * as allDoc from '../../actions/allDocActions.jsx';
 
 
 export class ProfileDocuments extends React.Component {
   constructor(props) {
     super(props);
-    this.openDoc = this.openDoc.bind(this);
-  }
-
-  openDoc(name) {
-    var docRequest = {
-      username: this.props.user.username,
-      docName: name,
-    }
-    this.props.dispatch(allDoc.openDoc(docRequest));
-    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
-    // `/createdoc/${this.props.user.username}`
   }
 
   render() {
     return (
-      <div className="profile-documents">
-        <div>{this.props.tab}</div>
-        <hr/>
+      <div className="profile-documents mt20">
         {this.props.docList.map((docs, i) => (
-          <ProfileDocSummary className="doc_summary" key={i} onClick={this.openDoc} doc={docs} />))}
+          <ProfileDocSummary key={i} docData={docs} />))}
       </div>
     )
   }

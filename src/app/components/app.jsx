@@ -10,6 +10,7 @@ import CreateDoc from './createDoc.jsx';
 import Navbar from './navbar.jsx';
 import Theme from 'material-ui/styles/MuiThemeProvider';
 import LoginModal from './modals/loginModal.jsx'
+import ProgressBar from './modals/progressBar.jsx'
 
 // UI
 import injectTapEventPlugin from 'react-tap-event-plugin';

@@ -66,13 +66,13 @@ export default class Home extends React.Component {
           <Modal.Title>Sign in to your account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <a className="btn btn-block btn-social btn-purple">
+        {/*<a className="btn btn-block btn-social btn-purple">
             <span className="fa fa-google"></span>
             Sign in with Google
           </a>
           <div className="hr-label mt20 mb20">
             <span className="hr-label-text">or</span>
-          </div>
+          </div>*/}
           <form onSubmit={this.login}>
             <FormGroup controlId="formEmail" validationState={this.validateEmail()} >
               <FormControl type="text" value={this.props.email} placeholder="Email address" name="email" onChange={this.handleChange} />
