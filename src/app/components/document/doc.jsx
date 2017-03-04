@@ -114,7 +114,7 @@ export class Doc extends React.Component {
                     <Tab title="Document" eventKey="document" >
                       <DocDetails />
                     </Tab>
-                    <Tab title="Merge Requests" eventKey="merge">
+                    <Tab title={"Merge Requests " + JSON.stringify(this.props.doc.pullRequest)} eventKey="merge">
                       <DocMerge />
                     </Tab>
                   {/*<Tab title="History" eventKey="history">

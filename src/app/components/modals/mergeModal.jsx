@@ -32,7 +32,7 @@ export class MergeModal extends React.Component {
   submitMerge(e) {
     e.preventDefault();
     console.log('submitting merge request');
-    this.props.dispatch(this.props.merge.mergeDocument());
+    this.props.dispatch(merge.mergeDocument());
   }
 
   render() {
