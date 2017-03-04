@@ -18,11 +18,8 @@ export class CreateDoc extends React.Component {
 
 
   createDocSubmit() {
-    var path = `${this.props.user.username}/${this.props.doc.docId}`;
-    
-    this.props.dispatch(create.createDocument(path));
-    //console.log(path);
-    // browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
+    this.props.dispatch(create.createDocument());
+    browserHistory.push(`/profile/${this.props.user.username}`);
   }
 
   componentWillMount() {
