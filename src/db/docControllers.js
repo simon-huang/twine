@@ -646,7 +646,7 @@ function copyDoc(req, res, next) {
 function openDoc(req, res, next) {
   console.log('req body ', req.body);
   // {username, doc name}
-  var user, doc;
+  var user, doc, pullRequests;
   var text, commits, currentCommit;
   var repository;
 
@@ -667,6 +667,20 @@ function openDoc(req, res, next) {
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
+    return PullRequest.findAll({ where: {status: 'open', docName: req.body.docName, targetUsername: user.username} }) 
+  })
+  .then(function(foundPullRequests){
+    pullRequests = foundPullRequests.map(instance => {
+      return {
+        docOwner: instance.dataValues.targetUsername, 
+        username: instance.dataValues.requesterName, 
+        docName: instance.dataValues.docName,  
+        collaboratorMessage: instance.dataValues.collaboratorMessage, 
+        mergeStatus: instance.dataValues.status, 
+        commitID: instance.dataValues.commitId, 
+        ownerMessage: ''
+      }
+    });
     console.log('get commits');
     return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
   })
@@ -707,7 +721,8 @@ function openDoc(req, res, next) {
       filePath: doc.filepath,
       docContent: text,
       docCommits: commits,
-      currentCommit: currentCommit
+      currentCommit: currentCommit,
+      pullRequests: pullRequests
     });
   })
 };
@@ -918,7 +933,7 @@ function getUpstream(req, res, next) {
 function requestMerge(req, res, next) { 
   console.log('req body ', req.body);
   // {username, docName, collaboratorMessage, commitID}
-  var user, doc, upstreamDoc, upstreamUser, text;
+  var user, doc, upstreamDoc, upstreamUser, text, upstreamText;
   var repository, index, oid, comment, commitID;
   var pathToClonedRequester;
 
@@ -962,6 +977,21 @@ function requestMerge(req, res, next) {
     }
     console.log('found upstream user ');
     upstreamUser = foundUser.dataValues;
+    return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
+  })
+  .then(function(data) {
+    // console.log('collaborator text ', data);
+    text = data;
+    return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
+  })
+  .then(function(data) {
+    // console.log('upstream text ', data);
+    upstreamText = data;
+    if (text === upstreamText + '\n' || text === upstreamText) {
+      console.log('no differences to merge')
+      return res.send(false);
+    }
+    console.log('you can merge');
     PullRequest.build({
       status: 'open',
       collaboratorMessage: req.body.collaboratorMessage,
