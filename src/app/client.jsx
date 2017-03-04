@@ -15,9 +15,9 @@ import Profile from './components/profile/profile.jsx';
 import EnsureLoggedInContainer from './components/auth/ensureLoggedInContainer.jsx';
 import Explore from './components/explore/explore.jsx';
 
-store.subscribe(() => {
-  //console.log('store changed', store.getState());
-})
+// store.subscribe(() => {
+//   console.log('store changed', store.getState());
+// })
 
 export class Publishus extends React.Component {
   render() {

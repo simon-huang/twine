@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
+import { browserHistory } from 'react-router';
 
 export function handleChange(name, value) {
   return {
@@ -101,7 +102,7 @@ export function copyDoc() {
   }
 }
 
-export function loadDocInfo(data) {
+export function loadDocInfo(data, path) {
   return (dispatch, getState) => {
     dispatch(handleChange('docID', data.docID));
     dispatch(handleChange('docOwner', data.docOwner));
