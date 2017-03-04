@@ -87,6 +87,35 @@ h6 { font-size: 14px; line-height: 20px; }
 /*============ Styling =============*/
 /*==================================*/
 
+.toast {
+  border-radius: 3px !important;
+  position: fixed !important;
+  right: -100px !important;
+  left: inherit !important;
+  z-index: 9999 !important;
+  -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.toast > div {
+  border-radius: 3px !important;
+  min-width: 250px !important;
+  max-width: 300px !important;
+}
+
+.toast > div > div {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.toast span {
+  vertical-align: middle !important;
+  display: block !important;
+  line-height: 48px !important;
+  font-size: 12px !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
 .loader {
   z-index: 9999;
   width: 100%;

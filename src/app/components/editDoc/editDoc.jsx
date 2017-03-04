@@ -49,3 +49,4 @@ export class EditDoc extends React.Component {
 }
 
 export default connect(state => state)(EditDoc);
+

@@ -24,10 +24,12 @@ import ProgressBar from '../modals/progressBar.jsx';
 import ForkedFrom from './forkedFrom.jsx'
 import DocMergeButton from './doc_merge_button.jsx'
 import MergeModal from './../modals/mergeModal.jsx'
+import Toast from '../modals/snackbar.jsx';
 
-// Store properties
+// Actions
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 import * as doc from './../../actions/docActions.jsx';
+import * as loading from './../../actions/loadingActions.jsx';
 
 export class Doc extends React.Component {
   constructor(props) {
@@ -49,8 +51,7 @@ export class Doc extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('ready is ', !nextProps.loading);
-    this.setState({ready: !nextProps.loading});
+    this.setState({ready: !nextProps.loading.async});
   }
 
   returnUrlParams() {
@@ -74,8 +75,9 @@ export class Doc extends React.Component {
   }
 
   copyDocument() {
-    this.props.dispatch(doc.copyDoc());
-    browserHistory.push('/doc');
+    this.props.dispatch(loading.toggleToast(true, 'Document copied! And its super'));
+    // this.props.dispatch(doc.copyDoc());
+    // browserHistory.push('/doc');
   }
 
   render() {
@@ -127,6 +129,7 @@ export class Doc extends React.Component {
             </div>  
           </div>
           <MergeModal />
+          <Toast />
         </div>
       );
     }
