@@ -102,7 +102,7 @@ export function copyDoc() {
   }
 }
 
-export function loadDocInfo(data, path) {
+export function loadDocInfo(data) {
   return (dispatch, getState) => {
     dispatch(handleChange('docID', data.docID));
     dispatch(handleChange('docOwner', data.docOwner));
