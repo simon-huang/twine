@@ -2,6 +2,7 @@ export default function reducer(state = {
   showMerge: false,
   mergeTitle: '',
   mergeMessage: '',
+  validateMerge: false, //do we need this? Or can we directly manupulate showMerge?
   error: null
 }, action) {
 
@@ -10,7 +11,7 @@ export default function reducer(state = {
     case "SHOWMERGEMENU": {
       return {
         ...state,
-        showMerge: action.payload
+        showMerge: !state.showMerge
       }
     }
     case "EDIT_MERGETITLE": {
