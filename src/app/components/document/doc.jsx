@@ -124,9 +124,9 @@ export class Doc extends React.Component {
                   </Tabs>
                 </div>
               </div>
-              <MergeModal />
             </div>  
           </div>
+          <MergeModal />
         </div>
       );
     }
