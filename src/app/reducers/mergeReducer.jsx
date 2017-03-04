@@ -2,7 +2,8 @@ export default function reducer(state = {
   showMergeMenu: false,
   mergeTitle: '',
   mergeMessage: '',
-  validateMerge: false, //do we need this? Or can we directly manupulate showMerge?
+  // validateMerge: false, //do we need this? Or can we directly manupulate showMerge?
+  displayMergeRequest: false,
   error: null
 }, action) {
 
@@ -24,6 +25,12 @@ export default function reducer(state = {
       return {
         ...state,
         mergeMessage: action.payload
+      }
+    }
+    case "TOGGLE_DISPLAYMERGEREQUEST": {
+      return {
+        ...state,
+        displayMergeRequest: !state.displayMergeRequest
       }
     }
   }

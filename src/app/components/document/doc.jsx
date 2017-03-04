@@ -19,7 +19,7 @@ import BreadcrumbItem from 'react-bootstrap/lib/BreadcrumbItem';
 import DocDetails from './doc_details.jsx'
 import DocHistory from './doc_history.jsx'
 import DocMerge from './doc_merge.jsx'
-import DocMergeList from './doc_mergeList.jsx'
+import DocMergeView from './doc_mergeView.jsx'
 import DocSettings from './doc_settings.jsx'
 import ProgressBar from '../modals/progressBar.jsx';
 import ForkedFrom from './forkedFrom.jsx'
@@ -117,7 +117,7 @@ export class Doc extends React.Component {
                       <DocDetails />
                     </Tab>
                     <Tab title={"Merge Requests " + this.props.doc.pullRequests.length} eventKey="merge">
-                      <DocMergeList />
+                      <DocMergeView />
                     </Tab>
                   {/*<Tab title="History" eventKey="history">
                       <DocHistory />

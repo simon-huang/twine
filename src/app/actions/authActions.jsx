@@ -64,9 +64,6 @@ export function login () {
     .then((response) => {
       dispatch(userCreated(response.data));
       dispatch(loadDocStorage(response.data));
-      // dispatch(doc.handleChange('ownedDocs', response.data.allMyDocuments.owned));
-      // dispatch(doc.handleChange('contributingDocs', response.data.allMyDocuments.contributing));
-      // dispatch(doc.handleChange('associatedDocs', response.data.allMyDocuments.both));
     })
     .catch((err) => {
       dispatch(authReject(err));

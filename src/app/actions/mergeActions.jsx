@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as doc from './docActions.jsx';
 
 export function handleChange(name, value) {
   return {
@@ -44,5 +45,11 @@ export function validateMerge () {
         //update message for toast
       }
     });
+  }
+}
+
+export function displayMerge () {
+  return {
+    type: "TOGGLE_DISPLAYMERGEREQUEST"
   }
 }
