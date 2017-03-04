@@ -1,8 +1,9 @@
 import React from 'react';
 import LinearProgress from 'material-ui/LinearProgress';
 
-const ProgressBar = () => (
-  <LinearProgress mode="indeterminate" />
+const LinearProgressExampleSimple = () => (
+  // <LinearProgress mode="indeterminate" />
+  <div></div>
 );
 
-export default ProgressBar;
+export default LinearProgressExampleSimple;

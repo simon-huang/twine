@@ -20,6 +20,7 @@ import DocDetails from './doc_details.jsx'
 import DocHistory from './doc_history.jsx'
 import DocMerge from './doc_merge.jsx'
 import DocSettings from './doc_settings.jsx'
+import ProgressBar from '../modals/progressBar.jsx';
 
 // Store properties
 import * as docSummary from './../../actions/docSummaryActions.jsx';
@@ -28,6 +29,9 @@ import * as doc from './../../actions/docActions.jsx';
 export class Doc extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      ready: false
+    }
     this.tabChange = this.tabChange.bind(this);
     this.redirectEditDoc = this.redirectEditDoc.bind(this);
     this.redirectProfile = this.redirectProfile.bind(this);
@@ -36,8 +40,14 @@ export class Doc extends React.Component {
   }
   
   componentWillMount() {
+    this.setState({ready: false});
     var params = this.returnUrlParams();
     this.props.dispatch(doc.retrieveSpecificDoc(params.username, params.docID));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('ready is ', !nextProps.loading);
+    this.setState({ready: !nextProps.loading});
   }
 
   returnUrlParams() {
@@ -66,51 +76,55 @@ export class Doc extends React.Component {
   }
 
   render() {
-    return (
-      <div className="container mt25 mb25">
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="row doc-title mb20">
-              <div className="col-sm-8">
-                <Breadcrumb className="breadcrumb">
-                  <BreadcrumbItem href="#" onClick={this.redirectProfile}>
-                    {this.props.doc.docOwner}
-                  </BreadcrumbItem>
-                  <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
-                    {this.props.doc.docName}
-                  </BreadcrumbItem>
-                  {this.props.doc.docDescription ? ' (' + this.props.doc.docDescription + ')' : ''}
-                </Breadcrumb>
+    if(!this.state.ready) {
+      return <ProgressBar />
+    } else {
+      return (
+        <div className="container mt25 mb25">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row doc-title mb20">
+                <div className="col-sm-8">
+                  <Breadcrumb className="breadcrumb">
+                    <BreadcrumbItem href="#" onClick={this.redirectProfile}>
+                      {this.props.doc.docOwner}
+                    </BreadcrumbItem>
+                    <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
+                      {this.props.doc.docName}
+                    </BreadcrumbItem>
+                    {this.props.doc.docDescription ? ' (' + this.props.doc.docDescription + ')' : ''}
+                  </Breadcrumb>
+                </div>
+                <div className="col-sm-4 text-right">
+                  <ButtonGroup>
+                    <Button>Merge</Button>
+                    <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
+                  </ButtonGroup>
+                </div>
               </div>
-              <div className="col-sm-4 text-right">
-                <ButtonGroup>
-                  <Button>Merge</Button>
-                  <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
-                </ButtonGroup>
+              <div className="row doc-tabs">
+                <div className="col-sm-12">
+                  <Tabs defaultActiveKey={this.props.docSummary.currentTab} onChange={this.tabChange} id="docTabs">
+                    <Tab title="Document" eventKey="document" >
+                      <DocDetails />
+                    </Tab>
+                    <Tab title="Merge Requests" eventKey="merge">
+                      <DocMerge />
+                    </Tab>
+                  {/*<Tab title="History" eventKey="history">
+                      <DocHistory />
+                    </Tab>
+                    <Tab title="Settings" eventKey="settings">
+                      <DocSettings />
+                    </Tab>*/}
+                  </Tabs>
+                </div>
               </div>
-            </div>
-            <div className="row doc-tabs">
-              <div className="col-sm-12">
-                <Tabs defaultActiveKey={this.props.docSummary.currentTab} onChange={this.tabChange} id="docTabs">
-                  <Tab title="Document" eventKey="document" >
-                    <DocDetails />
-                  </Tab>
-                  <Tab title="Merge Requests" eventKey="merge">
-                    <DocMerge />
-                  </Tab>
-                {/*<Tab title="History" eventKey="history">
-                    <DocHistory />
-                  </Tab>
-                  <Tab title="Settings" eventKey="settings">
-                    <DocSettings />
-                  </Tab>*/}
-                </Tabs>
-              </div>
-            </div>
-          </div>  
+            </div>  
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
