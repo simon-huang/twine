@@ -15,3 +15,10 @@ export function reqError () {
     type: "REQ_ERROR"
   }
 }
+
+export function toggleToast (showing, message) {
+  return {
+    type: "TOGGLE_TOAST",
+    payload: {showing: showing, message: message}
+  }
+}
