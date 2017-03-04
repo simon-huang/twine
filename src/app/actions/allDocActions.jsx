@@ -10,7 +10,7 @@ export function openDoc(docRequest) {
       dispatch(doc.loadDocInfo(data));
     });
   }
-} 
+}
 
 export function retrieveAllDocs () {
   return function(dispatch, getState) {
@@ -24,3 +24,21 @@ export function retrieveAllDocs () {
   }
 }
 
+
+// export function retrieveAllDocs () {
+//   return function(dispatch, getState) {
+//     dispatch({type:'REQ_STARTED'});
+//     axios.get('/api/doc/allDocs')
+//     .then((response) => {
+//       dispatch({
+//         type: 'EDIT_ASSOCIATEDDOCS',
+//         payload: response.data
+//       })
+//       dispatch({type: 'REQ_COMPLETED'});
+//     })
+//     .catch((err) => {
+//       dispatch(authReject(err));
+//       //dispatch({type: 'REQ_ERROR'});
+//     })
+//   }
+// }
