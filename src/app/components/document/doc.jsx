@@ -19,10 +19,12 @@ import BreadcrumbItem from 'react-bootstrap/lib/BreadcrumbItem';
 import DocDetails from './doc_details.jsx'
 import DocHistory from './doc_history.jsx'
 import DocMerge from './doc_merge.jsx'
+import DocMergeList from './doc_mergeList.jsx'
 import DocSettings from './doc_settings.jsx'
 import ProgressBar from '../modals/progressBar.jsx';
 import ForkedFrom from './forkedFrom.jsx'
 import DocMergeButton from './doc_merge_button.jsx'
+import DocCopyButton from './doc_copy_button.jsx'
 import MergeModal from './../modals/mergeModal.jsx'
 import Toast from '../modals/snackbar.jsx';
 
@@ -104,7 +106,7 @@ export class Doc extends React.Component {
                 <div className="col-sm-4 text-right">
                   <ButtonGroup>
                     <DocMergeButton />
-                    <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
+                    <DocCopyButton />
                   </ButtonGroup>
                 </div>
               </div>
@@ -114,8 +116,8 @@ export class Doc extends React.Component {
                     <Tab title="Document" eventKey="document" >
                       <DocDetails />
                     </Tab>
-                    <Tab title="Merge Requests" eventKey="merge">
-                      <DocMerge />
+                    <Tab title={"Merge Requests " + this.props.doc.pullRequests.length} eventKey="merge">
+                      <DocMergeList />
                     </Tab>
                   {/*<Tab title="History" eventKey="history">
                       <DocHistory />
