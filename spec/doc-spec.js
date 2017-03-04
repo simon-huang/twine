@@ -3,10 +3,10 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Fourth Test';
+var testName = 'Second Test';
 var expect = chai.expect;
 
-describe('Profile and Doc Route Tests', function() {
+xdescribe('Profile and Doc Route Tests', function() {
   var agent = request.agent(app);
   var testSession;
 
@@ -259,10 +259,10 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Open Doc', function() {
+  describe('Open Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
-        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
           if (res.error) {
             console.log('login error ', res.error);
@@ -270,7 +270,7 @@ describe('Doc Tests', function() {
           }
           testSession
             .post('/api/doc/openDoc')
-            .send({username: 'Tim', docName: testName})
+            .send({username: 'Sim', docName: testName})
             .end(function(err, res) {
               console.log('opened ', res.body);
               // expect(res.body.docText).to.equal('Overwriting the text 2');
@@ -416,8 +416,8 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Request Merge', function() {
-    it('should make a merge request', function(done) {
+  describe('Request Merge', function() {
+    xit('should make a merge request', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -474,6 +474,65 @@ describe('Doc Tests', function() {
             });
         });
     });
+
+    xit('should NOT make a merge request if no changes', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('sim login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text a \nasdfth time', commitMessage: ''})
+            .end(function(err, res) {
+              if (res.error) {
+                console.log('update doc error ', res.error);
+                done()
+              }
+              testSession.get('/api/auth/logout')
+              .end(function(err, res) {
+                if (res.error) {
+                  console.log('sim logout error ', res.error);
+                  done()
+                }
+                testSession.post('/api/auth/login')
+                  .send({ email: 'Tim@gmail.com', password: 'Tim' })
+                  .end(function(err, res) {
+                    if (res.error) {
+                      console.log('tim login error ', res.error);
+                      done()
+                    }
+                    testSession
+                      .post('/api/doc/saveDoc')
+                      .send({username: 'Tim', docName: testName, docContent: 'Overwriting the text a \nasdfth time\ngliughigh', commitMessage: ''})
+                      .end(function(err, res) {
+                        if (res.error) {
+                          console.log('tim update doc error ', res.error);
+                          done()
+                        }
+                        var latestCommit = res.body.currentCommit;
+
+                        testSession
+                          .post('/api/doc/requestMerge')
+                          .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+                          .end(function(err, res) {
+                            if (res.error) {
+                              console.log('tim request merge error ', res.error);
+                              done()
+                            }
+                            console.log('res.text: ', res.text, res. body);
+                            expect(res.body).to.equal(false);
+                            done();
+                          });
+                      });
+                  });
+              });  
+            });
+        });
+    });
+
 
     xit('OLD VERSION', function(done) {
       testSession.post('/api/auth/login')
