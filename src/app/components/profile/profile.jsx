@@ -13,13 +13,24 @@ import ProfileDocuments from './profile_documents.jsx';
 
 import * as allDoc from '../../actions/allDocActions.jsx';
 
+import ProgressBar from '../modals/progressBar.jsx';
+
 export class Profile extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      ready: false
+    }
   }
   
   componentWillMount() {
+    this.setState({ready: false});
     this.props.dispatch(allDoc.retrieveAllDocs());
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    console.log('ready is ', !nextProps.loading);
+    this.setState({ready: !nextProps.loading});
   }
 
   tabChange(tab) {
@@ -27,27 +38,31 @@ export class Profile extends React.Component {
   }
 
   render() {
-    return (
-      <div className="container mt20 profile">
-        <h4 className="mt10 mb20 bold">Your documents</h4>
-          <div className="row doc-tabs">
-            <div className="col-sm-12">
-              <Tabs defaultActiveKey={this.props.user.currentTab} onChange={this.tabChange} id="docTabs">
-                <Tab title="All docs" eventKey="all" >
-                  <ProfileDocuments tab={'All docs'} docList={this.props.allDoc.associatedDocs}/>
-                </Tab>
-                <Tab title="Owned by me" eventKey="owned" >
-                  <ProfileDocuments tab={'Owned by me'} docList={this.props.allDoc.ownedDocs}/>
-                </Tab>
-                <Tab title="Contributing to" eventKey="contrib">
-                  <ProfileDocuments tab={'Contributing to'} docList={this.props.allDoc.contributingDocs}/>
-                </Tab>
-              </Tabs>
+    if(!this.state.ready) {
+      return <ProgressBar />
+    } else { 
+      return (
+        <div className="container mt20 profile">
+          <h4 className="mt10 mb20 bold">Your documents</h4>
+            <div className="row doc-tabs">
+              <div className="col-sm-12">
+                <Tabs defaultActiveKey={this.props.user.currentTab} onChange={this.tabChange} id="docTabs">
+                  <Tab title="All docs" eventKey="all" >
+                    <ProfileDocuments tab={'All docs'} docList={this.props.allDoc.associatedDocs}/>
+                  </Tab>
+                  <Tab title="Owned by me" eventKey="owned" >
+                    <ProfileDocuments tab={'Owned by me'} docList={this.props.allDoc.ownedDocs}/>
+                  </Tab>
+                  <Tab title="Contributing to" eventKey="contrib">
+                    <ProfileDocuments tab={'Contributing to'} docList={this.props.allDoc.contributingDocs}/>
+                  </Tab>
+                </Tabs>
+              </div>
             </div>
-          </div>
 
-      </div>
-    )
+        </div>
+      )
+    }
   }
 }
 
