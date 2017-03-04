@@ -8,6 +8,7 @@ import merge from "./mergeReducer.jsx";
 import create from "./createDocReducer.jsx";
 import allDoc from "./allDocReducer.jsx";
 import auth from "./authReducer.jsx";
+import loading from "./loadingReducer.jsx";
 
 export default combineReducers({
   doc,
@@ -16,5 +17,6 @@ export default combineReducers({
   merge,
   create,
   allDoc,
-  auth
+  auth,
+  loading
 });

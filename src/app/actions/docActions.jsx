@@ -11,13 +11,17 @@ export function handleChange(name, value) {
 
 export function retrieveSpecificDoc (username, docID) {
   return function(dispatch, getState) {
+    dispatch({type: 'REQ_STARTED'});
     axios.get(`/api/profile/${username}/${docID}`)
     .then((response) => {
-      console.log(response.data);
       dispatch({
         type: 'RETRIEVE_DOC',
         payload: response.data
       })
+      dispatch({type: 'REQ_COMPLETED'});
+    })
+    .catch((err) => {
+      dispatch({type: 'REQ_ERROR'});
     })
   }
 }

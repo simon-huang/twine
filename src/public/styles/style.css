@@ -87,6 +87,16 @@ h6 { font-size: 14px; line-height: 20px; }
 /*============ Styling =============*/
 /*==================================*/
 
+.loader {
+  z-index: 9999;
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: blue;
+}
+
 .doc-list-title {
   color: #2A97FF;
 }
