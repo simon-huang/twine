@@ -48,7 +48,7 @@ function specificDoc(req, res, next) {
       return res.end('You don\'t have permission to view this doc');
     } else {
       
-      PullRequest.findAll({ where: {status: 'open', docName: req.body.docName, targetUsername: req.params.username} }) 
+      PullRequest.findAll({ where: {status: 'open', upstreamDocId: req.params.docId, targetUsername: req.params.username} }) 
       .then(function(foundPullRequests){
         console.log('found open pull requests');
         pullRequests = foundPullRequests.map(instance => {
