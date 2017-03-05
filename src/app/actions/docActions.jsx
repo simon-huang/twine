@@ -103,14 +103,15 @@ export function copyDoc() {
       docOwner: states.doc.docOwner,
       docName: states.doc.docName
     }
-
     axios.post('/api/doc/copyDoc', copyInfo)
     .then(function(response) {
+      console.log(response.data)
       dispatch({
         type: 'RETRIEVE_DOC',
         payload: response.data
       })
       dispatch({type: 'REQ_COMPLETED'});
+      browserHistory.push(`/profile/${response.data.docOwner}/${response.data.docID}`)
       dispatch(loading.toggleToast(true, 'Document saved'));
     })
     .catch(function(err) {

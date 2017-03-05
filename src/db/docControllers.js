@@ -509,7 +509,7 @@ function saveDoc(req, res, next) {
 function copyDoc(req, res, next) {
   console.log('req body ', req.body);
   // {username, username and doc name of target doc}
-  var currentUser, docOwner, targetDoc, copiedDoc;
+  var currentUser, docOwner, targetDoc, copiedDoc, pullRequests;
   var newFilepath, repo, text, index, oid, comment, commitID;
 
   if (!(req.user && req.user.username === req.body.username)) {
@@ -544,6 +544,20 @@ function copyDoc(req, res, next) {
     } 
     console.log('found user ');
     currentUser = foundUser.dataValues;
+    return PullRequest.findAll({ where: {status: 'open', docName: req.body.docName, targetUsername: currentUser.username} }) 
+  })
+  .then(function(foundPullRequests){
+    pullRequests = foundPullRequests.map(instance => {
+      return {
+        docOwner: instance.dataValues.targetUsername, 
+        username: instance.dataValues.requesterName, 
+        docName: instance.dataValues.docName,  
+        collaboratorMessage: instance.dataValues.collaboratorMessage, 
+        mergeStatus: instance.dataValues.status, 
+        commitID: instance.dataValues.commitId, 
+        ownerMessage: ''
+      }
+    });
     // make sure the user doesn't already have a doc with the same name
     return Doc.findOne({ where: {name: req.body.docName, userID: currentUser.id} }) 
   })
@@ -642,7 +656,8 @@ function copyDoc(req, res, next) {
                 commitMessage: madeDocVersion.dataValues.commitMessage
               }],
               currentCommit: commitID,
-              originOwner: docOwner.username
+              originOwner: docOwner.username,
+              pullRequests: pullRequests
             });
           })
         })
