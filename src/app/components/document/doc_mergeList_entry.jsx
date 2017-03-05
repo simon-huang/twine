@@ -13,7 +13,6 @@ export class DocMergeListEntry extends React.Component {
 
   openMerge(e) {
     e.preventDefault();
-    // browserHistory.push(`/profile/${this.props.docData.docOwner}/${this.props.docData.docID}`);
   }
 
   displayMergeRequest(e) {
@@ -34,6 +33,3 @@ export class DocMergeListEntry extends React.Component {
 };
 
 export default connect(state => state)(DocMergeListEntry);
-
-
-        

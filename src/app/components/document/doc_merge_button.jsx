@@ -34,5 +34,3 @@ export class DocMergeButton extends React.Component {
 };
 
 export default connect(state => state)(DocMergeButton);
-
-
