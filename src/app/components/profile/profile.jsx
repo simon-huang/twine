@@ -21,16 +21,26 @@ export class Profile extends React.Component {
     this.state = {
       ready: false
     }
+    this.returnUrlParams = this.returnUrlParams.bind(this);
   }
   
   componentWillMount() {
     this.setState({ready: false});
-    this.props.dispatch(allDoc.retrieveAllDocs());
+    var params = this.returnUrlParams();
+    console.log('PARAMS.USERNAME  ', params.username);
+    this.props.dispatch(allDoc.retrieveProfileDocs(params.username));
   }
   
   componentWillReceiveProps(nextProps) {
-    console.log('ready is ', !nextProps.loading);
-    this.setState({ready: !nextProps.loading});
+    console.log('ready is ', !nextProps.loading.async);
+    this.setState({ready: !nextProps.loading.async});
+  }
+  
+  returnUrlParams() {
+    var path = this.props.location.pathname;
+    var splitPath = path.split(/[\\\/]/);
+    const username = splitPath[splitPath.length - 1];
+    return {username}
   }
 
   tabChange(tab) {
