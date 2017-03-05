@@ -4,19 +4,10 @@ import { connect } from 'react-redux';
 import DocMergeListEntry from './doc_mergeList_entry.jsx';
 import DocMerge from './doc_merge.jsx'
 
-import * as merge from './../../actions/mergeActions.jsx';
-
 export class DocMergeList extends React.Component {
   constructor(props) {
     super(props);
-    // this.displayMergeRequest = this.displayMergeRequest.bind(this);
   }
-
-  // displayMergeRequest(e) {
-  //   e.preventDefault();
-  //   console.log('going to merge req');
-  //   this.props.dispatch(merge.displayMerge();
-  // }
 
   render() {
     if (!this.props.merge.displayMergeRequest) {
