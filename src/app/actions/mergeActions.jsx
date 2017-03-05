@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
+
 import * as doc from './docActions.jsx';
+import * as loading from './loadingActions.jsx';
 
 
 export function handleChange(name, value) {
@@ -44,7 +46,7 @@ export function validateMerge () {
       if (response.data) {
         dispatch(showMergeMenu());
       } else {
-        //update message for toast
+        dispatch(loading.toggleToast(true, 'No changes to submit merge'));
       }
     });
   }
