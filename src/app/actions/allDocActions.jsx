@@ -17,7 +17,6 @@ export function retrieveAllDocs () {
     dispatch({type:'REQ_STARTED'});
     axios.get('/api/doc/allDocs')
     .then((response) => {
-      console.log('response.data', response.data.allDocuments);
       dispatch({
         type: 'EDIT_ALLDOCUMENTS',
         payload: response.data.allDocuments
