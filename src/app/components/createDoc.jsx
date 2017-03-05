@@ -19,7 +19,6 @@ export class CreateDoc extends React.Component {
 
   createDocSubmit() {
     this.props.dispatch(create.createDocument());
-    browserHistory.push(`/profile/${this.props.user.username}`);
   }
 
   componentWillMount() {
