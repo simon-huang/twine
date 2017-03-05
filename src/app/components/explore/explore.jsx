@@ -23,8 +23,7 @@ export class Explore extends React.Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    console.log('ready is ', !nextProps.loading);
-    this.setState({ready: !nextProps.loading});
+    this.setState({ready: !nextProps.loading.async});
   }
 
   render() {
