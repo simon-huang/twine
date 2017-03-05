@@ -8,7 +8,7 @@ export class Doc_contents extends React.Component {
 
   render() {
     return (
-      <div dangerouslySetInnerHTML={{'__html': this.props.doc.masterHtml}} />
+      <div className="doc-viewing" dangerouslySetInnerHTML={{'__html': this.props.doc.masterHtml}} />
     );
   }
 }

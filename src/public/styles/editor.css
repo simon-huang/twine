@@ -1,9 +1,3 @@
-.rdw-editor-main html, .rdw-editor-main body, .rdw-editor-main div, .rdw-editor-main span, .rdw-editor-main applet, .rdw-editor-main object, .rdw-editor-main iframe, .rdw-editor-main p, .rdw-editor-main blockquote, .rdw-editor-main pre, .rdw-editor-main a, .rdw-editor-main abbr, .rdw-editor-main acronym, .rdw-editor-main address, .rdw-editor-main big, .rdw-editor-main cite, .rdw-editor-main code, .rdw-editor-main del, .rdw-editor-main dfn, .rdw-editor-main em, .rdw-editor-main img, .rdw-editor-main ins, .rdw-editor-main kbd, .rdw-editor-main q, .rdw-editor-main s, .rdw-editor-main samp, .rdw-editor-main small, .rdw-editor-main strike, .rdw-editor-main strong, .rdw-editor-main sub, .rdw-editor-main sup, .rdw-editor-main tt, .rdw-editor-main var, .rdw-editor-main b, .rdw-editor-main u, .rdw-editor-main i, .rdw-editor-main center, .rdw-editor-main dl, .rdw-editor-main dt, .rdw-editor-main dd, .rdw-editor-main ol, .rdw-editor-main ul, .rdw-editor-main li, .rdw-editor-main fieldset, .rdw-editor-main form, .rdw-editor-main label, .rdw-editor-main legend, .rdw-editor-main table, .rdw-editor-main caption, .rdw-editor-main tbody, .rdw-editor-main tfoot, .rdw-editor-main thead, .rdw-editor-main tr, .rdw-editor-main th, .rdw-editor-main td, .rdw-editor-main article, .rdw-editor-main aside, .rdw-editor-main canvas, .rdw-editor-main details, .rdw-editor-main embed, .rdw-editor-main figure, .rdw-editor-main figcaption, .rdw-editor-main footer, .rdw-editor-main header, .rdw-editor-main hgroup, .rdw-editor-main menu, .rdw-editor-main nav, .rdw-editor-main output, .rdw-editor-main ruby, .rdw-editor-main section, .rdw-editor-main summary, .rdw-editor-main time, .rdw-editor-main mark, .rdw-editor-main audio, .rdw-editor-main video {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
 .rdw-option-wrapper {
   border: 1px solid #C6C6C6;
   padding: 5px;

@@ -78,7 +78,7 @@ export class Doc extends React.Component {
   }
 
   copyDocument() {
-    this.props.dispatch(loading.toggleToast(true, 'Document copied! And its super'));
+    this.props.dispatch(loading.toggleToast(true, 'Document copied'));
     // this.props.dispatch(doc.copyDoc());
     // browserHistory.push('/doc');
   }
