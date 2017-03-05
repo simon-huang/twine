@@ -112,7 +112,7 @@ export function copyDoc() {
       })
       dispatch({type: 'REQ_COMPLETED'});
       browserHistory.push(`/profile/${response.data.docOwner}/${response.data.docID}`)
-      dispatch(loading.toggleToast(true, 'Document saved'));
+      dispatch(loading.toggleToast(true, 'Document copied!'));
     })
     .catch(function(err) {
       dispatch({type: 'REQ_ERROR'});
