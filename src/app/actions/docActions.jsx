@@ -119,3 +119,5 @@ export function loadDocInfo(data) {
     dispatch(handleChange('pullRequests', data.pullRequests));
   }
 }
+
+
