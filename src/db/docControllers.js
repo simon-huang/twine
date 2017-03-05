@@ -544,20 +544,6 @@ function copyDoc(req, res, next) {
     } 
     console.log('found user ');
     currentUser = foundUser.dataValues;
-    return PullRequest.findAll({ where: {status: 'open', docName: req.body.docName, targetUsername: currentUser.username} }) 
-  })
-  .then(function(foundPullRequests){
-    pullRequests = foundPullRequests.map(instance => {
-      return {
-        docOwner: instance.dataValues.targetUsername, 
-        username: instance.dataValues.requesterName, 
-        docName: instance.dataValues.docName,  
-        collaboratorMessage: instance.dataValues.collaboratorMessage, 
-        mergeStatus: instance.dataValues.status, 
-        commitID: instance.dataValues.commitId, 
-        ownerMessage: ''
-      }
-    });
     // make sure the user doesn't already have a doc with the same name
     return Doc.findOne({ where: {name: req.body.docName, userID: currentUser.id} }) 
   })
@@ -657,7 +643,7 @@ function copyDoc(req, res, next) {
               }],
               currentCommit: commitID,
               originOwner: docOwner.username,
-              pullRequests: pullRequests
+              pullRequests: []
             });
           })
         })
