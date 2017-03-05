@@ -22,7 +22,6 @@ export function createDocument() {
     };
     axios.post('/api/doc/createDoc', createRequestInfo)
     .then(function(data){
-      console.log('DATA.DATA', data.data);
       data = data.data;
       dispatch({
         type: 'RETRIEVE_DOC',
@@ -31,7 +30,6 @@ export function createDocument() {
       return data;
     })
     .then(function(data){
-      console.log('DATA', data);
       browserHistory.push("/editdoc");
       dispatch(loading.toggleToast(true, `${data.docName} created!`));
     })
