@@ -31,6 +31,7 @@ import Toast from '../modals/snackbar.jsx';
 // Actions
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 import * as doc from './../../actions/docActions.jsx';
+import * as merge from './../../actions/mergeActions.jsx';
 import * as loading from './../../actions/loadingActions.jsx';
 
 export class Doc extends React.Component {
@@ -50,6 +51,7 @@ export class Doc extends React.Component {
     this.setState({ready: false});
     var params = this.returnUrlParams();
     this.props.dispatch(doc.retrieveSpecificDoc(params.username, params.docID));
+    this.props.dispatch(merge.displayMergeFalse());
   }
 
   componentWillReceiveProps(nextProps) {

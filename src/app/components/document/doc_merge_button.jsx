@@ -21,7 +21,7 @@ export class DocMergeButton extends React.Component {
   }
 
   render() {
-    if (this.props.doc.originOwner !== this.props.user.username) {
+    if (this.props.doc.originOwner !== null) {
       return (
         <button className="btn btn-success merge_request" onClick={this.showMergeMenu}>Merge</button>
       );

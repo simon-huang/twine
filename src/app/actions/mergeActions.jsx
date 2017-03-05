@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
 import * as doc from './docActions.jsx';
+
 
 export function handleChange(name, value) {
   return {
@@ -51,5 +53,54 @@ export function validateMerge () {
 export function displayMerge () {
   return {
     type: "TOGGLE_DISPLAYMERGEREQUEST"
+  }
+}
+
+export function displayMergeFalse () {
+  return {
+    type: "TOGGLE_DISPLAYMERGEREQUEST_FALSE"
+  }
+}
+
+export function reviewPullRequest (data) {
+  return (dispatch, getState) => {
+    // console.log('COMMITID OUTBOUND', data);
+    axios.post('/api/doc/reviewPullRequest', {commitID: data})
+    .then(function(response) {
+      response = response.data
+      dispatch(doc.handleChange('originContent', response.originContent));
+      dispatch(doc.handleChange('diffContent', response.diffContent));
+      dispatch(editMergeDiff());
+      dispatch(displayMerge());
+    })
+  }
+}
+
+
+export function editMergeDiff() {
+  return (dispatch, getState) => {
+    var states = getState();
+
+    // Convert master HTML back into EditorState
+    const blocksFromHTML = convertFromHTML(states.merge.diffHtml);
+    const contentState = ContentState.createFromBlockArray(blocksFromHTML);
+    const editorState = EditorState.createWithContent(contentState);
+
+    console.log('states.doc.masterHtml', states.doc.masterHtml);
+    console.log('contentState', convertToRaw(contentState));
+
+    dispatch({
+      type: "POPULATE_MERGE_EDITOR",
+      payload: {
+        editorState: editorState,
+      }
+    });
+  }
+}
+
+export function editingDiff(value) {
+  return {
+    type: "EDIT_DIFF_CONTENT",
+    payload: value
   }
 }

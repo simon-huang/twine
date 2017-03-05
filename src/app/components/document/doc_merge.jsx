@@ -14,6 +14,7 @@ import MergeReview from './doc_merge_review.jsx';
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
 import * as docSummary from './../../actions/docSummaryActions.jsx';
+import * as merge from '../../actions/mergeActions.jsx';
 
 export class Doc_merge extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ export class Doc_merge extends React.Component {
     this.submitMergeComment = this.submitMergeComment.bind(this);
     this.switchSplitOrUnified = this.switchSplitOrUnified.bind(this);
     this.editMerge = this.editMerge.bind(this);
+    this.mergeRequestList = this.mergeRequestList.bind(this);
   }
 
   componentWillMount() {    
@@ -51,6 +53,11 @@ export class Doc_merge extends React.Component {
     this.props.dispatch(doc.loadOriginalContent());
     this.props.dispatch(docSummary.editMerge())
   }
+
+  mergeRequestList() {
+    this.props.dispatch(merge.displayMerge());
+  }
+
 
   commentBox() {
     if (this.props.docSummary.reviewChanges.acceptComments) {
@@ -88,6 +95,7 @@ export class Doc_merge extends React.Component {
             <div className="row title-container mt10">
               <div className="col-sm-12">
                 <div className="doc-merge-details">
+                  <button onClick={this.mergeRequestList}>Return to list</button>
                   <p>franklinjjeng wants to merge changes into this document : “Adding results section with data analysis”</p>
                 </div>
               </div>  

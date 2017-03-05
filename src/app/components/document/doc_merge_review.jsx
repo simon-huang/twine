@@ -8,12 +8,13 @@ import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, co
 
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
+import * as merge from '../../actions/mergeActions.jsx';
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 
 class DocMergeReview extends React.Component {
   constructor(props) {
     super(props);
-    this.editingDoc = this.editingDoc.bind(this);
+    this.editingDiff = this.editingDiff.bind(this);
     this.createHTML = this.createHTML.bind(this);
     this.editMode = this.editMode.bind(this);
     this.splitView = this.splitView.bind(this);
@@ -21,6 +22,7 @@ class DocMergeReview extends React.Component {
 
   componentWillUnmount() {
     this.props.dispatch(docSummary.turnOffEdits());
+    // this.props.dispatch(merge.editMergeDiff());
   }
 
   createHTML(contents) {
@@ -28,8 +30,8 @@ class DocMergeReview extends React.Component {
     this.props.dispatch(doc.createHTML(html));
   }
 
-  editingDoc(editorState) {
-    this.props.dispatch(doc.editingDoc(editorState));
+  editingDiff(editorState) {
+    this.props.dispatch(merge.editingDiff(editorState));
   }
 
   splitView() {
@@ -64,11 +66,11 @@ class DocMergeReview extends React.Component {
   editMode() {
     if (this.props.docSummary.editMerge) {
       return (
-        <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
+        <Editor editorState={this.props.merge.diffObject} onEditorStateChange={this.editingDiff} onContentStateChange={this.createHTML} />
       )
     } else {
       return (
-        <div className="split-document" dangerouslySetInnerHTML={{'__html': this.props.doc.masterHtml}}></div>
+        <div className="split-document" dangerouslySetInnerHTML={{'__html': this.props.merge.diffHtml}}></div>
       )
     }
   }

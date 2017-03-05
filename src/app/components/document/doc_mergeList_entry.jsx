@@ -14,12 +14,11 @@ export class DocMergeListEntry extends React.Component {
   openMerge(e) {
     e.preventDefault();
     // browserHistory.push(`/profile/${this.props.docData.docOwner}/${this.props.docData.docID}`);
-    console.log('opening merge req');
   }
 
   displayMergeRequest(e) {
     e.preventDefault();
-    this.props.dispatch(merge.displayMerge());
+    this.props.dispatch(merge.reviewPullRequest(this.props.prInfo.commitID));
   }
 
   render() {
