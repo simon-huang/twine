@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 import * as doc from './docActions.jsx';
+import * as loading from './loadingActions.jsx';
 
 export function handleCreateChange(name, value) {
   return {
@@ -21,7 +23,18 @@ export function createDocument() {
     axios.post('/api/doc/createDoc', createRequestInfo)
     .then(function(data){
       data = data.data;
-      dispatch(doc.loadDocInfo(data));
+      dispatch({
+        type: 'RETRIEVE_DOC',
+        payload: data
+      })
+      return data;
+    })
+    .then(function(data){
+      browserHistory.push("/editdoc");
+      dispatch(loading.toggleToast(true, `${data.docName} created!`));
+    })
+    .catch(function(err) {
+      console.log(err);
     });
   }
 }

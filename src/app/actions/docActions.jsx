@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
+import { browserHistory } from 'react-router';
 
 export function handleChange(name, value) {
   return {
@@ -26,6 +27,7 @@ export function retrieveSpecificDoc (username, docID) {
   }
 }
 
+
 export function loadOriginalContent() {
   return (dispatch, getState) => {
     var states = getState();
@@ -35,8 +37,8 @@ export function loadOriginalContent() {
     const contentState = ContentState.createFromBlockArray(blocksFromHTML);
     const editorState = EditorState.createWithContent(contentState);
 
-    console.log('states.doc.masterHtml', states.doc.masterHtml);
-    console.log('contentState', convertToRaw(contentState));
+    // console.log('states.doc.masterHtml', states.doc.masterHtml);
+    // console.log('contentState', convertToRaw(contentState));
 
     dispatch({
       type: "POPULATE_EDITOR",
@@ -117,3 +119,5 @@ export function loadDocInfo(data) {
     dispatch(handleChange('pullRequests', data.pullRequests));
   }
 }
+
+

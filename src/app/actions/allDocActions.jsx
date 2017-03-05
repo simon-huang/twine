@@ -10,17 +10,46 @@ export function openDoc(docRequest) {
       dispatch(doc.loadDocInfo(data));
     });
   }
-} 
+}
 
 export function retrieveAllDocs () {
   return function(dispatch, getState) {
+    dispatch({type:'REQ_STARTED'});
     axios.get('/api/doc/allDocs')
     .then((response) => {
-      dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
+      dispatch({
+        type: 'EDIT_ALLDOCUMENTS',
+        payload: response.data.allDocuments
+      })
+      dispatch({type: 'REQ_COMPLETED'});
     })
     .catch((err) => {
-      dispatch(authReject(err));
+      dispatch({type: 'REQ_ERROR'});
     })
   }
 }
 
+export function retrieveProfileDocs (username) {
+  return function(dispatch, getState) {
+    dispatch({type:'REQ_STARTED'});
+    axios.get(`/api/profile/${username}`)
+    .then((response) => {
+      dispatch({
+        type: 'EDIT_OWNEDDOCS',
+        payload: response.data.userDocuments.owned
+      }) 
+      dispatch({
+        type: 'EDIT_CONTRIBUTINGDOCS',
+        payload: response.data.userDocuments.contributing
+      }) 
+      dispatch({
+        type: 'EDIT_ASSOCIATEDDOCS',
+        payload: response.data.userDocuments.both
+      })
+      dispatch({type: 'REQ_COMPLETED'});
+    })
+    .catch((err) => {
+      dispatch({type: 'REQ_ERROR'});
+    })
+  }
+}

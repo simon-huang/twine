@@ -26,7 +26,6 @@ import ForkedFrom from './forkedFrom.jsx'
 import DocMergeButton from './doc_merge_button.jsx'
 import DocCopyButton from './doc_copy_button.jsx'
 import MergeModal from './../modals/mergeModal.jsx'
-import Toast from '../modals/snackbar.jsx';
 
 // Actions
 import * as docSummary from './../../actions/docSummaryActions.jsx';
@@ -133,7 +132,6 @@ export class Doc extends React.Component {
             </div>  
           </div>
           <MergeModal />
-          <Toast />
         </div>
       );
     }

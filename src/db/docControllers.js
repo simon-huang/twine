@@ -137,7 +137,7 @@ function allDocsForUser(req, res, next) {
           currentCommit: ''
         }
       });
-      myDocsObject.both = myDocs;
+      docsObject.both = docs;
       
       docsObject.owned = docs.filter(doc => {
         return doc.parentID === null;

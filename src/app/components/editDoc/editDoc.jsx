@@ -15,6 +15,7 @@ export class EditDoc extends React.Component {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
+    this.redirectToDoc = this.redirectToDoc.bind(this);
   }
 
   componentWillMount() {
@@ -32,7 +33,7 @@ export class EditDoc extends React.Component {
 
 
   redirectToDoc() {
-    browserHistory.push('/doc');
+    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
   }
 
   render() {

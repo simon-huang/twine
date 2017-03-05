@@ -16,7 +16,7 @@ import EnsureLoggedInContainer from './components/auth/ensureLoggedInContainer.j
 import Explore from './components/explore/explore.jsx';
 
 store.subscribe(() => {
-  // console.log('store changed', store.getState());
+  console.log('store changed', store.getState());
 })
 
 export class Publishus extends React.Component {

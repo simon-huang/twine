@@ -10,7 +10,6 @@ export function autoLogin () {
             type: "AUTO_LOGIN", 
             payload: response.data.username
           });
-          dispatch(loadDocStorage(response.data));
         }
       }).catch((err) => {
         console.log('no prior auth');
@@ -63,7 +62,6 @@ export function login () {
     })
     .then((response) => {
       dispatch(userCreated(response.data));
-      dispatch(loadDocStorage(response.data));
     })
     .catch((err) => {
       dispatch(authReject(err));
@@ -81,7 +79,6 @@ export function signup () {
     })
     .then((response) => {
       dispatch(userCreated(response.data));
-      dispatch(doc.handleChange('allDocuments', response.data.allDocuments));
     })
     .catch((err) => {
       dispatch(authReject(err));
