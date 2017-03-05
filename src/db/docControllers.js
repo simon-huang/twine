@@ -16,14 +16,6 @@ var exec = require('child_process').exec;
 
 // diff
 var jsdiff = require('diff');
-function escapeHTML(s) {
-  var n = s;
-  n = n.replace(/&/g, '&amp;');
-  n = n.replace(/</g, '&lt;');
-  n = n.replace(/>/g, '&gt;');
-  n = n.replace(/"/g, '&quot;');
-  return n;
-}
 
 var filesFolder = 'documents';
 
@@ -803,7 +795,7 @@ function reviewUpstream(req, res, next) {
         result.push('<del>');
       }
 
-      result.push(escapeHTML(part.value));
+      result.push(part.value);
 
       if (part.added) {
         result.push('</ins>');
@@ -1148,7 +1140,7 @@ function reviewPullRequest(req, res, next) {
         result.push('<del>');
       }
 
-      result.push(escapeHTML(part.value));
+      result.push(part.value);
 
       if (part.added) {
         result.push('</ins>');

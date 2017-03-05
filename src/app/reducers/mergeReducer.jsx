@@ -2,7 +2,12 @@ export default function reducer(state = {
   showMergeMenu: false,
   mergeTitle: '',
   mergeMessage: '',
-  validateMerge: false, //do we need this? Or can we directly manupulate showMerge?
+  // validateMerge: false, //do we need this? Or can we directly manupulate showMerge?
+  displayMergeRequest: false,
+  // originContent: '',
+  diffHtml: '',
+  diffObject: '',
+  originHtml: '',
   error: null
 }, action) {
 
@@ -26,7 +31,45 @@ export default function reducer(state = {
         mergeMessage: action.payload
       }
     }
+    case "EDIT_DIFFCONTENT": {
+      return {
+        ...state,
+        diffHtml: action.payload
+      }
+    }
+    case "EDIT_ORIGINCONTENT": {
+      return {
+        ...state,
+        originHtml: action.payload
+      }
+    }
+    case "TOGGLE_DISPLAYMERGEREQUEST": {
+      return {
+        ...state,
+        displayMergeRequest: !state.displayMergeRequest
+      }
+    }
+    case "TOGGLE_DISPLAYMERGEREQUEST_FALSE": {
+      return {
+        ...state,
+        displayMergeRequest: false
+      }
+    }
+    case "POPULATE_MERGE_EDITOR": {
+      return {
+        ...state,
+        diffObject: action.payload.editorState,
+      }
+    }
+    case "EDIT_DIFF_CONTENT": {
+      return {
+        ...state,
+        diffObject: action.payload
+      }
+    }
+    
   }
+
 
   return state;
 }

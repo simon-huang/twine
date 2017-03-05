@@ -19,7 +19,7 @@ import BreadcrumbItem from 'react-bootstrap/lib/BreadcrumbItem';
 import DocDetails from './doc_details.jsx'
 import DocHistory from './doc_history.jsx'
 import DocMerge from './doc_merge.jsx'
-import DocMergeList from './doc_mergeList.jsx'
+import DocMergeView from './doc_mergeView.jsx'
 import DocSettings from './doc_settings.jsx'
 import ProgressBar from '../modals/progressBar.jsx';
 import ForkedFrom from './forkedFrom.jsx'
@@ -31,6 +31,7 @@ import Toast from '../modals/snackbar.jsx';
 // Actions
 import * as docSummary from './../../actions/docSummaryActions.jsx';
 import * as doc from './../../actions/docActions.jsx';
+import * as merge from './../../actions/mergeActions.jsx';
 import * as loading from './../../actions/loadingActions.jsx';
 
 export class Doc extends React.Component {
@@ -50,6 +51,7 @@ export class Doc extends React.Component {
     this.setState({ready: false});
     var params = this.returnUrlParams();
     this.props.dispatch(doc.retrieveSpecificDoc(params.username, params.docID));
+    this.props.dispatch(merge.displayMergeFalse());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -117,7 +119,7 @@ export class Doc extends React.Component {
                       <DocDetails />
                     </Tab>
                     <Tab title={"Merge Requests " + this.props.doc.pullRequests.length} eventKey="merge">
-                      <DocMergeList />
+                      <DocMergeView />
                     </Tab>
                   {/*<Tab title="History" eventKey="history">
                       <DocHistory />
