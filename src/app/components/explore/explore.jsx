@@ -27,7 +27,6 @@ export class Explore extends React.Component {
   }
 
   render() {
-    console.log('this.state.ready', this.state.ready);
     if(!this.state.ready) {
       return <ProgressBar />
     } else {

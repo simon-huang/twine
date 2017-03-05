@@ -13,9 +13,7 @@ export class DocCopyButton extends React.Component {
   }
 
   copyDocument() {
-    this.props.dispatch(loading.toggleToast(true, 'Document copied! And its super'));
-    // this.props.dispatch(doc.copyDoc());
-    // browserHistory.push('/doc');
+    this.props.dispatch(doc.copyDoc());
   }
 
   render() {

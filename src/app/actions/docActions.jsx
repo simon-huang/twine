@@ -96,6 +96,7 @@ export function saveDoc() {
 
 export function copyDoc() {
   return (dispatch, getState) => {
+    dispatch({type: 'REQ_STARTED'});
     var states = getState();
     var copyInfo = {
       username: states.user.username,
@@ -103,10 +104,18 @@ export function copyDoc() {
       docName: states.doc.docName
     }
 
-    axios.post('api/doc/copyDoc', copyInfo)
-    .then(function(data) {
-      data = data.data;
-      dispatch(loadDocInfo(data));
+    axios.post('/api/doc/copyDoc', copyInfo)
+    .then(function(response) {
+      dispatch({
+        type: 'RETRIEVE_DOC',
+        payload: response.data
+      })
+      dispatch({type: 'REQ_COMPLETED'});
+      dispatch(loading.toggleToast(true, 'Document saved'));
+    })
+    .catch(function(err) {
+      dispatch({type: 'REQ_ERROR'});
+      dispatch(loading.toggleToast(true, 'Error saving'));
     });
   }
 }
