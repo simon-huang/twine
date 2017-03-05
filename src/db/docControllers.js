@@ -509,7 +509,7 @@ function saveDoc(req, res, next) {
 function copyDoc(req, res, next) {
   console.log('req body ', req.body);
   // {username, username and doc name of target doc}
-  var currentUser, docOwner, targetDoc, copiedDoc;
+  var currentUser, docOwner, targetDoc, copiedDoc, pullRequests;
   var newFilepath, repo, text, index, oid, comment, commitID;
 
   if (!(req.user && req.user.username === req.body.username)) {
@@ -642,7 +642,8 @@ function copyDoc(req, res, next) {
                 commitMessage: madeDocVersion.dataValues.commitMessage
               }],
               currentCommit: commitID,
-              originOwner: docOwner.username
+              originOwner: docOwner.username,
+              pullRequests: []
             });
           })
         })

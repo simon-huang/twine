@@ -96,17 +96,27 @@ export function saveDoc() {
 
 export function copyDoc() {
   return (dispatch, getState) => {
+    dispatch({type: 'REQ_STARTED'});
     var states = getState();
     var copyInfo = {
       username: states.user.username,
       docOwner: states.doc.docOwner,
       docName: states.doc.docName
     }
-
-    axios.post('api/doc/copyDoc', copyInfo)
-    .then(function(data) {
-      data = data.data;
-      dispatch(loadDocInfo(data));
+    axios.post('/api/doc/copyDoc', copyInfo)
+    .then(function(response) {
+      console.log(response.data)
+      dispatch({
+        type: 'RETRIEVE_DOC',
+        payload: response.data
+      })
+      dispatch({type: 'REQ_COMPLETED'});
+      browserHistory.push(`/profile/${response.data.docOwner}/${response.data.docID}`)
+      dispatch(loading.toggleToast(true, 'Document copied!'));
+    })
+    .catch(function(err) {
+      dispatch({type: 'REQ_ERROR'});
+      dispatch(loading.toggleToast(true, 'Error saving'));
     });
   }
 }

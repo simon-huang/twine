@@ -27,12 +27,10 @@ export class Profile extends React.Component {
   componentWillMount() {
     this.setState({ready: false});
     var params = this.returnUrlParams();
-    console.log('PARAMS.USERNAME  ', params.username);
     this.props.dispatch(allDoc.retrieveProfileDocs(params.username));
   }
   
   componentWillReceiveProps(nextProps) {
-    console.log('ready is ', !nextProps.loading.async);
     this.setState({ready: !nextProps.loading.async});
   }
   
