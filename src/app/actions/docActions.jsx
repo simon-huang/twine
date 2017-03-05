@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
 import { browserHistory } from 'react-router';
+import * as loading from './loadingActions.jsx';
 
 export function handleChange(name, value) {
   return {
@@ -66,6 +67,8 @@ export function createHTML(value) {
 
 export function saveDoc() {
   return (dispatch, getState) => {
+    dispatch({type: 'REQ_STARTED'});
+
     var states = getState();
     
     dispatch(handleChange('masterHtml', states.doc.editsHtml));
@@ -81,6 +84,12 @@ export function saveDoc() {
     .then(function(data) {
       data = data.data;
       dispatch(handleChange('docCommits', data));
+      dispatch({type: 'REQ_COMPLETED'});
+      dispatch(loading.toggleToast(true, 'Document saved'));
+    })
+    .catch(function(err) {
+      dispatch({type: 'REQ_ERROR'});
+      dispatch(loading.toggleToast(true, 'Error saving'));
     })
   }
 }

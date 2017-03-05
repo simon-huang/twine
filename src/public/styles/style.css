@@ -2,7 +2,7 @@
 /*========== STYLE RESET ===========*/
 /*==================================*/
 
-html, body, div, span, applet, object, iframe,
+/*html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -19,9 +19,9 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   vertical-align: baseline;
-}
+}*/
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+/*article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
@@ -42,13 +42,13 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
+}*/
 
 /*==================================*/
 /*============= Fonts ==============*/
 /*==================================*/
 
-html, body, div, span, applet, object, iframe, p, 
+/*html, body, div, span, applet, object, iframe, p, 
 blockquote, pre, a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -75,13 +75,25 @@ h2 { font-size: 35px; line-height: 42px; }
 h3 { font-size: 25px; line-height: 30px; }
 h4 { font-size: 18px; line-height: 24px; }
 h5 { font-size: 16px; line-height: 22px; }
-h6 { font-size: 14px; line-height: 20px; }
+h6 { font-size: 14px; line-height: 20px; }*/
 
 .white { color: #ffffff; }
 .purple { color: #5F00FF; }
 .orange { color: #FEDC50; }
 .bold { font-weight: 700 !important }
 .italic { font-style: italic }
+
+/*==================================*/
+/*====== Clear Editors & Docs ======*/
+/*==================================*/
+
+/*.rdw-editor-main html, .rdw-editor-main body, .rdw-editor-main div, .rdw-editor-main span, .rdw-editor-main applet, .rdw-editor-main object, .rdw-editor-main iframe, .rdw-editor-main p, .rdw-editor-main blockquote, .rdw-editor-main pre, .rdw-editor-main a, .rdw-editor-main abbr, .rdw-editor-main acronym, .rdw-editor-main address, .rdw-editor-main big, .rdw-editor-main cite, .rdw-editor-main code, .rdw-editor-main del, .rdw-editor-main dfn, .rdw-editor-main em, .rdw-editor-main img, .rdw-editor-main ins, .rdw-editor-main kbd, .rdw-editor-main q, .rdw-editor-main s, .rdw-editor-main samp, .rdw-editor-main small, .rdw-editor-main strike, .rdw-editor-main strong, .rdw-editor-main sub, .rdw-editor-main sup, .rdw-editor-main tt, .rdw-editor-main var, .rdw-editor-main b, .rdw-editor-main u, .rdw-editor-main i, .rdw-editor-main center, .rdw-editor-main dl, .rdw-editor-main dt, .rdw-editor-main dd, .rdw-editor-main ol, .rdw-editor-main ul, .rdw-editor-main li, .rdw-editor-main fieldset, .rdw-editor-main form, .rdw-editor-main label, .rdw-editor-main legend, .rdw-editor-main table, .rdw-editor-main caption, .rdw-editor-main tbody, .rdw-editor-main tfoot, .rdw-editor-main thead, .rdw-editor-main tr, .rdw-editor-main th, .rdw-editor-main td, .rdw-editor-main article, .rdw-editor-main aside, .rdw-editor-main canvas, .rdw-editor-main details, .rdw-editor-main embed, .rdw-editor-main figure, .rdw-editor-main figcaption, .rdw-editor-main footer, .rdw-editor-main header, .rdw-editor-main hgroup, .rdw-editor-main menu, .rdw-editor-main nav, .rdw-editor-main output, .rdw-editor-main ruby, .rdw-editor-main section, .rdw-editor-main summary, .rdw-editor-main time, .rdw-editor-main mark, .rdw-editor-main audio, .rdw-editor-main video {
+  
+}
+
+.doc-viewing html, .doc-viewing body, .doc-viewing div, .doc-viewing span, .doc-viewing applet, .doc-viewing object, .doc-viewing iframe, .doc-viewing p, .doc-viewing blockquote, .doc-viewing pre, .doc-viewing a, .doc-viewing abbr, .doc-viewing acronym, .doc-viewing address, .doc-viewing big, .doc-viewing cite, .doc-viewing code, .doc-viewing del, .doc-viewing dfn, .doc-viewing em, .doc-viewing img, .doc-viewing ins, .doc-viewing kbd, .doc-viewing q, .doc-viewing s, .doc-viewing samp, .doc-viewing small, .doc-viewing strike, .doc-viewing strong, .doc-viewing sub, .doc-viewing sup, .doc-viewing tt, .doc-viewing var, .doc-viewing b, .doc-viewing u, .doc-viewing i, .doc-viewing center, .doc-viewing dl, .doc-viewing dt, .doc-viewing dd, .doc-viewing ol, .doc-viewing ul, .doc-viewing li, .doc-viewing fieldset, .doc-viewing form, .doc-viewing label, .doc-viewing legend, .doc-viewing table, .doc-viewing caption, .doc-viewing tbody, .doc-viewing tfoot, .doc-viewing thead, .doc-viewing tr, .doc-viewing th, .doc-viewing td, .doc-viewing article, .doc-viewing aside, .doc-viewing canvas, .doc-viewing details, .doc-viewing embed, .doc-viewing figure, .doc-viewing figcaption, .doc-viewing footer, .doc-viewing header, .doc-viewing hgroup, .doc-viewing menu, .doc-viewing nav, .doc-viewing output, .doc-viewing ruby, .doc-viewing section, .doc-viewing summary, .doc-viewing time, .doc-viewing mark, .doc-viewing audio, .doc-viewing video {
+  
+}*/
 
 /*==================================*/
 /*============ Styling =============*/
