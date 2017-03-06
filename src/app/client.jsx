@@ -19,11 +19,15 @@ store.subscribe(() => {
   console.log('store changed', store.getState());
 })
 
+function createElement(Component, props) {
+  return <Component key={`RouteComponent-${props.location.pathname}`} {...props} />;
+}
+
 export class Publishus extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Router history={browserHistory}>
+        <Router history={browserHistory} createElement={createElement}>
           <Route component={App}>
             <Route path="/" component={Home}/>
             <Route path="login" component={Login}/>
