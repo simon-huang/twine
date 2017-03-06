@@ -25,6 +25,7 @@ export class Doc_merge extends React.Component {
     this.switchSplitOrUnified = this.switchSplitOrUnified.bind(this);
     this.editMerge = this.editMerge.bind(this);
     this.mergeRequestList = this.mergeRequestList.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {    
@@ -33,6 +34,11 @@ export class Doc_merge extends React.Component {
 
   reviewChanges(e) {
     this.props.dispatch(docSummary.reviewChanges(e));
+
+    // send out
+    // commitID: this.props.doc.currentCommit
+    // ownerMessage: 
+    // mergeStatus: accept/decline
   }
 
   cancelComment() {
@@ -58,6 +64,11 @@ export class Doc_merge extends React.Component {
     this.props.dispatch(merge.displayMerge());
   }
 
+  handleChange(e) {
+    e.preventDefault();
+    this.props.dispatch(doc.handleChange(e.target.name, e.target.value));
+  }
+
 
   commentBox() {
     if (this.props.docSummary.reviewChanges.acceptComments) {
@@ -66,7 +77,7 @@ export class Doc_merge extends React.Component {
           <div onClick={this.cancelComment} className="btn-exit">x</div>
           <h5 className="mb10">Accept with comments</h5>
           <form onSubmit={this.submitMergeComment}>
-            <textarea name="mergeComment" placeholder="Add a comment for this merge"/>
+            <textarea onChange={this.handleChange} type="text" value={this.props.merge.ownerMergeMessage} name="ownerMergeMessage" placeholder="Add a comment for this merge" />
             <input className="btn-purple" type="submit" value="Accept and send" />
             <div onClick={this.cancelComment} className="btn-cancel text-right">cancel</div>
           </form>
@@ -78,7 +89,7 @@ export class Doc_merge extends React.Component {
           <div onClick={this.cancelComment} className="btn-exit">x</div>
           <h5 className="mb10">Decline with comments</h5>
           <form onSubmit={this.submitMergeComment}>
-            <textarea name="mergeComment" placeholder="Add a decline comment"/>
+            <textarea onChange={this.handleChange} type="text" value={this.props.merge.ownerMergeMessage} name="ownerMergeMessage" placeholder="Add a decline comment" />
             <input className="btn-purple" type="submit" value="Decline and send" />
             <div onClick={this.cancelComment} className="btn-cancel text-right">cancel</div>
           </form>

@@ -36,3 +36,9 @@ export function reviewChanges (dropdownSelect) {
     payload: dropdownSelect
   }
 }
+
+export function resetReviewChanges() {
+  return {
+    type: "RESET_REVIEW_CHANGES"
+  }
+}

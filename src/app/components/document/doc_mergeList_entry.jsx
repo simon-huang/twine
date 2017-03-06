@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
 import * as merge from './../../actions/mergeActions.jsx';
+import * as doc from './../../actions/docActions.jsx';
+import * as docSummary from './../../actions/docSummaryActions.jsx';
 
 export class DocMergeListEntry extends React.Component {
   constructor(props) {
     super(props);
-    this.openMerge = this.openMerge.bind(this);
     this.displayMergeRequest = this.displayMergeRequest.bind(this);
-  }
-
-  openMerge(e) {
-    e.preventDefault();
   }
 
   displayMergeRequest(e) {
     e.preventDefault();
+    this.props.dispatch(doc.handleChange('OWNERMERGEMESSAGE', ''));
+    this.props.dispatch(docSummary.resetReviewChanges());
     this.props.dispatch(merge.reviewPullRequest(this.props.prInfo.commitID));
   }
 
