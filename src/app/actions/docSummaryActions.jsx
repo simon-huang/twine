@@ -43,7 +43,8 @@ export function actionPullRequest (info) {
   return (dispatch, getState) => {
     axios.post('/api/doc/actionPullRequest', info)
     .then(function(response) {
-      console.log('action taken on PR', response.data);
+      // dependent on how we handle error handling, toast message should change
+      dispatch(loading.toggleToast(true, 'Merge successful!'));
     });
   }
 }
