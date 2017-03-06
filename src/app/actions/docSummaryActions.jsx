@@ -41,9 +41,9 @@ export function reviewChanges (dropdownSelect) {
 
 export function actionPullRequest (info) {
   return (dispatch, getState) => {
-    axios.post('api/doc/actionPullRequest', info)
+    axios.post('/api/doc/actionPullRequest', info)
     .then(function(response) {
-      console.log('action taken on PR');
+      console.log('action taken on PR', response.data);
     });
   }
 }

@@ -9,6 +9,7 @@ export default function reducer(state = {
   diffObject: '',
   originHtml: '',
   ownerMergeMessage: '',
+  mergeCommitID: '',
   error: null
 }, action) {
 
@@ -48,6 +49,12 @@ export default function reducer(state = {
       return {
         ...state,
         ownerMergeMessage: action.payload
+      }
+    }
+    case "EDIT_MERGECOMMITID": {
+      return {
+        ...state,
+        mergeCommitID: action.payload
       }
     }
     case "TOGGLE_DISPLAYMERGEREQUEST": {

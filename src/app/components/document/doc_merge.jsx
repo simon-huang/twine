@@ -45,7 +45,7 @@ export class Doc_merge extends React.Component {
     console.log('merge comment!', e.target.name);
 
     var actionPRInfo = {
-      commitID: this.props.doc.currentCommit,
+      commitID: this.props.merge.mergeCommitID,
       ownerMessage: this.props.merge.ownerMergeMessage,
       mergeStatus: 'accept'
     }
