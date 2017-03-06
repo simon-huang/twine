@@ -12,7 +12,6 @@ export class DocMergeButton extends React.Component {
 
   showMergeMenu() {
     this.props.dispatch(merge.validateMerge());
-    // this.props.dispatch(merge.showMergeMenu());
   }
 
   handleChange(e) {
