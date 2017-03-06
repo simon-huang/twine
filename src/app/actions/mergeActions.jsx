@@ -46,7 +46,7 @@ export function validateMerge () {
       if (response.data) {
         dispatch(showMergeMenu());
       } else {
-        dispatch(loading.toggleToast(true, 'No changes to submit merge'));
+        dispatch(loading.toggleToast(true, 'Nothing new to merge'));
       }
     });
   }
