@@ -29,7 +29,11 @@ export function mergeDocument() {
       collaboratorMessage: states.merge.mergeTitle,
       commitID: states.doc.currentCommit
     }
-    axios.post('/api/doc/requestMerge', mergeRequest);
+    axios.post('/api/doc/requestMerge', mergeRequest)
+    .then(function(response) {
+      dispatch(showMergeMenu());
+      dispatch(loading.toggleToast(true, 'Merge request submitted!'));
+    });
   }
 }
 
@@ -87,9 +91,6 @@ export function editMergeDiff() {
     const blocksFromHTML = convertFromHTML(states.merge.diffHtml);
     const contentState = ContentState.createFromBlockArray(blocksFromHTML);
     const editorState = EditorState.createWithContent(contentState);
-
-    console.log('states.doc.masterHtml', states.doc.masterHtml);
-    console.log('contentState', convertToRaw(contentState));
 
     dispatch({
       type: "POPULATE_MERGE_EDITOR",
