@@ -8,12 +8,19 @@ import * as allDoc from '../../actions/allDocActions.jsx';
 export class ForkedFrom extends React.Component {
   constructor(props) {
     super(props);
+    this.openDoc = this.openDoc.bind(this);
+  }
+
+  openDoc(e) {
+    e.preventDefault();
+    browserHistory.push(`/profile/${this.props.doc.originOwner}/${this.props.doc.parentID}`);
   }
 
   render() {
     if (this.props.doc.originOwner) {
       return (
-        <div>Forked from: {this.props.doc.originOwner}
+        <div>
+          <span>Copied from: <a onClick={this.openDoc}>{`${this.props.doc.originOwner} / ${this.props.doc.docName}`}</a></span>
         </div>
       );
     } else {

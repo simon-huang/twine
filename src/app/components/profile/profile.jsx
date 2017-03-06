@@ -22,6 +22,7 @@ export class Profile extends React.Component {
       ready: false
     }
     this.returnUrlParams = this.returnUrlParams.bind(this);
+    this.profileOwner = this.profileOwner.bind(this);
   }
   
   componentWillMount() {
@@ -37,7 +38,7 @@ export class Profile extends React.Component {
   returnUrlParams() {
     var path = this.props.location.pathname;
     var splitPath = path.split(/[\\\/]/);
-    const username = splitPath[splitPath.length - 1];
+    var username = splitPath[splitPath.length - 1];
     return {username}
   }
 
@@ -45,20 +46,33 @@ export class Profile extends React.Component {
     this.props.dispatch(user.tabChange(tab));
   }
 
+  profileOwner() {
+    var yourProfile = true;
+    var profileOwner = this.returnUrlParams().username;
+    if (profileOwner !== this.props.user.username) {
+      yourProfile = false
+    };
+    return yourProfile;
+  }
+
   render() {
+    var yourProfile = this.profileOwner();
+    var profileOwner = this.returnUrlParams().username;
+    console.log('profileOwner ', profileOwner);
+    console.log('yourProfile ', yourProfile);
     if(!this.state.ready) {
       return <ProgressBar />
     } else { 
       return (
         <div className="container mt20 profile">
-          <h4 className="mt10 mb20 bold">Your documents</h4>
+          {yourProfile ? <h4 className="mt10 mb20 bold">Your documents</h4> : <h4 className="mt10 mb20 bold">{profileOwner}&#39;s documents</h4>}
             <div className="row doc-tabs">
               <div className="col-sm-12">
                 <Tabs defaultActiveKey={this.props.user.currentTab} onChange={this.tabChange} id="docTabs">
                   <Tab title="All docs" eventKey="all" >
                     <ProfileDocuments tab={'All docs'} docList={this.props.allDoc.associatedDocs}/>
                   </Tab>
-                  <Tab title="Owned by me" eventKey="owned" >
+                  <Tab title={yourProfile ? "Owned by me" : "Owned"} eventKey="owned" >
                     <ProfileDocuments tab={'Owned by me'} docList={this.props.allDoc.ownedDocs}/>
                   </Tab>
                   <Tab title="Contributing to" eventKey="contrib">
