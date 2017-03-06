@@ -25,6 +25,7 @@ export class Doc_merge extends React.Component {
     this.switchSplitOrUnified = this.switchSplitOrUnified.bind(this);
     this.editMerge = this.editMerge.bind(this);
     this.mergeRequestList = this.mergeRequestList.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {    
@@ -36,12 +37,23 @@ export class Doc_merge extends React.Component {
   }
 
   cancelComment() {
-    this.props.dispatch(docSummary.cancelComment())
+    this.props.dispatch(docSummary.cancelComment());
   }
 
   submitMergeComment(e) {
     e.preventDefault();
-    console.log('merge comment!', e.target.name, e.target);
+
+    var actionPRInfo = {
+      commitID: this.props.merge.mergeCommitID,
+      ownerMessage: this.props.merge.ownerMergeMessage,
+      mergeStatus: 'accept'
+    }
+
+   if (e.target.name === 'declineMerge') {
+      actionPRInfo.mergeStatus = 'decline';
+    }
+
+    this.props.dispatch(docSummary.actionPullRequest(actionPRInfo));
   }
 
   switchSplitOrUnified(e) {
@@ -58,6 +70,11 @@ export class Doc_merge extends React.Component {
     this.props.dispatch(merge.displayMerge());
   }
 
+  handleChange(e) {
+    e.preventDefault();
+    this.props.dispatch(doc.handleChange(e.target.name, e.target.value));
+  }
+
 
   commentBox() {
     if (this.props.docSummary.reviewChanges.acceptComments) {
@@ -65,8 +82,8 @@ export class Doc_merge extends React.Component {
         <div className="merge-comment text-left">
           <div onClick={this.cancelComment} className="btn-exit">x</div>
           <h5 className="mb10">Accept with comments</h5>
-          <form onSubmit={this.submitMergeComment}>
-            <textarea name="mergeComment" placeholder="Add a comment for this merge"/>
+          <form onSubmit={this.submitMergeComment} name="acceptMerge">
+            <textarea onChange={this.handleChange} type="text" value={this.props.merge.ownerMergeMessage} name="ownerMergeMessage" placeholder="Add a comment for this merge" />
             <input className="btn-purple" type="submit" value="Accept and send" />
             <div onClick={this.cancelComment} className="btn-cancel text-right">cancel</div>
           </form>
@@ -77,8 +94,8 @@ export class Doc_merge extends React.Component {
         <div className="merge-comment text-left">
           <div onClick={this.cancelComment} className="btn-exit">x</div>
           <h5 className="mb10">Decline with comments</h5>
-          <form onSubmit={this.submitMergeComment}>
-            <textarea name="mergeComment" placeholder="Add a decline comment"/>
+          <form onSubmit={this.submitMergeComment} name="declineMerge">
+            <textarea onChange={this.handleChange} type="text" value={this.props.merge.ownerMergeMessage} name="ownerMergeMessage" placeholder="Add a decline comment" />
             <input className="btn-purple" type="submit" value="Decline and send" />
             <div onClick={this.cancelComment} className="btn-cancel text-right">cancel</div>
           </form>
@@ -116,7 +133,7 @@ export class Doc_merge extends React.Component {
                         <Button onClick={this.editMerge} bsSize="small"><i className="fa fa-pencil"></i></Button>
                       </ButtonGroup>
                       <DropdownButton onSelect={this.reviewChanges} bsSize="small" title="Review changes" id="review-merge">
-                        <MenuItem eventKey="acceptQuick">Quick Accept</MenuItem>
+                        <MenuItem eventKey="acceptQuick" name="acceptQuick" onClick={this.submitMergeComment}>Quick Accept</MenuItem>
                         <MenuItem eventKey="acceptComments">Accept with comments</MenuItem>
                         <MenuItem eventKey="declineComments">Decline with comments</MenuItem>
                       </DropdownButton>

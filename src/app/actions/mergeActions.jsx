@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { CompositeDecorator, ContentBlock, ContentState, EditorState, Entity, convertFromHTML, convertToRaw } from 'draft-js';
+
 import * as doc from './docActions.jsx';
+import * as loading from './loadingActions.jsx';
 
 
 export function handleChange(name, value) {
@@ -44,7 +46,7 @@ export function validateMerge () {
       if (response.data) {
         dispatch(showMergeMenu());
       } else {
-        //update message for toast
+        dispatch(loading.toggleToast(true, 'Nothing new to merge'));
       }
     });
   }
@@ -64,7 +66,7 @@ export function displayMergeFalse () {
 
 export function reviewPullRequest (data) {
   return (dispatch, getState) => {
-    // console.log('COMMITID OUTBOUND', data);
+    dispatch(doc.handleChange('mergeCommitID', data));
     axios.post('/api/doc/reviewPullRequest', {commitID: data})
     .then(function(response) {
       response = response.data

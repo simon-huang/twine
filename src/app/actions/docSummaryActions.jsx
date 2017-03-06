@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function switchSplitOrUnified (view) {
   return {
     type: "SWITCH_SPLIT_UNIFIED",
@@ -34,5 +36,14 @@ export function reviewChanges (dropdownSelect) {
   return {
     type: "REVIEW_CHANGES",
     payload: dropdownSelect
+  }
+}
+
+export function actionPullRequest (info) {
+  return (dispatch, getState) => {
+    axios.post('/api/doc/actionPullRequest', info)
+    .then(function(response) {
+      console.log('action taken on PR', response.data);
+    });
   }
 }
