@@ -42,7 +42,6 @@ export class Doc_merge extends React.Component {
 
   submitMergeComment(e) {
     e.preventDefault();
-    console.log('merge comment!', e.target.name);
 
     var actionPRInfo = {
       commitID: this.props.merge.mergeCommitID,
@@ -51,11 +50,9 @@ export class Doc_merge extends React.Component {
     }
 
    if (e.target.name === 'declineMerge') {
-      console.log('Declining Merge')
       actionPRInfo.mergeStatus = 'decline';
     }
 
-    console.log('actionPRInfo', actionPRInfo);
     this.props.dispatch(docSummary.actionPullRequest(actionPRInfo));
   }
 
