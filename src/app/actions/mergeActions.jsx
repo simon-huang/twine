@@ -47,10 +47,10 @@ export function validateMerge () {
     }
     axios.post('/api/doc/validateMerge', validateMergeInfo)
     .then(function(response) {
-      if (response.data) {
+      if (response.data === true) {
         dispatch(showMergeMenu());
       } else {
-        dispatch(loading.toggleToast(true, 'Nothing new to merge'));
+        dispatch(loading.toggleToast(true, response.data));
       }
     });
   }
