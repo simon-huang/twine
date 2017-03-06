@@ -64,16 +64,6 @@ export default function reducer(state = {
         return {...state, reviewChanges: {...state.reviewChanges, acceptQuick: false, acceptComments: false, declineComments: true}}
       }
     }
-    case "RESET_REVIEW_CHANGES": {
-      return {
-        ...state,
-        reviewChanges: {
-          acceptQuick: false,
-          acceptComments: false,
-          declineComments: false,
-        }
-      }
-    }
   }
 
   return state;

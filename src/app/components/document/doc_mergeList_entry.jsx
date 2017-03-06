@@ -15,7 +15,7 @@ export class DocMergeListEntry extends React.Component {
   displayMergeRequest(e) {
     e.preventDefault();
     this.props.dispatch(doc.handleChange('OWNERMERGEMESSAGE', ''));
-    this.props.dispatch(docSummary.resetReviewChanges());
+    this.props.dispatch(docSummary.cancelComment());
     this.props.dispatch(merge.reviewPullRequest(this.props.prInfo.commitID));
   }
 

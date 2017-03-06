@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export function switchSplitOrUnified (view) {
   return {
     type: "SWITCH_SPLIT_UNIFIED",
@@ -37,8 +39,11 @@ export function reviewChanges (dropdownSelect) {
   }
 }
 
-export function resetReviewChanges() {
-  return {
-    type: "RESET_REVIEW_CHANGES"
+export function actionPullRequest (info) {
+  return (dispatch, getState) => {
+    axios.post('api/doc/actionPullRequest', info)
+    .then(function(response) {
+      console.log('action taken on PR');
+    });
   }
 }
