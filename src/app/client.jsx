@@ -39,7 +39,7 @@ export class Publishus extends React.Component {
             <Route path="profile/:username/:docId" component={Doc}/>
             <Route component={EnsureLoggedInContainer}>
               <Route path="createdoc" component={CreateDoc}/>
-              <Route path="editdoc" component={EditDoc}/>
+              <Route path="profile/:username/:docId/editing" component={EditDoc}/>
               <Route path="profile/:username" component={Profile}/>
             </Route>
             <Redirect from="*" to='404' />

@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router';
 import SignUp from './auth/signUp.jsx';
 import Login from './auth/login.jsx';
 import CreateDoc from './createDoc.jsx';
-import Navbar from './navbar.jsx';
+import Navbar from './navigation/navbar.jsx';
 import Theme from 'material-ui/styles/MuiThemeProvider';
 import LoginModal from './modals/loginModal.jsx';
 import Toast from './modals/toast.jsx';

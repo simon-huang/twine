@@ -85,7 +85,7 @@ export default class Home extends React.Component {
             <FormGroup controlId="formSubmit" className="mt25">
               <input type="submit" className="btn btn-purple" label="Log in"/>
             </FormGroup>
-            <a className="btn-cancel forgot-password mt25 text-center">Forgot your password?</a>
+            {/*<a className="btn-cancel forgot-password mt25 text-center">Forgot your password?</a>*/}
           </form>
         </Modal.Body>
       </Modal>

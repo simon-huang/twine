@@ -31,7 +31,6 @@ export class EditDoc extends React.Component {
     this.props.dispatch(doc.editingDoc(editorState));
   }
 
-
   redirectToDoc() {
     browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
   }
@@ -39,9 +38,6 @@ export class EditDoc extends React.Component {
   render() {
     return (
       <div className="doc-editor">
-        <div className="title">
-          <h5 className="list-title" onClick={this.redirectToDoc}>Editing: {this.props.doc.docName}</h5>
-        </div>
         <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
         <EditDoc_details />
       </div>
