@@ -34,8 +34,6 @@ export function retrieveProfileDocs (username) {
     dispatch({type:'REQ_STARTED'});
     axios.get(`/api/profile/${username}`)
     .then((response) => {
-      console.log('profile response ==> ', response.data);
-      console.log('profile response userDocuments ==> ', response.data.userDocuments);
       dispatch({
         type: 'EDIT_OWNEDDOCS',
         payload: response.data.userDocuments.owned
