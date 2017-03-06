@@ -58,8 +58,6 @@ export class Profile extends React.Component {
   render() {
     var yourProfile = this.profileOwner();
     var profileOwner = this.returnUrlParams().username;
-    console.log('profileOwner ', profileOwner);
-    console.log('yourProfile ', yourProfile);
     if(!this.state.ready) {
       return <ProgressBar />
     } else { 
