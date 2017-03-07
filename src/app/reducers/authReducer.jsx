@@ -9,7 +9,7 @@ export default function reducer(state = {
 
   switch(action.type) { 
 
-    case "AUTO_LOGIN": {
+    case "USER_LOGIN": {
       return {
         ...state,
         login: true
