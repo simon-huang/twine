@@ -15,7 +15,7 @@ export class EditDoc extends React.Component {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
-    // this.routerWillLeave = this.routerWillLeave.bind(this);
+    this.routerWillLeave = this.routerWillLeave.bind(this);
   }
 
   componentWillMount() {
@@ -23,18 +23,17 @@ export class EditDoc extends React.Component {
     this.props.dispatch(doc.toggleEditMode());
   }
 
-  // componentDidMount() {
-  //   this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
-  // }
+  componentDidMount() {
+    this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+  }
 
-  // routerWillLeave(nextLocation) {
-  //   if (this.props.doc.editMode) {
-  //     this.props.dispatch(doc.toggleUnsavedChangesModal(nextLocation));
-  //     return false;
-  //   } else {
-  //     browserHistory.push(nextLocation);
-  //   }
-  // }
+  routerWillLeave(nextLocation) {
+    if (this.props.doc.editMode) {
+      this.props.dispatch(doc.toggleEditMode());
+      this.props.dispatch(doc.toggleUnsavedChangesModal(nextLocation.pathname));
+      return false;
+    }
+  }
 
   createHTML(contents) {
     const html = draftToHtml(contents);
