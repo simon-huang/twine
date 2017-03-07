@@ -16,6 +16,14 @@ export class EditDoc extends React.Component {
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
+
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes.';
+      if (this.props.doc.editMode) {
+        return e.returnValue
+      };
+    });
   }
 
   componentWillMount() {

@@ -48,7 +48,7 @@ export class LoggedIn extends React.Component {
       return (
         <Nav>
           <NavItem onClick={this.updatePath} eventKey={7} name={`/profile/${this.props.doc.docOwner}/${this.props.doc.docId}`}>
-            {`editing: ${this.props.doc.docName}`}
+            {this.props.doc.editMode ? `Edits made to: ${this.props.doc.docName}` : `Changes saved for ${this.props.doc.docName}`}
           </NavItem>
         </Nav>
       );
