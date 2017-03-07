@@ -25,6 +25,14 @@ export class editDocModal extends React.Component {
     e.preventDefault();
     this.props.dispatch(doc.toggleUnsavedChangesModal());
     browserHistory.push(this.props.doc.nextRouteAfterEdits);
+
+    window.removeEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes.';
+      if (this.props.doc.editMode) {
+        return e.returnValue
+      };
+    });
   }
 
   save(e) {
@@ -32,6 +40,14 @@ export class editDocModal extends React.Component {
     this.props.dispatch(doc.saveDoc());
     this.props.dispatch(doc.toggleUnsavedChangesModal());
     browserHistory.push(this.props.doc.nextRouteAfterEdits);
+
+    window.removeEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes.';
+      if (this.props.doc.editMode) {
+        return e.returnValue
+      };
+    });
   }
 
   render() {

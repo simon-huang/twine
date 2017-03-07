@@ -16,23 +16,26 @@ export class EditDoc extends React.Component {
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
     this.routerWillLeave = this.routerWillLeave.bind(this);
+    this.onUnload = this.onUnload.bind(this);
+  }
 
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      e.returnValue = 'You have unsaved changes.';
-      if (this.props.doc.editMode) {
-        return e.returnValue
-      };
-    });
+  onUnload(event) {
+    if(this.props.doc.editMode) {
+      event.returnValue = "You have unsaved changes!"
+    }
   }
 
   componentWillMount() {
     this.props.dispatch(doc.loadOriginalContent());
-    this.props.dispatch(doc.toggleEditMode());
   }
 
   componentDidMount() {
     this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+    window.addEventListener("beforeunload", this.onUnload);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.onUnload)
   }
 
   routerWillLeave(nextLocation) {
