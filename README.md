@@ -1,26 +1,19 @@
-# PublishUs
+# Twine
 
-> Simple document editing with the power of git.
-
-## Team
-
-  - __Product Owner__: Justin Mendelson
-  - __Scrum Master__: Franklin Jeng
-  - __Development Team Members__: Simon Huang, Abiy Melaku
+> Github for Documents. For additional info, [read our press release](https://github.com/bearded-artichokes/publishus/blob/master/PRESS-RELEASE.md).
 
 ## Table of Contents
 
-1. [Usage](#Usage)
+1. [Roadmap](#roadmap)
 1. [Requirements](#requirements)
 1. [Development](#development)
     1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
 1. [Contributing](#contributing)
+1. [Team](#team)
 
-## Usage
+### Roadmap
 
-> Create projects together with organization and structure. Gated process prevents overwritting changes made with each other.
+[View the project roadmap](https://github.com/bearded-artichokes/publishus/issues)
 
 ## Requirements
 
@@ -47,7 +40,7 @@ With a blank password
 
 Once inside, create a database for use
 ```
-CREATE DATABASE publishus;
+CREATE DATABASE twine;
 ```
 
 From within the root directory:
@@ -61,17 +54,22 @@ Start the server with:
 npm start
 ```
 
-Start tests with:
+Run front end tests with:
 ```
-npm test
+npm run-script testf
 ```
 
-
-### Roadmap
-
-View the project roadmap [here](https://github.com/bearded-artichokes/publishus/issues)
-
+Run back end tests with:
+```
+npm run-script testb
+```
 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## Team
+
+  - __Product Owner__: Justin Mendelson
+  - __Scrum Master__: Franklin Jeng
+  - __Development Team Members__: Simon Huang, Abiy Melaku
