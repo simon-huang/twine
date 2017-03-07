@@ -12,8 +12,7 @@ export default function reducer(state = {
     case "AUTO_LOGIN": {
       return {
         ...state,
-        login: true,
-        redirectUrl: '/profile/' + action.payload,
+        login: true
       }
     }
 
