@@ -40,6 +40,7 @@ require('./auth/passport.js')(passport);
 app.use('/api/profile', profileRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/doc', docRouter);
+// app.use('/api/doc', docRouter, errorHandler);
 
 //====================================================
 //====================================================
@@ -55,6 +56,16 @@ app.use('*', function (request, response){
   response.sendFile(path.resolve(__dirname, '../public', 'index.html'))
 })
 
+function errorHandler (err, req, res, next) {
+  if (res.headersSent) {
+    return next(err)
+  }
+  console.log('in error handler');
+  res.status(500)
+  return res.send({ error: err })
+  console.log('WHY IS THIS ALSO CALLED?');
+}
+// app.use(errorHandler);
 // spin up server
 app.listen(port, function() {
   console.log('Listening on port ', port);

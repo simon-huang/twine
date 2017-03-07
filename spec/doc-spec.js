@@ -3,7 +3,7 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'First Test';
+var testName = 'Seventh Test';
 var expect = chai.expect;
 
 xdescribe('Profile and Doc Route Tests', function() {
@@ -417,7 +417,7 @@ describe('Doc Tests', function() {
   });
 
   describe('Validate Merge', function() {
-    it('should response true if different', function(done) {
+    xit('should response true if different', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -475,7 +475,7 @@ describe('Doc Tests', function() {
         });
     });
 
-    it('should response false if same', function(done) {
+    xit('should response false if same', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -523,8 +523,89 @@ describe('Doc Tests', function() {
                               done()
                             }
                             console.log('res.text: ', res.text, res. body);
-                            expect(res.body).to.equal(false);
+                            expect(res.text).to.equal('Nothing new to merge');
                             done();
+                          });
+                      });
+                  });
+              });  
+            });
+        });
+    });
+
+    it('should response false if already an open pull request', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('sim login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/saveDoc')
+            .send({username: 'Sim', docName: testName, docContent: 'Overwriting the text a \nasdfth time', commitMessage: ''})
+            .end(function(err, res) {
+              if (res.error) {
+                console.log('update doc error ', res.error);
+                done()
+              }
+              testSession.get('/api/auth/logout')
+              .end(function(err, res) {
+                if (res.error) {
+                  console.log('sim logout error ', res.error);
+                  done()
+                }
+                testSession.post('/api/auth/login')
+                  .send({ email: 'Tim@gmail.com', password: 'Tim' })
+                  .end(function(err, res) {
+                    if (res.error) {
+                      console.log('tim login error ', res.error);
+                      done()
+                    }
+                    testSession
+                      .post('/api/doc/saveDoc')
+                      .send({username: 'Tim', docName: testName, docContent: 'Overwritasdfsagsfghing the text a \nasdfth time\n', commitMessage: ''})
+                      .end(function(err, res) {
+                        if (res.error) {
+                          console.log('tim update doc error ', res.error);
+                          done()
+                        }
+                        var latestCommit = res.body.currentCommit;
+
+                        testSession
+                          .post('/api/doc/validateMerge')
+                          .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+                          .end(function(err, res) {
+                            if (res.error) {
+                              console.log('tim request merge error ', res.error);
+                              done()
+                            }
+                            console.log('FIRST TIME IT SHOULD BE FINE', res.body);
+                            expect(res.body).to.equal(true);
+                            testSession
+                              .post('/api/doc/requestMerge')
+                              .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+                              .end(function(err, res) {
+                                if (res.error) {
+                                  console.log('tim request merge error ', res.error);
+                                  done()
+                                }
+                                expect(res.text).to.equal('Pull request sent');
+                                // console.log('res.text: ', res.text, 'Pull request sent');
+                                console.log('merge request successfully made');
+                                testSession
+                                  .post('/api/doc/validateMerge')
+                                  .send({username: 'Tim', docName: testName, collaboratorMessage: 'Helping', commitID: latestCommit})
+                                  .end(function(err, res) {
+                                    if (res.error) {
+                                      console.log('tim request merge error ', res.error);
+                                      done()
+                                    }
+                                    console.log('SECOND TIME IT SHOULD NOT WORK', res.text);
+                                    expect(res.text).to.equal('Merge request pending for these changes');
+                                    done();
+                                  });
+                              });
                           });
                       });
                   });
@@ -534,8 +615,12 @@ describe('Doc Tests', function() {
     });
   });
 
+  
+
+  
+
   xdescribe('Request Merge', function() {
-    xit('should make a merge request', function(done) {
+    it('should make a merge request', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
