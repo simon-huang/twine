@@ -51,7 +51,7 @@ export default class Home extends React.Component {
   login(e) {
     e.preventDefault();
     this.props.dispatch(auth.toggleLoginModal())
-    this.props.dispatch(auth.login());
+    this.props.dispatch(auth.modalLogin());
   }
 
   handleChange(e) {

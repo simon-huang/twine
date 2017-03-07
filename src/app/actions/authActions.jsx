@@ -6,14 +6,18 @@ export function autoLogin () {
     axios.get('/api/auth/checkAuth')
       .then((response) => {
         if (response.data.status === 'successful') {
-          dispatch({
-            type: "AUTO_LOGIN", 
-            payload: response.data.username
-          });
+          dispatch(userLogin(response.data.username));
         }
       }).catch((err) => {
         console.log('no prior auth');
       })
+  }
+}
+
+export function userLogin(username) {
+  return {
+    type: "USER_LOGIN",
+    payload: username
   }
 }
 
@@ -62,6 +66,27 @@ export function login () {
     })
     .then((response) => {
       dispatch(userCreated(response.data));
+    })
+    .catch((err) => {
+      dispatch(authReject(err));
+    })
+  }
+}
+
+export function modalLogin () {
+  return function(dispatch, getState) {
+    var user = getState().user;
+    var auth = getState().auth;
+    axios.post('/api/auth/login', {
+      email: user.email,
+      password: user.password
+    })
+    .then((response) => {
+      if (auth.redirectUrl === '' || auth.redirectUrl === '/' || auth.redirectUrl === '/signup') {
+        dispatch(userCreated(response.data));
+      } else {
+        dispatch(userLogin(response.data.username));
+      }
     })
     .catch((err) => {
       dispatch(authReject(err));
