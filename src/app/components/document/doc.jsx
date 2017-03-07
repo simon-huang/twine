@@ -32,6 +32,7 @@ import * as docSummary from './../../actions/docSummaryActions.jsx';
 import * as doc from './../../actions/docActions.jsx';
 import * as merge from './../../actions/mergeActions.jsx';
 import * as loading from './../../actions/loadingActions.jsx';
+import * as auth from './../../actions/authActions.jsx';
 
 export class Doc extends React.Component {
   constructor(props) {
@@ -70,7 +71,13 @@ export class Doc extends React.Component {
   }
 
   redirectEditDoc() {
-    browserHistory.push(`/profile/${this.props.doc.docOwner}/${this.props.doc.docId}/editing`);
+    if (this.props.doc.docOwner === this.props.user.username) {
+      browserHistory.push(`/profile/${this.props.doc.docOwner}/${this.props.doc.docId}/editing`);
+    } else if (this.props.user.username === '') {
+      this.props.dispatch(auth.toggleLoginModal());
+    }else {
+      this.props.dispatch(loading.toggleToast(true, 'Unable to edit. You don\'t own this doc!'));
+    }
   }
 
   redirectProfile() {
