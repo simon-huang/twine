@@ -3,10 +3,10 @@ import chai from 'chai';
 import session from 'supertest-session';
 import app from '../src/server/server.js';
 
-var testName = 'Seventh Test';
+var testName = 'Eighth Test';
 var expect = chai.expect;
 
-xdescribe('Profile and Doc Route Tests', function() {
+describe('Profile and Doc Route Tests', function() {
   var agent = request.agent(app);
   var testSession;
 
@@ -14,7 +14,7 @@ xdescribe('Profile and Doc Route Tests', function() {
     testSession = session(app);
   });
   // write tests trying to grab a private doc as both the correct logged in user and not
-  xdescribe('Get a doc', function() {
+  describe('Get a doc', function() {
     xit('someone else should not grab my private doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -156,7 +156,7 @@ describe('Doc Tests', function() {
   });
 
   describe('New Doc', function() {
-    xit('should make a public doc', function(done) {
+    it('should make a public doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -177,7 +177,7 @@ describe('Doc Tests', function() {
         });  
     });
 
-    it('should not make a duplicate doc', function(done) {
+    xit('should not make a duplicate doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -215,7 +215,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Save Doc', function() {
+  describe('Save Doc', function() {
     it('should work without commit message', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -255,7 +255,7 @@ describe('Doc Tests', function() {
     });
   });
   
-  xdescribe('Copy Doc', function() {
+  describe('Copy Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -278,7 +278,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Open Doc', function() {
+  describe('Open Doc', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -299,7 +299,7 @@ describe('Doc Tests', function() {
       
     });
   });
-  xdescribe('Review Upstream', function() {
+  describe('Review Upstream', function() {
     it('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Tim@gmail.com', password: 'Tim' })
@@ -320,7 +320,7 @@ describe('Doc Tests', function() {
       
     });
   });
-  xdescribe('Get Upstream', function() {
+  describe('Get Upstream', function() {
     xit('should work when there\'s no merge conflict', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -423,7 +423,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  xdescribe('Get All Docs', function() {
+  describe('Get All Docs', function() {
     it('should work', function(done) {
       testSession
         .get('/api/doc/allDocs')
@@ -435,7 +435,7 @@ describe('Doc Tests', function() {
     });
   });
 
-  describe('Validate Merge', function() {
+  xdescribe('Validate Merge', function() {
     xit('should response true if different', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
@@ -783,8 +783,25 @@ describe('Doc Tests', function() {
       
     });
   });
-  xdescribe('Review Pull Request', function() {
-    it('should work', function(done) {
+  describe('Review Pull Request', function() {
+    xit('should not work', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Tim@gmail.com', password: 'Tim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/reviewPullRequest')
+            .send({commitID: '8dfbfd623f4813c7d6003fc8f04671d455e2d09d'})
+            .end(function(err, res) {
+              expect(res.text).to.equal('You are not logged in at that username');
+              done();
+            });
+        });
+    });
+    xit('should work', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -794,9 +811,9 @@ describe('Doc Tests', function() {
           }
           testSession
             .post('/api/doc/reviewPullRequest')
-            .send({commitID: 'bd60c99fdf6b0ea3d52f3946030b9bccd5913033'})
+            .send({commitID: '8dfbfd623f4813c7d6003fc8f04671d455e2d09d'})
             .end(function(err, res) {
-              console.log('res.body: ', res.body);
+              console.log('res.body on success', res.body)
               // expect(res.text).to.equal('Pull request sent');
               done();
             });
@@ -805,7 +822,7 @@ describe('Doc Tests', function() {
     });
   });
   xdescribe('Action Pull Request', function() {
-    it('should accept', function(done) {
+    xit('should accept', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -815,7 +832,7 @@ describe('Doc Tests', function() {
           }
           testSession
             .post('/api/doc/actionPullRequest')
-            .send({commitID: 'bd60c99fdf6b0ea3d52f3946030b9bccd5913033', ownerMessage: 'Thanks', mergeStatus: 'accept'})
+            .send({commitID: '03f114d615e8062bffd1f97129c3867aaf403e3b', ownerMessage: 'Thanks', mergeStatus: 'accept'})
             .end(function(err, res) {
               console.log('res.body: ', res.body);
               // expect(res.text).to.equal('Pull request sent');
@@ -825,15 +842,24 @@ describe('Doc Tests', function() {
       
     });
     xit('should decline', function(done) {
-      testSession
-        .post('/api/doc/actionPullRequest')
-        .send({commitID: '4a41c49373204ca91a6ec2a7a392374bd876d85a', ownerMessage: 'Nope', mergeStatus: 'decline'})
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
-          console.log('res.body: ', res.body);
-          // expect(res.text).to.equal('Pull request sent');
-          done();
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/actionPullRequest')
+            .send({commitID: '2029554d52b059bfedde22b449a7e770fb3602f5', ownerMessage: 'Thanks', mergeStatus: 'decline'})
+            .end(function(err, res) {
+              expect(res.text).to.equal('Pull Request declined');
+              done();
+            });
         });
+      
     });
+
   });
 
   xdescribe('Checkout past version', function() {
@@ -847,7 +873,7 @@ describe('Doc Tests', function() {
           }
           testSession
             .post('/api/doc/pastVersion')
-            .send({commitID: '532cf12b49bc0d9f8d284612df66ecf382f3341f'})
+            .send({commitID: 'f837d3a0fe61740dba1cfa01dc551feb7f678a84'})
             .end(function(err, res) {
               console.log('res.body: ', res.body);
               // expect(res.text).to.equal('Pull request sent');

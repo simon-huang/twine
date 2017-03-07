@@ -34,7 +34,7 @@ function specificDoc(req, res, next) {
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
-    console.log('here is the doc ', doc);
+    console.log('here is the doc ');
     if (doc.public === false && (!req.user || !(req.user.username === req.params.username))) {
       console.log('You don\'t have permission to view this doc');
       return Promise.reject('You don\'t have permission to view this doc');
@@ -482,7 +482,7 @@ function saveDoc(req, res, next) {
 
       return repository.createCommit("HEAD", who, who, comment, oid, [parent]);
     })
-    .done(function(commit) {
+    .then(function(commit) {
       console.log('successful commit ', commit);
       commitID = commit.tostrS();
       // console.log(commit.tostrS(), typeof commit.tostrS());
@@ -496,7 +496,7 @@ function saveDoc(req, res, next) {
       .then(function(madeDocVersion) {
         return DocVersion.findAll({ where: {docId: doc.id} })
       })
-      .done(function(foundCommits) {
+      .then(function(foundCommits) {
         commits = foundCommits.map((instance) => {
           return {
             id: instance.dataValues.id,
@@ -565,7 +565,7 @@ function copyDoc(req, res, next) {
     }
     newFilepath = path.resolve(__dirname, filesFolder, currentUser.username, targetDoc.name);
     NodeGit.Clone(targetDoc.filepath, newFilepath)
-    .done(function(repository) {
+    .then(function(repository) {
       console.log('Cloned repo ', repository);
       repo = repository;
       Doc.build({
@@ -624,7 +624,7 @@ function copyDoc(req, res, next) {
 
           return repository.createCommit("HEAD", who, who, comment, oid, [parent]);
         })
-        .done(function(commit) {
+        .then(function(commit) {
           console.log('successful commit ', commit);
           commitID = commit.tostrS();
           DocVersion.build({
@@ -730,7 +730,7 @@ function openDoc(req, res, next) {
     currentCommit = oid.tostrS();
     return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
   })
-  .done(function(data) {
+  .then(function(data) {
     console.log('read contents ', data);
     text = data;
     var type = doc.public === true ? 'public' : 'private';
@@ -803,7 +803,7 @@ function reviewUpstream(req, res, next) {
     console.log('text 1 ', data);
     return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
   })
-  .done(function(data) {
+  .then(function(data) {
     obj.text2 = data;
     console.log('text 2 ', data);
     var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
@@ -936,7 +936,7 @@ function getUpstream(req, res, next) {
           text = data;
           return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
         })
-        .done(function(foundCommits) {
+        .then(function(foundCommits) {
           commits = foundCommits.map((instance) => {
             return {
               id: instance.dataValues.id,
@@ -1149,10 +1149,10 @@ function reviewPullRequest(req, res, next) {
       console.log('pull request doesn\'t exist');
       return Promise.reject('Can\'t find that merge request');
     }
-    console.log('found pull request ', foundPullRequest);
+    console.log('found pull request ');
     pullRequest = foundPullRequest.dataValues;
 
-    if (!req.user || !(req.user.username === req.body.username)) {
+    if (!req.user || !(req.user.username === pullRequest.targetUsername)) {
       console.log('You are not logged in at that username');
       return Promise.reject('You are not logged in at that username');      
     }
@@ -1164,7 +1164,7 @@ function reviewPullRequest(req, res, next) {
       console.log('original doc doesn\'t exist');
       return Promise.reject('Can\'t find that doc');
     }
-    console.log('found upstreamDequest ', foundUpstreamDoc);
+    console.log('found upstreamDequest ');
     doc = foundUpstreamDoc.dataValues;
     return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
   })
@@ -1174,7 +1174,7 @@ function reviewPullRequest(req, res, next) {
     var stringiFiedID = '' + pullRequest.id;
     return fse.readFile(path.join(__dirname, 'pullRequests', stringiFiedID, doc.name + '.txt'), 'utf8')
   })
-  .done(function(data) {
+  .then(function(data) {
     obj.text2 = data;
     console.log('text 2 ', data);
     var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
@@ -1215,7 +1215,7 @@ function actionPullRequest(req, res, next) {
   var user, upstreamDoc, requestingDoc, pullRequest, pullRequestInstance, text;
   var repository, index, oid, comment, commitID, commits;
 
-  return PullRequest.findOne({ where: {commitId: req.body.commitID } })
+  return PullRequest.findOne({ where: {commitId: req.body.commitID, status: 'open' } })
   .then(function(foundPullRequest){
     if (!foundPullRequest) {
       console.log('pull request doesn\'t exist');
@@ -1230,17 +1230,21 @@ function actionPullRequest(req, res, next) {
       return Promise.reject('You are not logged in at that username');      
     }
 
-    console.log(pullRequest);
+    // console.log(pullRequest);
     if (req.body.mergeStatus === 'decline') {
-      pullRequestInstance.updateAttributes({
+      return pullRequestInstance.updateAttributes({
         status: 'decline', 
         ownerMessage: req.body.ownerMessage
       })
-      .then(function(){
-        console.log('Updated table for denial');
-        return Promise.reject('Pull Request declined');      
-      })
     }
+  })
+  .then(function(){
+    if (req.body.mergeStatus === 'decline') {
+      console.log('Updated table for denial');
+      return Promise.reject('Pull Request declined');
+    }      
+  })
+  .then(function(){  
     return Doc.findOne({ where: {id: pullRequest.upstreamDocId} }) 
   })
   .then(function(foundUpstreamDoc){
@@ -1248,7 +1252,7 @@ function actionPullRequest(req, res, next) {
       console.log('original doc doesn\'t exist');
       return Promise.reject('Can\'t find that doc');
     }
-    console.log('found upstream doc', foundUpstreamDoc.dataValues);
+    console.log('found upstream doc');
     upstreamDoc = foundUpstreamDoc.dataValues;
     return User.findOne({ where: {username: pullRequest.targetUsername } })
   })
@@ -1257,95 +1261,95 @@ function actionPullRequest(req, res, next) {
       console.log('user doesn\'t exist');
       return Promise.reject('User doesn\'t exist');
     } 
-    console.log('foundUser', foundUser.dataValues);
+    console.log('foundUser');
     user = foundUser.dataValues;
-    return NodeGit.Repository.open(upstreamDoc.filepath);
-  })
-  .then(function(repo) {
-    console.log('opened repo');
-    repository = repo;
-    var stringiFiedID = '' + pullRequest.id;
-    return fse.readFile(path.join(__dirname, 'pullRequests', stringiFiedID, upstreamDoc.name + '.txt'), 'utf8');
-  }) 
-  .then(function(data) {
-    text = data;
-    return fse.writeFile(path.join(repo.workdir(), upstreamDoc.name + '.txt'), text);
-  })
-  .then(function(){
-    return repository.index();
-  })
-  .then(function(idx) {
-    index = idx;
-    return index.addByPath(upstreamDoc.name + '.txt');
-  })
-  .then(function(s) {
-    return index.write();
-  })
-  .catch(function(e) {
-    console.log('error',e)
-  })
-  .then(function() {
-    return index.writeTree();
-  })
-  .then(function(oidResult) {
-    oid = oidResult;
-    return NodeGit.Reference.nameToId(repository, "HEAD");
-  })
-  .then(function(head) {
-    return repository.getCommit(head);
-  })
-  .then(function(parent) {
-    var who = NodeGit.Signature.now(user.username, user.email);
-    comment = `Contribution from ${pullRequest.requesterName} at ${new Date().toLocaleString()}`;
+    NodeGit.Repository.open(upstreamDoc.filepath)
+    .then(function(repo) {
+      console.log('opened repo');
+      repository = repo;
+      var stringiFiedID = '' + pullRequest.id;
+      return fse.readFile(path.join(__dirname, 'pullRequests', stringiFiedID, upstreamDoc.name + '.txt'), 'utf8');
+    }) 
+    .then(function(data) {
+      text = data;
+      return fse.writeFile(path.join(repository.workdir(), upstreamDoc.name + '.txt'), text);
+    })
+    .then(function(){
+      return repository.index();
+    })
+    .then(function(idx) {
+      index = idx;
+      return index.addByPath(upstreamDoc.name + '.txt');
+    })
+    .then(function(s) {
+      return index.write();
+    })
+    .catch(function(e) {
+      console.log('error',e)
+    })
+    .then(function() {
+      return index.writeTree();
+    })
+    .then(function(oidResult) {
+      oid = oidResult;
+      return NodeGit.Reference.nameToId(repository, "HEAD");
+    })
+    .then(function(head) {
+      return repository.getCommit(head);
+    })
+    .then(function(parent) {
+      var who = NodeGit.Signature.now(user.username, user.email);
+      comment = `Contribution from ${pullRequest.requesterName} at ${new Date().toLocaleString()}`;
 
-    return repository.createCommit("HEAD", who, who, comment, oid, [parent]);
-  })
-  .then(function(commit) {
-    console.log('successful commit ', commit);
-    commitID = commit.tostrS();
-    // console.log(commit.tostrS(), typeof commit.tostrS());
-    DocVersion.build({
-      commitID: commitID,
-      commitMessage: comment,
-      docId: upstreamDoc.id,
-      userId: user.id
+      return repository.createCommit("HEAD", who, who, comment, oid, [parent]);
     })
-    .save()
-    .then(function(madeDocVersion) {
-      // console.log('made another docVersion', madeDocVersion);
-      return DocVersion.findAll({ where: {docId: upstreamDoc.id, userId: user.id} })
-    })
-    .done(function(foundCommits) {
-      // console.log('found all commits ', foundCommits);
-      commits = foundCommits.map((instance) => {
-        return {
-          id: instance.dataValues.id,
-          commitID: instance.dataValues.commitID,
-          commitMessage: instance.dataValues.commitMessage
-        }
-      });
-        pullRequestInstance.updateAttributes({
-          status: 'accept', 
-          ownerMessage: req.body.ownerMessage
-        })
-      .then(function(updatedPR) {
-        console.log('PR status changed to accepted ');
-        var type = upstreamDoc.public === true ? 'public' : 'private';
-        res.send({
-          docID: upstreamDoc.id,
-          docOwner: user.username,
-          docName: upstreamDoc.name, 
-          docDescription: upstreamDoc.description,
-          docType: type,
-          parentID: upstreamDoc.originId,
-          originOwner: upstreamDoc.originOwner,
-          filePath: upstreamDoc.filepath,
-          docContent: text,
-          docCommits: commits,
-          currentCommit: commitID
-        });
+    .then(function(commit) {
+      console.log('successful commit ', commit);
+      commitID = commit.tostrS();
+      // console.log(commit.tostrS(), typeof commit.tostrS());
+      DocVersion.build({
+        commitID: commitID,
+        commitMessage: comment,
+        docId: upstreamDoc.id,
+        userId: user.id
       })
-    })
+      .save()
+      .then(function(madeDocVersion) {
+        // console.log('made another docVersion', madeDocVersion);
+        return DocVersion.findAll({ where: {docId: upstreamDoc.id, userId: user.id} })
+      })
+      .then(function(foundCommits) {
+        // console.log('found all commits ', foundCommits);
+        commits = foundCommits.map((instance) => {
+          return {
+            id: instance.dataValues.id,
+            commitID: instance.dataValues.commitID,
+            commitMessage: instance.dataValues.commitMessage
+          }
+        });
+          pullRequestInstance.updateAttributes({
+            status: 'accept', 
+            ownerMessage: req.body.ownerMessage
+          })
+        .then(function(updatedPR) {
+          console.log('PR status changed to accepted ');
+          var type = upstreamDoc.public === true ? 'public' : 'private';
+          res.send({
+            docID: upstreamDoc.id,
+            docOwner: user.username,
+            docName: upstreamDoc.name, 
+            docDescription: upstreamDoc.description,
+            docType: type,
+            parentID: upstreamDoc.originId,
+            originOwner: upstreamDoc.originOwner,
+            filePath: upstreamDoc.filepath,
+            docContent: text,
+            docCommits: commits,
+            currentCommit: commitID
+          });
+        })
+      })
+    })  
   })
   .then(null, function(err){
     console.log('Error: ', err);
