@@ -155,8 +155,8 @@ describe('Doc Tests', function() {
     testSession = session(app);
   });
 
-  xdescribe('New Doc', function() {
-    it('should make a public doc', function(done) {
+  describe('New Doc', function() {
+    xit('should make a public doc', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {
@@ -176,6 +176,25 @@ describe('Doc Tests', function() {
             });
         });  
     });
+
+    it('should not make a duplicate doc', function(done) {
+      testSession.post('/api/auth/login')
+        .send({ email: 'Sim@gmail.com', password: 'Sim' })
+        .end(function(err, res) {
+          if (res.error) {
+            console.log('login error ', res.error);
+            done()
+          }
+          testSession
+            .post('/api/doc/createDoc')
+            .send({username: 'Sim', docName: testName, docDescription: 'This is the test', docType: 'public'})
+            .end(function(err, res) {
+              expect(res.text).to.equal('You already have a doc with that name');
+              done();
+            });
+        });  
+    });
+
     xit('should make a private doc', function(done) {
       
       testSession.post('/api/auth/login')
@@ -533,7 +552,7 @@ describe('Doc Tests', function() {
         });
     });
 
-    it('should response false if already an open pull request', function(done) {
+    xit('should response false if already an open pull request', function(done) {
       testSession.post('/api/auth/login')
         .send({ email: 'Sim@gmail.com', password: 'Sim' })
         .end(function(err, res) {

@@ -30,75 +30,78 @@ function specificDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
     console.log('here is the doc ', doc);
     if (doc.public === false && (!req.user || !(req.user.username === req.params.username))) {
       console.log('You don\'t have permission to view this doc');
-      return res.end('You don\'t have permission to view this doc');
-    } else {
+      return Promise.reject('You don\'t have permission to view this doc');
+    } 
       
-      PullRequest.findAll({ where: {status: 'open', upstreamDocId: req.params.docId, targetUsername: req.params.username} }) 
-      .then(function(foundPullRequests){
-        console.log('found open pull requests');
-        pullRequests = foundPullRequests.map(instance => {
-          return {
-            docOwner: instance.dataValues.targetUsername, 
-            username: instance.dataValues.requesterName, 
-            docName: instance.dataValues.docName,  
-            collaboratorMessage: instance.dataValues.collaboratorMessage, 
-            mergeStatus: instance.dataValues.status, 
-            commitID: instance.dataValues.commitId, 
-            ownerMessage: ''
-          }
-        });
-        console.log('get commits');
-        return DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
-      })
-      .then(function(foundCommits){
-        console.log('found commits ');
-        commits = foundCommits.map((instance) => {
-          return {
-            id: instance.dataValues.id,
-            commitID: instance.dataValues.commitID,
-            commitMessage: instance.dataValues.commitMessage
-          }
-        });
-        // console.log('reduced commits to send later ', commits);
-        return NodeGit.Repository.open(doc.filepath)
-      })
-      .then(function(repo) {
-        repository = repo;
-        console.log('found repo');
-        return NodeGit.Reference.nameToId(repository, 'HEAD')
-      })
-      .then(function(oid) {
-        currentCommit = oid.tostrS();
-        return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
-      })
-      .done(function(data) {
-        console.log('read contents ', data);
-        text = data;
-        var type = doc.public === true ? 'public' : 'private';
-        console.log('confirm doctype');
-        res.send({
-          docID: doc.id,
-          docOwner: doc.docOwner,
-          docName: doc.name, 
-          docDescription: doc.description,
-          docType: type,
-          parentID: doc.originId,
-          originOwner: doc.originOwner,
-          filePath: doc.filepath,
-          docContent: text,
-          docCommits: commits,
-          currentCommit: currentCommit,
-          pullRequests: pullRequests
-        });
-      })
-    }
+    return PullRequest.findAll({ where: {status: 'open', upstreamDocId: req.params.docId, targetUsername: req.params.username} }) 
+  })    
+
+  .then(function(foundPullRequests){
+    console.log('found open pull requests (if they exist)');
+    pullRequests = foundPullRequests.map(instance => {
+      return {
+        docOwner: instance.dataValues.targetUsername, 
+        username: instance.dataValues.requesterName, 
+        docName: instance.dataValues.docName,  
+        collaboratorMessage: instance.dataValues.collaboratorMessage, 
+        mergeStatus: instance.dataValues.status, 
+        commitID: instance.dataValues.commitId, 
+        ownerMessage: ''
+      }
+    });
+    return DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
+  })
+  .then(function(foundCommits){
+    console.log('found commits ');
+    commits = foundCommits.map((instance) => {
+      return {
+        id: instance.dataValues.id,
+        commitID: instance.dataValues.commitID,
+        commitMessage: instance.dataValues.commitMessage
+      }
+    });
+    // console.log('reduced commits to send later ', commits);
+    return NodeGit.Repository.open(doc.filepath)
+  })
+  .then(function(repo) {
+    repository = repo;
+    console.log('found repo');
+    return NodeGit.Reference.nameToId(repository, 'HEAD')
+  })
+  .then(function(oid) {
+    currentCommit = oid.tostrS();
+    return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
+  })
+  .then(function(data) {
+    console.log('read contents ', data);
+    text = data;
+    var type = doc.public === true ? 'public' : 'private';
+    console.log('confirm doctype');
+    res.send({
+      docID: doc.id,
+      docOwner: doc.docOwner,
+      docName: doc.name, 
+      docDescription: doc.description,
+      docType: type,
+      parentID: doc.originId,
+      originOwner: doc.originOwner,
+      filePath: doc.filepath,
+      docContent: text,
+      docCommits: commits,
+      currentCommit: currentCommit,
+      pullRequests: pullRequests
+    });
+  })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
   })
 }
 
@@ -107,13 +110,14 @@ function allDocsForUser(req, res, next) {
   var user, docs;
   var docsObject = {};
   console.log('in the route handler', req.params);
+
   if (req.user && req.user.username === req.params.username) {
     console.log('this is you');
     User.findOne({ where: {username: req.params.username } })
     .then(function(foundUser) {
       if (!foundUser) {
         console.log('user doesn\'t exist');
-        return res.end('User doesn\'t exist');
+        return Promise.reject('User doesn\'t exist');
       } 
       // user = foundUser.dataValues;
       console.log('found user in db ');
@@ -147,18 +151,21 @@ function allDocsForUser(req, res, next) {
       });
       res.send({username: req.params.username, userDocuments: docsObject});
     })
+    .then(null, function(err){
+      console.log('Error: ', err);
+      res.end(err);
+    })
   } else {
     console.log('not yours');
     User.findOne({ where: {username: req.params.username } })
     .then(function(foundUser) {
       if (!foundUser) {
-        // res.status().end()
         console.log('user doesn\'t exist');
-        return res.end('User doesn\'t exist');
+        return Promise.reject('User doesn\'t exist');
       } 
       // user = foundUser.dataValues;
       console.log('found user in db ');
-      return Doc.findAll({ where: {docOwner: req.params.username } })
+      return Doc.findAll({ where: {docOwner: req.params.username, public: true } })
     })
     .then(function(foundDocs) {
       console.log('queried for docs')
@@ -187,13 +194,17 @@ function allDocsForUser(req, res, next) {
       });
       res.send({username: req.params.username, userDocuments: docsObject});
     })
+    .then(null, function(err){
+      console.log('Error: ', err);
+      res.end(err);
+    })
   }
 }
 
 function allDocs(req, res, next) {
   var docs;
   console.log('requesting all docs');
-  Doc.findAll()
+  Doc.findAll({ where: {public: true } })
   .then(function(allD) {
     console.log('found all docs ');
     docs = allD.map(instance => {
@@ -219,6 +230,7 @@ function allDocs(req, res, next) {
 function retrieveDocsAndPullRequests(username, callback) {
   var user, docs, myDocs, pullRequests;
   var myDocsObject = {};
+  console.log('in the login docs retrieval handler');
   User.findOne({ where: {username: username } })
   .then(function(foundUser) {
     if (!foundUser) {
@@ -300,64 +312,56 @@ function createDoc(req, res, next) {
     public: req.body.docType === 'public' ? 1 : 0
   }; 
   if (!req.user || !(req.user.username === req.body.username)) {
-    console.log('You are not logged in at this username');
-    return res.end('You are not logged in at this username');
+    console.log('You are not logged in at that username');
+    return res.end('You are not logged in at that username');
   }
   // get userID
   return User.findOne({ where: {username: req.body.username } })
   .then(function(foundUser){
     if (!foundUser) {
-      console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      console.log('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
     // make sure the user doesn't already have a doc with the same name
-    return Doc.findOne({ where: {name: req.body.name, userID: user.id} }) 
+    return Doc.findOne({ where: {name: req.body.docName, userID: user.id} }) 
   })
   .then(function(foundDoc){
-  //already exists
+    console.log('does it already exist')
     if (foundDoc) {
-      // res.status().end()
       console.log('doc already exists');
-      return res.end('You already have a doc with that name');
+      return Promise.reject('You already have a doc with that name');
     } 
     console.log('make doc');
     var docName = doc.name;
     NodeGit.Repository.init(path.resolve(__dirname, filesFolder, user.username, docName), 0)
     .then(function(repo) {
-      console.log('1');
       repository = repo;
       return fse.writeFile(path.join(repository.workdir(), docName + '.txt'), '');
     })
     .then(function(){
-      console.log('2');
       return repository.index();
     })
     .then(function(idx) {
-      console.log('3');
       index = idx;
     })
     .then(function() {
-      console.log('4');
       return index.addByPath(docName+ '.txt');
     })
     .then(function() {
-      console.log('5');
       return index.write();
     })
     .then(function() {
-      console.log('6');
       return index.writeTree();
     })
     .then(function(oid) {
-      console.log('7');
       var who = NodeGit.Signature.now(user.username, user.email);
 
       return repository.createCommit("HEAD", who, who, "Create document", oid, []);
     })
-    .done(function(commit) {
-      console.log('successful commit ', commit);
+    .then(function(commit) {
+      console.log('successful commit ');
       commitID = commit.tostrS();
       console.log('file made')
       pathToDoc = path.resolve(__dirname, filesFolder, user.username, docName);
@@ -408,7 +412,11 @@ function createDoc(req, res, next) {
           })
         })
       })
-    });
+    })
+  })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
   })
 };
 
@@ -419,15 +427,15 @@ function saveDoc(req, res, next) {
 
   var repository, index, oid;
   if (!req.user || !(req.user.username === req.body.username)) {
-    console.log('You are not logged in at this username');
-    return res.end('You are not logged in at this username');
+    console.log('You are not logged in at that username');
+    return res.end('You are not logged in at that username');
   }
 
   return User.findOne({ where: {username: req.body.username } })
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
@@ -437,7 +445,7 @@ function saveDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     doc = foundDoc.dataValues; 
     console.log('save doc');
@@ -503,6 +511,10 @@ function saveDoc(req, res, next) {
       })
     });
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 
@@ -513,25 +525,24 @@ function copyDoc(req, res, next) {
   var newFilepath, repo, text, index, oid, comment, commitID;
 
   if (!req.user || !(req.user.username === req.body.username)) {
-    console.log('You are not logged in at this username');
-    return res.end('You are not logged in at this username');
+    console.log('You are not logged in at that username');
+    return res.end('You are not logged in at that username');
   }
 
   return User.findOne({ where: {username: req.body.docOwner } })
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     docOwner = foundUser.dataValues;
-    // make sure the user doesn't already have a doc with the same name
     return Doc.findOne({ where: {name: req.body.docName, userID: docOwner.id} }) 
   })
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     targetDoc = foundDoc.dataValues; 
     console.log('found target doc');
@@ -540,7 +551,7 @@ function copyDoc(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     currentUser = foundUser.dataValues;
@@ -550,7 +561,7 @@ function copyDoc(req, res, next) {
   .then(function(foundDoc){
     if (foundDoc) {
       console.log('doc already exists');
-      return res.end('You already have a doc with that name');
+      return Promise.reject('You already have a doc with that name');
     }
     newFilepath = path.resolve(__dirname, filesFolder, currentUser.username, targetDoc.name);
     NodeGit.Clone(targetDoc.filepath, newFilepath)
@@ -650,6 +661,10 @@ function copyDoc(req, res, next) {
       })
     });
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 
@@ -664,7 +679,7 @@ function openDoc(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
@@ -673,9 +688,9 @@ function openDoc(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
-    // console.log('found doc', foundDoc.dataValues);
+    console.log('found doc');
     doc = foundDoc.dataValues; 
     return PullRequest.findAll({ where: {status: 'open', docName: req.body.docName, targetUsername: user.username} }) 
   })
@@ -691,11 +706,10 @@ function openDoc(req, res, next) {
         ownerMessage: ''
       }
     });
-    console.log('get commits');
+    console.log('found pull requests (if they exist)');
     return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
   })
   .then(function(foundCommits){
-    console.log('found commits ');
     commits = foundCommits.map((instance) => {
       return {
         id: instance.dataValues.id,
@@ -703,6 +717,7 @@ function openDoc(req, res, next) {
         commitMessage: instance.dataValues.commitMessage
       }
     });
+    console.log('found commits');
     // console.log('reduced commits to send later ', commits);
     return NodeGit.Repository.open(doc.filepath)
   })
@@ -735,6 +750,10 @@ function openDoc(req, res, next) {
       pullRequests: pullRequests
     });
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 function reviewUpstream(req, res, next) {
@@ -746,15 +765,15 @@ function reviewUpstream(req, res, next) {
   var obj = {};
 
   if (!req.user || !(req.user.username === req.body.username)) {
-    console.log('You are not logged in at this username');
-    return res.end('You are not logged in at this username');
+    console.log('You are not logged in at that username');
+    return res.end('You are not logged in at that username');
   }
 
   return User.findOne({ where: {username: req.body.username } })
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
@@ -763,7 +782,7 @@ function reviewUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -772,7 +791,7 @@ function reviewUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find upstream doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -812,6 +831,10 @@ function reviewUpstream(req, res, next) {
       diffToolMergePreview: result
     });
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 function getUpstream(req, res, next) {
@@ -821,15 +844,15 @@ function getUpstream(req, res, next) {
   var repository, index, oid, comment, commitID, commits;
 
   if (!req.user || !(req.user.username === req.body.username)) {
-    console.log('You are not logged in at this username');
-    return res.end('You are not logged in at this username');
+    console.log('You are not logged in at that username');
+    return res.end('You are not logged in at that username');
   }
 
   return User.findOne({ where: {username: req.body.username } })
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
@@ -838,7 +861,7 @@ function getUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -847,7 +870,7 @@ function getUpstream(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find upstream doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -938,6 +961,10 @@ function getUpstream(req, res, next) {
       })
     });
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 function validateMerge(req, res, next) { 
@@ -947,12 +974,12 @@ function validateMerge(req, res, next) {
   var repository, index, oid, comment, commitID;
   var pathToClonedRequester;
   var commit;
-  console.log('MAKING SURE THERE ARE NO OPEN PULL REQUESTS');
+
   PullRequest.findOne({ where: {commitId: req.body.commitID} }) 
   .then(function(pullRequestFound) {
     if (pullRequestFound) {
-      console.log('You already have an open pull request');
-      return res.end('Merge request pending for these changes');
+      console.log('Merge request pending for these changes');
+      return Promise.reject('Merge request pending for these changes');
     }
     console.log('no open pull requests')
     return DocVersion.findOne({ where: {commitID: req.body.commitID} })
@@ -960,7 +987,7 @@ function validateMerge(req, res, next) {
   .then(function(foundDocVersion){
     if (!foundDocVersion) {
       console.log('Commit doesn\'t exist');
-      return res.end('Commit doesn\'t exist');
+      return Promise.reject('Commit doesn\'t exist');
     } 
     console.log('found commit');
     commit = foundDocVersion.dataValues;
@@ -969,22 +996,20 @@ function validateMerge(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
     if (!req.user || !(req.user.username === req.body.username)) {
-      console.log('You are not logged in at this username');
-      return res.end('You are not logged in at this username');
-      // console.log('time to try an error handler');
-      // return next('You are not logged in at this username');
+      console.log('You are not logged in at that username');
+      return Promise.reject('You are not logged in at that username');      
     }
     return Doc.findOne({ where: {id: commit.docId, userID: user.id} }) 
   })  
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -993,7 +1018,7 @@ function validateMerge(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find upstream doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -1002,7 +1027,7 @@ function validateMerge(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('log: Can\'t find upstream user');
-      return res.end('Can\'t find upstream user');
+      return Promise.reject('User doesn\'t exist');
     }
     console.log('found upstream user ');
     upstreamUser = foundUser.dataValues;
@@ -1023,6 +1048,14 @@ function validateMerge(req, res, next) {
       res.send(true);
     }
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 
@@ -1034,14 +1067,14 @@ function requestMerge(req, res, next) {
   var pathToClonedRequester;
 
   if (!req.user || !(req.user.username === req.body.username)) {
-    console.log('You are not logged in at this username');
-    return res.end('You are not logged in at this username');
+    console.log('You are not logged in at that username');
+    return Promise.reject('You are not logged in at that username');      
   }
   User.findOne({ where: {username: req.body.username } })
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
@@ -1050,7 +1083,7 @@ function requestMerge(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found my doc');
     doc = foundDoc.dataValues; 
@@ -1059,7 +1092,7 @@ function requestMerge(req, res, next) {
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('Upstream doc doesn\'t exist');
-      return res.end('Can\'t find upstream doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found upstream doc');
     upstreamDoc = foundDoc.dataValues; 
@@ -1068,7 +1101,7 @@ function requestMerge(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('log: Can\'t find upstream user');
-      return res.end('Can\'t find upstream user');
+      return Promise.reject('User doesn\'t exist');
     }
     console.log('found upstream user ');
     upstreamUser = foundUser.dataValues;
@@ -1095,6 +1128,10 @@ function requestMerge(req, res, next) {
       return res.end('Pull request sent');
     })
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 
@@ -1110,14 +1147,14 @@ function reviewPullRequest(req, res, next) {
   .then(function(foundPullRequest){
     if (!foundPullRequest) {
       console.log('pull request doesn\'t exist');
-      return res.end('Can\'t find that merge request');
+      return Promise.reject('Can\'t find that merge request');
     }
     console.log('found pull request ', foundPullRequest);
     pullRequest = foundPullRequest.dataValues;
 
     if (!req.user || !(req.user.username === req.body.username)) {
-      console.log('You are not logged in at this username');
-      return res.end('You are not logged in at this username');
+      console.log('You are not logged in at that username');
+      return Promise.reject('You are not logged in at that username');      
     }
 
     return Doc.findOne({ where: {id: pullRequest.upstreamDocId} }) 
@@ -1125,7 +1162,7 @@ function reviewPullRequest(req, res, next) {
   .then(function(foundUpstreamDoc){
     if (!foundUpstreamDoc) {
       console.log('original doc doesn\'t exist');
-      return res.end('Can\'t find original doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found upstreamDequest ', foundUpstreamDoc);
     doc = foundUpstreamDoc.dataValues;
@@ -1165,6 +1202,10 @@ function reviewPullRequest(req, res, next) {
       diffContent: result
     });
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 function actionPullRequest(req, res, next) { 
@@ -1178,30 +1219,26 @@ function actionPullRequest(req, res, next) {
   .then(function(foundPullRequest){
     if (!foundPullRequest) {
       console.log('pull request doesn\'t exist');
-      return res.end('Can\'t find that merge request');
+      return Promise.reject('Can\'t find that merge request');
     }
     console.log('found pull request ');
     pullRequestInstance = foundPullRequest;
     pullRequest = foundPullRequest.dataValues;
 
     if (!req.user || !(req.user.username === pullRequest.targetUsername)) {
-      console.log('You are not logged in at this username');
-      return res.end('You are not logged in at this username');
+      console.log('You are not logged in at that username');
+      return Promise.reject('You are not logged in at that username');      
     }
 
     console.log(pullRequest);
     if (req.body.mergeStatus === 'decline') {
-      //BRIEF INSERT
-      // return res.end('testing end');
-      // foundPullRequest.dataValues.status = 'decline';
-      // foundPullRequest.setDataValue('status', 'decline')
       pullRequestInstance.updateAttributes({
         status: 'decline', 
         ownerMessage: req.body.ownerMessage
       })
       .then(function(){
         console.log('Updated table for denial');
-        return res.end('Pull Request declined');
+        return Promise.reject('Pull Request declined');      
       })
     }
     return Doc.findOne({ where: {id: pullRequest.upstreamDocId} }) 
@@ -1209,7 +1246,7 @@ function actionPullRequest(req, res, next) {
   .then(function(foundUpstreamDoc){
     if (!foundUpstreamDoc) {
       console.log('original doc doesn\'t exist');
-      return res.end('Can\'t find original doc');
+      return Promise.reject('Can\'t find that doc');
     }
     console.log('found upstream doc', foundUpstreamDoc.dataValues);
     upstreamDoc = foundUpstreamDoc.dataValues;
@@ -1218,7 +1255,7 @@ function actionPullRequest(req, res, next) {
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('foundUser', foundUser.dataValues);
     user = foundUser.dataValues;
@@ -1238,31 +1275,26 @@ function actionPullRequest(req, res, next) {
     return repository.index();
   })
   .then(function(idx) {
-    console.log('got here 2');
     index = idx;
     return index.addByPath(upstreamDoc.name + '.txt');
   })
   .then(function(s) {
-    console.log('got here 3', s);
     return index.write();
   })
   .catch(function(e) {
     console.log('error',e)
   })
   .then(function() {
-    console.log('got here 4');
     return index.writeTree();
   })
   .then(function(oidResult) {
     oid = oidResult;
-    console.log('got here 5');
     return NodeGit.Reference.nameToId(repository, "HEAD");
   })
   .then(function(head) {
     return repository.getCommit(head);
   })
   .then(function(parent) {
-    console.log('got here 7');
     var who = NodeGit.Signature.now(user.username, user.email);
     comment = `Contribution from ${pullRequest.requesterName} at ${new Date().toLocaleString()}`;
 
@@ -1315,6 +1347,10 @@ function actionPullRequest(req, res, next) {
       })
     })
   })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 function pastVersion(req, res, next) {//commit ID, username, doc name
@@ -1329,7 +1365,7 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
   .then(function(foundDocVersion){
     if (!foundDocVersion) {
       console.log('commit doesn\'t exist');
-      return res.end('Can\'t find that savepoint');
+      return Promise.reject('Commit doesn\'t exist');
     }
     console.log('found doc version');
     docVersion = foundDocVersion.dataValues;
@@ -1338,20 +1374,20 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
   .then(function(foundUser){
     if (!foundUser) {
       console.log('user doesn\'t exist');
-      return res.end('User doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
     } 
     console.log('found user ');
     user = foundUser.dataValues;
     if (!(req.user && req.user.username === user.username)) {
-      console.log('You are not logged in at this username');
-      return res.end('You are not logged in at this username');
+      console.log('You are not logged in at that username');
+      return Promise.reject('You are not logged in at that username');      
     }
     return Doc.findOne({ where: {id: docVersion.docId} }) 
   })
   .then(function(foundDoc){
     if (!foundDoc) {
       console.log('doc doesn\'t exist');
-      return res.end('Can\'t find that doc');
+      return Promise.reject('Can\'t find that doc');
     }
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
@@ -1383,7 +1419,7 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
     console.log('Checkout done');
     return fse.readFile(path.join(repository.workdir(), doc.name + '.txt'), 'utf8');
   })
-  .done(function(data) {
+  .then(function(data) {
     currentText = data;
     console.log('checked out text :', currentText);
     var type = doc.public === true ? 'public' : 'private';
@@ -1400,7 +1436,11 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
       docCommits: commits,
       currentCommit: req.body.commitID
     });
-  });
+  })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 };
 
 export { specificDoc, allDocsForUser, allDocs, retrieveDocsAndPullRequests, createDoc, saveDoc, copyDoc, openDoc, reviewUpstream, getUpstream, validateMerge, requestMerge, reviewPullRequest, actionPullRequest, pastVersion };
