@@ -10,7 +10,6 @@ var schema = require('../db/schema.js')
 var authRouter = require('./routers/authRouter.js');
 var docRouter = require('./routers/docRouter.js');
 var profileRouter = require('./routers/profileRouter.js');
-// import { allDocsForUser, specificDoc } from '../db/docControllers.js';
 var port = process.env.PORT || 3000;
 
 var app = express();
@@ -44,16 +43,13 @@ app.use('/api/doc', docRouter);
 //====================================================
 //====================================================
 
-// // Users and their docs
-// app.get('/:username', allDocsForUser);
-// app.get('/:username/:docId', specificDoc);
-
 // serve static client-facing files
 app.use(express.static(path.resolve(__dirname, '../public')));
 
 app.use('*', function (request, response){
   response.sendFile(path.resolve(__dirname, '../public', 'index.html'))
 })
+
 
 // spin up server
 app.listen(port, function() {
