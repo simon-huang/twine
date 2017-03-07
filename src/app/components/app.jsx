@@ -34,7 +34,7 @@ export default class App extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.location.pathname === '/explore') {
+    if (this.props.location.pathname !== '/login') {
       this.props.dispatch(auth.setRedirectUrl(this.props.location.pathname));
     }
     this.props.dispatch(auth.autoLogin());

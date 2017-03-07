@@ -75,8 +75,7 @@ export default function reducer(state = {
     case "EDIT_DOC_CONTENT": {
       return {
         ...state,
-        editsObject: action.payload,
-        editMode: true
+        editsObject: action.payload
       }
     }
     case "EDIT_MASTERHTML": {
@@ -109,7 +108,8 @@ export default function reducer(state = {
     case "UPDATE_DOC_HTML": {
       return {
         ...state,
-        editsHtml: action.payload
+        editsHtml: action.payload,
+        editMode: true
       }
     }
 
