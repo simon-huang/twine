@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 
+import CopiedFrom from '../commonComponents/copiedFrom.jsx'
+
 export class ProfileDocSummary extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ export class ProfileDocSummary extends React.Component {
     return (
       <div>
         <h4 className="doc-list-title bold" onClick={this.openDoc}>{this.props.docData.docName}</h4>
+        <CopiedFrom docData={this.props.docData}/>
         <br/>
         <div>{this.props.docData.docDescription}</div>
         <hr/>
