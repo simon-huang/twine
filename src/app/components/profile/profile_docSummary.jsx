@@ -20,6 +20,7 @@ export class ProfileDocSummary extends React.Component {
     return (
       <div>
         <h4 className="doc-list-title bold" onClick={this.openDoc}>{this.props.docData.docName}</h4>
+        <div>By: {this.props.docData.docOwner}</div>
         <CopiedFrom docData={this.props.docData}/>
         <br/>
         <div>{this.props.docData.docDescription}</div>
