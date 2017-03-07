@@ -15,11 +15,32 @@ export class EditDoc extends React.Component {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
-    this.redirectToDoc = this.redirectToDoc.bind(this);
+    this.routerWillLeave = this.routerWillLeave.bind(this);
+
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes.';
+      if (this.props.doc.editMode) {
+        return e.returnValue
+      };
+    });
   }
 
   componentWillMount() {
     this.props.dispatch(doc.loadOriginalContent());
+    this.props.dispatch(doc.toggleEditMode());
+  }
+
+  componentDidMount() {
+    this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+  }
+
+  routerWillLeave(nextLocation) {
+    if (this.props.doc.editMode) {
+      this.props.dispatch(doc.toggleEditMode());
+      this.props.dispatch(doc.toggleUnsavedChangesModal(nextLocation.pathname));
+      return false;
+    }
   }
 
   createHTML(contents) {
@@ -31,17 +52,9 @@ export class EditDoc extends React.Component {
     this.props.dispatch(doc.editingDoc(editorState));
   }
 
-
-  redirectToDoc() {
-    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
-  }
-
   render() {
     return (
       <div className="doc-editor">
-        <div className="title">
-          <h5 className="list-title" onClick={this.redirectToDoc}>Editing: {this.props.doc.docName}</h5>
-        </div>
         <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
         <EditDoc_details />
       </div>

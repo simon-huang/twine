@@ -30,7 +30,7 @@ export function createDocument() {
       return data;
     })
     .then(function(data){
-      browserHistory.push("/editdoc");
+      browserHistory.push(`/profile/${data.docOwner}/${data.docID}/editing`);
       dispatch(loading.toggleToast(true, `${data.docName} created!`));
     })
     .catch(function(err) {

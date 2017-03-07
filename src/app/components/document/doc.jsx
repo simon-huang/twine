@@ -70,7 +70,7 @@ export class Doc extends React.Component {
   }
 
   redirectEditDoc() {
-    browserHistory.push('/editdoc');
+    browserHistory.push(`/profile/${this.props.doc.docOwner}/${this.props.doc.docId}/editing`);
   }
 
   redirectProfile() {

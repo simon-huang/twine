@@ -47,10 +47,10 @@ export default class SignUp extends React.Component {
           <TextField type="text" onChange={this.handleChange} value={this.props.username} name="username" floatingLabelText="Pick a username" style={styles.signup} />
           <TextField type="text" onChange={this.handleChange} value={this.props.email} name="email" floatingLabelText="Email address" style={styles.signup} />
           <TextField type="password" onChange={this.handleChange} value={this.props.password} name="password" floatingLabelText="Password" style={styles.signup} />
-          <div className="checkbox">
+          {/*<div className="checkbox">
             <Checkbox checkedIcon={<ActionFavorite />} uncheckedIcon={<ActionFavoriteBorder />} style={styles.terms} />
             <span>I agree to <a href="#">PublishUs Terms</a></span>
-          </div>
+          </div>*/}
           <RaisedButton type="submit" label="Create account" primary={true} style={styles.btnSignup} />
         </form>
       </div>

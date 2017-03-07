@@ -58,6 +58,19 @@ export function editingDoc(value) {
   }
 }
 
+export function toggleUnsavedChangesModal(nextRoute) {
+  return {
+    type: "TOGGLE_UNSAVED_CHANGES_MODAL",
+    payload: nextRoute
+  }
+}
+
+export function toggleEditMode() {
+  return {
+    type: "TOGGLE_EDIT_MODE"
+  }
+}
+
 export function createHTML(value) {
   return {
     type: "UPDATE_DOC_HTML",

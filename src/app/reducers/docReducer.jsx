@@ -15,6 +15,9 @@ export default function reducer(state = {
   currentCommit: '',
   commitMessage: '',
   pullRequests: [],
+  editMode: false,
+  unsavedChangesModal: false,
+  nextRouteAfterEdits: '',
   error: null
 }, action) {
 
@@ -72,7 +75,8 @@ export default function reducer(state = {
     case "EDIT_DOC_CONTENT": {
       return {
         ...state,
-        editsObject: action.payload
+        editsObject: action.payload,
+        editMode: true
       }
     }
     case "EDIT_MASTERHTML": {
@@ -84,12 +88,12 @@ export default function reducer(state = {
     case "EDIT_DOCCOMMITS": {
       return {
         ...state,
-        docCommits: action.payload
+        docCommits: action.payload,
+        editMode: false
       }
     }
 
     case "EDIT_PULLREQUESTS": {
-      console.log('grabbing PRs');
       return {
         ...state,
         pullRequests: action.payload
@@ -114,6 +118,21 @@ export default function reducer(state = {
         ...state,
         editsObject: action.payload.editorState,
         editsHtml: action.payload.editsHtml
+      }
+    }
+
+    case "TOGGLE_EDIT_MODE": {
+      return {
+        ...state,
+        editMode: !state.editMode
+      }
+    }
+
+    case "TOGGLE_UNSAVED_CHANGES_MODAL": {
+      return {
+        ...state,
+        unsavedChangesModal: !state.unsavedChangesModal,
+        nextRouteAfterEdits: action.payload
       }
     }
     
