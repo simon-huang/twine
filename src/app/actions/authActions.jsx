@@ -76,12 +76,17 @@ export function login () {
 export function modalLogin () {
   return function(dispatch, getState) {
     var user = getState().user;
+    var auth = getState().auth;
     axios.post('/api/auth/login', {
       email: user.email,
       password: user.password
     })
     .then((response) => {
-      dispatch(userLogin(response.data.username));
+      if (auth.redirectUrl === '' || auth.redirectUrl === '/' || auth.redirectUrl === '/signup') {
+        dispatch(userCreated(response.data));
+      } else {
+        dispatch(userLogin(response.data.username));
+      }
     })
     .catch((err) => {
       dispatch(authReject(err));
