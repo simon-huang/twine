@@ -15,12 +15,26 @@ export class EditDoc extends React.Component {
     super(props);
     this.editingDoc = this.editingDoc.bind(this);
     this.createHTML = this.createHTML.bind(this);
-    this.redirectToDoc = this.redirectToDoc.bind(this);
+    // this.routerWillLeave = this.routerWillLeave.bind(this);
   }
 
   componentWillMount() {
     this.props.dispatch(doc.loadOriginalContent());
+    this.props.dispatch(doc.toggleEditMode());
   }
+
+  // componentDidMount() {
+  //   this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+  // }
+
+  // routerWillLeave(nextLocation) {
+  //   if (this.props.doc.editMode) {
+  //     this.props.dispatch(doc.toggleUnsavedChangesModal(nextLocation));
+  //     return false;
+  //   } else {
+  //     browserHistory.push(nextLocation);
+  //   }
+  // }
 
   createHTML(contents) {
     const html = draftToHtml(contents);
@@ -29,10 +43,6 @@ export class EditDoc extends React.Component {
 
   editingDoc(editorState) {
     this.props.dispatch(doc.editingDoc(editorState));
-  }
-
-  redirectToDoc() {
-    browserHistory.push(`/profile/${this.props.user.username}/${this.props.doc.docId}`);
   }
 
   render() {

@@ -103,6 +103,10 @@ a:hover {
 /*============ Styling =============*/
 /*==================================*/
 
+.unsaved-changes-actions li {
+  display: inline-block;
+}
+
 .toast {
   border-radius: 3px !important;
   position: fixed !important;
