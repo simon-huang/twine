@@ -83,7 +83,7 @@ export default class Home extends React.Component {
               <FormControl.Feedback />
             </FormGroup>
             <FormGroup controlId="formSubmit" className="mt25">
-              <input type="submit" className="btn btn-purple" label="Log in"/>
+              <input type="submit" className="btn btn-purple" value="Log in"/>
             </FormGroup>
             {/*<a className="btn-cancel forgot-password mt25 text-center">Forgot your password?</a>*/}
           </form>

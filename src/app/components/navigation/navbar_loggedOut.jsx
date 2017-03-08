@@ -31,7 +31,7 @@ export class LoggedOut extends React.Component {
   
   render() {
     return (
-      <NavContainer.Collapse>
+      <div>
         <Nav>
           <NavItem onClick={this.updatePath} eventKey={1} name="explore">Explore</NavItem>
         </Nav>
@@ -39,7 +39,7 @@ export class LoggedOut extends React.Component {
           <NavItem className="login" onClick={this.toggleLoginModal} eventKey={5} name="/login">Login</NavItem>
           <NavItem className="signup" onClick={this.updatePath} eventKey={6} name="/signup">Signup</NavItem>
         </Nav>
-      </NavContainer.Collapse>
+      </div>
     );
   }
 }

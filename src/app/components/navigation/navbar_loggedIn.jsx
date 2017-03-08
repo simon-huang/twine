@@ -57,19 +57,19 @@ export class LoggedIn extends React.Component {
   
   render() {
     return (
-      <NavContainer.Collapse>
+      <div>
         {this.checkEditMode()}
         <Nav pullRight>
           <NavDropdown eventKey={4} title={
             <span>
-              <i className="fa fa-user-circle"></i>&nbsp;{this.props.user.username}
+              <img className="profile-avatar-nav mr5" src={"http://api.adorable.io/avatar/" + this.props.user.username} />&nbsp;{this.props.user.username}
             </span>
           } id="user-settings">
             <MenuItem onClick={this.updatePath} eventKey={3} name={`/profile/${this.props.user.username}`}>Profile</MenuItem>
             <MenuItem eventKey={4.1} name="/logout" onClick={this.logout}>Logout</MenuItem>
           </NavDropdown>
         </Nav>
-      </NavContainer.Collapse>
+      </div>
     );
   }
 }

@@ -19,13 +19,13 @@ export class CopiedFrom extends React.Component {
   render() {
     if (this.props.docData.originOwner) {
       return (
-        <div>
-          <span>Copied from: <a onClick={this.openDoc}>{`${this.props.docData.originOwner} / ${this.props.docData.docName}`}</a></span>
+        <div className="copied-from-tag ml5">
+          <span><i class="fa fa-code-fork"></i> from: <a onClick={this.openDoc}>{`${this.props.docData.originOwner} / ${this.props.docData.docName}`}</a></span>
         </div>
       );
     } else {
       return (
-        <div></div>
+        <span></span>
       );
     }
   }

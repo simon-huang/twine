@@ -2,10 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // UI
-import styles from './../styles/style.jsx';
-import TextField from 'material-ui/TextField';
-import RaisedBtn from 'material-ui/RaisedButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
 
 // Store properties
 import * as user from '../../actions/userActions.jsx';
@@ -25,6 +23,8 @@ export default class Login extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.login = this.login.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
   }
 
   login(e) {
@@ -37,15 +37,45 @@ export default class Login extends React.Component {
     this.props.dispatch(doc.handleChange(e.target.name, e.target.value));
   }
 
+  validateEmail() {
+    const length = this.props.email;
+    if (length > 10) return 'success';
+    else if (length > 5) return 'warning';
+    else if (length > 0) return 'error';
+  }
+
+  validatePassword() {
+    const length = this.props.password;
+    if (length > 10) return 'success';
+    else if (length > 5) return 'warning';
+    else if (length > 0) return 'error';
+  }
+
   render() {
     return (
-      <div className="text-center mt45">
-        <h2>Log in to your account</h2>
-        <form onSubmit={this.login} style={styles.formFields}>
-          <TextField type="text" onChange={this.handleChange} value={this.props.email} name="email" floatingLabelText="Email address" style={styles.signup} />
-          <TextField type="password" onChange={this.handleChange} value={this.props.password} name="password" floatingLabelText="Password" style={styles.signup} />
-          <RaisedButton type="submit" label="Log in" primary={true} style={styles.btnSignup} />
-        </form>
+      <div className="text-center pt45">
+        <div className="row">
+          <div className="col-sm-12 text-center">
+            <h2 className="mt30 mb30">Log in to your account</h2>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-xs-10 col-sm-6 col-md-4 col-lg-3 col-centered">
+            <form onSubmit={this.login}>
+              <FormGroup controlId="formEmail" validationState={this.validateEmail()} >
+                <FormControl type="text" value={this.props.email} placeholder="Email address" name="email" onChange={this.handleChange} />
+                <FormControl.Feedback />
+              </FormGroup>
+              <FormGroup controlId="formPassword" validationState={this.validatePassword()} >
+                <FormControl type="password" value={this.props.password} placeholder="Password" name="password" onChange={this.handleChange} />
+                <FormControl.Feedback />
+              </FormGroup>
+              <FormGroup className="text-left mt25" controlId="formSubmit">
+                <input type="submit" className="btn btn-purple" value="Log in"/>
+              </FormGroup>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
