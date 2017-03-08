@@ -12,20 +12,14 @@ exports.auth = function (req, res, next) {
 }
 
 exports.login = function (req, res, next) {
-  console.log('WAS THIS CALLED?');
   if (req.user) {
     req.session.username = req.user.username;
-    retrieveDocsAndPullRequests(req.user.username, function(docsArray, myDocsObject, pullRequestsArray) {
-      res
+    res
       .status(200)
       .send({ 
         status: 'successful', 
-        username: req.user.username, 
-        allDocuments: docsArray,
-        allMyDocuments: myDocsObject,
-        pullRequestsToMe: pullRequestsArray
+        username: req.user.username
       });
-    });
   } else {
     res
     .status(401)
