@@ -2,8 +2,6 @@ import axios from 'axios';
 import * as doc from './docActions.jsx';
 import * as loading from './loadingActions.jsx';
 import { browserHistory } from 'react-router';
-import bluebird from 'bluebird';
-var Promise = bluebird;
 
 export function autoLogin () {
   return function(dispatch, getState) {
