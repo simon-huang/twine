@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as doc from './docActions.jsx';
+import * as loading from './loadingActions.jsx';
 
 export function autoLogin () {
   return function(dispatch, getState) {
@@ -68,6 +69,8 @@ export function login () {
       dispatch(userCreated(response.data));
     })
     .catch((err) => {
+      dispatch(loading.toggleToast(true, err.response.data)); 
+      // 'Username or email is already in use'
       dispatch(authReject(err));
     })
   }

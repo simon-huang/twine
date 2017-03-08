@@ -12,6 +12,7 @@ exports.auth = function (req, res, next) {
 }
 
 exports.login = function (req, res, next) {
+  console.log('WAS THIS CALLED?');
   if (req.user) {
     req.session.username = req.user.username;
     retrieveDocsAndPullRequests(req.user.username, function(docsArray, myDocsObject, pullRequestsArray) {
@@ -37,8 +38,8 @@ exports.register = function (req, res, next) {
   var password = req.body.password;
   var email = req.body.email;
 
-  User.findOne({ where: {username: username} })
-    .then(function(err, user) {
+  User.findOne({ where: {username: username, email: email} })
+    .then(function(user) {
       if (!user) {
         return bcrypt.genSaltAsync()
           .then(function(salt) {
@@ -58,7 +59,7 @@ exports.register = function (req, res, next) {
             });
           });
       } else {
-        res.status(409).end('user exists');
+        res.status(409).end('Username or email is already in use');
       }
     })
 }
