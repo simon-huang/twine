@@ -13,13 +13,24 @@ export class DocMergeList extends React.Component {
     if (!this.props.merge.displayMergeRequest) {
       if (!this.props.doc.pullRequests.length) {
         return (
-          <div>No Merge Requests</div>
+          <div className="merge-request-container pt10 pb10">
+            <div className="row mt15">
+              <div className="col-sm-12">
+                No Merge Requests
+              </div>
+            </div>
+          </div>
         );
       } else {
         return (
-          <div>
-            {this.props.doc.pullRequests.map((info, i) => (
-              <DocMergeListEntry className="merge_entry" key={i} prInfo={info} />))}
+          <div className="merge-request-container pt10 pb10">
+            <div className="row mt15">
+              <div className="col-sm-12">
+                {this.props.doc.pullRequests.map((info, i) => (
+                  <DocMergeListEntry className="merge_entry" key={i} prInfo={info} />
+                ))}
+              </div>
+            </div>
           </div>
         );
       }

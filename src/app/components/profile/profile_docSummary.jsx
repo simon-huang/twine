@@ -19,10 +19,22 @@ export class ProfileDocSummary extends React.Component {
   render() {
     return (
       <div>
-        <h4 className="doc-list-title bold" onClick={this.openDoc}>{this.props.docData.docName}</h4>
-        <CopiedFrom docData={this.props.docData}/>
-        <br/>
-        <div>{this.props.docData.docDescription}</div>
+        <div className="row">
+          <div className="col-sm-12">
+            <span className="doc-list-title bold" onClick={this.openDoc}>{this.props.docData.docName}</span>
+            {this.props.docData.docType === 'private' ? <span className="doc-list-privacy-tag ml10">{this.props.docData.docType}</span> : <span></span>}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <CopiedFrom docData={this.props.docData}/>
+          </div>
+        </div>
+        <div className="row mt5">
+          <div className="col-sm-12">
+            <p className="doc-list-description">{this.props.docData.docDescription}</p>
+          </div>
+        </div>
         <hr/>
       </div>
     );

@@ -25,14 +25,16 @@ export class Navbar extends React.Component {
   render() {
     const pathname = this.props.props.location.pathname;
     return (
-      <NavContainer className={(pathname === '/' ) ? 'nav-clear' : 'nav-white'}>
+      <NavContainer collapseOnSelect className={(pathname === '/' ) ? 'nav-clear' : 'nav-white'}>
         <NavContainer.Header>
           <NavContainer.Brand>
-            <a className="nav-logo" onClick={this.updatePath} name="/">PublishUs</a>
+            <img src={(pathname === '/' ) ? "/assets/img/TwineLogo2_white.svg" : "/assets/img/TwineLogo2_purple.svg"} className="nav-logo" onClick={this.updatePath} name="/" />
           </NavContainer.Brand>
           <NavContainer.Toggle />
         </NavContainer.Header>
-        {this.props.props.isLoggedIn ? <LoggedIn location={this.props.props.location} /> : <LoggedOut location={this.props.props.location} />}
+        <NavContainer.Collapse>
+          {this.props.props.isLoggedIn ? <LoggedIn location={this.props.props.location} /> : <LoggedOut location={this.props.props.location} />}
+        </NavContainer.Collapse>
       </NavContainer>
     );
   }

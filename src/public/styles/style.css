@@ -2,7 +2,7 @@
 /*========== STYLE RESET ===========*/
 /*==================================*/
 
-/*html, body, div, span, applet, object, iframe,
+html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -19,9 +19,9 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   vertical-align: baseline;
-}*/
+}
 /* HTML5 display-role reset for older browsers */
-/*article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
@@ -42,13 +42,17 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}*/
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
 
 /*==================================*/
 /*============= Fonts ==============*/
 /*==================================*/
 
-/*html, body, div, span, applet, object, iframe, p, 
+html, body, div, span, applet, object, iframe, p, 
 blockquote, pre, a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -75,7 +79,7 @@ h2 { font-size: 35px; line-height: 42px; }
 h3 { font-size: 25px; line-height: 30px; }
 h4 { font-size: 18px; line-height: 24px; }
 h5 { font-size: 16px; line-height: 22px; }
-h6 { font-size: 14px; line-height: 20px; }*/
+h6 { font-size: 14px; line-height: 20px; }
 
 a:hover {
   cursor: pointer;
@@ -100,8 +104,171 @@ a:hover {
 }*/
 
 /*==================================*/
+/*========= Notifications ==========*/
+/*==================================*/
+
+.notifications-merge-req {
+  display: inline-block;
+  background: #FEDC50;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.notifications-merge-req span {
+  color: #6D6D6D;
+  vertical-align: middle;
+  font-size: 10px;
+}
+
+/*==================================*/
+/*=========== Create Doc ===========*/
+/*==================================*/
+
+.create-doc-container {
+  position: relative;
+  height: 80vh;
+}
+
+.create-doc {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 80%;
+  height: 400px;
+}
+
+.create-doc-form .create-doc-title,
+.create-doc-form textarea {
+  border: none;
+  resize: none;
+  display: block;
+  width: 100%;
+  padding: 10px;
+}
+
+.create-doc-form .create-doc-title:focus,
+.create-doc-form textarea:focus,
+.create-doc-form .create-doc-title:active,
+.create-doc-form textarea:active  {
+  outline: none;
+}
+
+.create-doc-form .create-doc-title {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.create-doc-form textarea {
+  font-size: 24px;
+}
+
+.create-doc-form .privacy-selector {
+  display: block;
+  padding-left: 10px;
+  font-size: 24px;
+  color: #B3B3B3;
+}
+
+.create-doc-form .privacy-selector select {
+  border: none;
+  background: none;
+  color: #454545;
+}
+
+.create-doc-form .btn-purple {
+  padding: 10px 25px;
+  font-size: 14px;
+}
+
+/*==================================*/
+/*============== Tabs ==============*/
+/*==================================*/
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+  border: none;
+  border-bottom: 3px solid #5F00FF;
+}
+
+.nav-tabs>li>a {
+  color: #585858;
+  border: none;
+}
+
+.nav-tabs>li>a:focus,
+.nav-tabs>li>a:hover {
+  border: none;
+  background-color: white;
+  color: #5F00FF;
+  outline: none;
+  outline-offset: 0px;
+}
+
+/*==================================*/
 /*============ Styling =============*/
 /*==================================*/
+
+.breadcrumb {
+  background: transparent;
+  padding: 0px;
+}
+
+.breadcrumb li,
+.breadcrumb li a {
+  color: #2A97FF;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.profile-avatar {
+  width: 100%;
+  border-radius: 3px;
+}
+
+.profile-avatar-nav {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.app-body {
+  min-height: 90vh;
+}
+
+.form-control {
+  border-radius: 3px;
+  border: 1px solid #B1B1B1;
+  box-shadow: none;
+  height: 38px;
+  font-size: 15px;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.signup-container {
+  height: 90vh;
+}
+
+.nav-logo {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.footer {
+  position: relative;
+  background-color: #2f2f2f;
+  padding: 10px;
+}
 
 .unsaved-changes-actions li {
   display: inline-block;
@@ -136,18 +303,21 @@ a:hover {
   text-align: center !important;
 }
 
-.loader {
-  z-index: 9999;
-  width: 100%;
-  height: 100vh;
-  position: absolute;
+.progress-bar {
+  position: relative;
   left: 0;
   top: 0;
-  background-color: blue;
+  background-color: white;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
 }
 
 .doc-list-title {
   color: #2A97FF;
+  font-size: 18px;
+  line-height: 24px;
+  vertical-align: middle
 }
 
 .doc-list-title:hover,
@@ -156,6 +326,30 @@ a:hover {
   outline: none;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.doc-list-privacy-tag {
+  border-radius: 3px;
+  background: #FEDC50;
+  padding: 4px 8px;
+  color: #626262;
+  font-size: 11px;
+  vertical-align: middle;
+}
+
+.copied-from-tag span {
+  font-size: 11px;
+  color: #818181
+}
+
+.copied-from-tag a {
+  font-size: 11px;
+}
+
+.doc-list-description {
+  font-size: 14px;
+  line-height: 20px;
+  color: #545454;
 }
 
 .radioActive,
@@ -170,7 +364,7 @@ a:hover {
 }
 
 .home-page {
-  position: absolute;
+  position: relative;
   z-index: -1;
   left: 0;
   top: 0;
@@ -258,7 +452,26 @@ a:hover {
 .btn-purple:active {
   cursor: pointer;
   background-color: #520ACB;
-  color: white;
+  color: #333333;
+  text-decoration: none;
+  outline: none;
+}
+
+.btn-gray {
+  background-color: #EDEDED;
+  border-radius: 3px;
+  border: 1px solid #838383;
+  padding: 8px 15px;
+  color: #333333;
+  font-size: 12px;
+}
+
+.btn-gray:hover,
+.btn-gray:focus,
+.btn-gray:active {
+  cursor: pointer;
+  background-color: #E4E4E4;
+  color: #333333;
   text-decoration: none;
   outline: none;
 }
@@ -522,6 +735,24 @@ a:hover {
   border: none;
 }
 
+.nav-clear .navbar-toggle {
+  border-color: #fff !important;
+}
+
+.nav-clear .icon-bar {
+  background-color: #fff !important;
+}
+
+@media (max-width: 768px) {
+  .nav-clear {
+    position: relative;
+    background: #5F00FF;
+  }
+  .nav-clear .signup a {
+    width: 90px;
+  }
+}
+
 .nav-white {
   background: white;
   border-bottom: 1px solid #f1f1f1;
@@ -584,6 +815,7 @@ a:hover {
 .pt70 {padding-top: 70px;}
 .pt75 {padding-top: 75px;}
 .pt80 {padding-top: 80px;}
+.pt150 {padding-top: 150px;}
 .pb5 {padding-bottom: 5px;}
 .pb10 {padding-bottom: 10px;}
 .pb15 {padding-bottom: 15px;}

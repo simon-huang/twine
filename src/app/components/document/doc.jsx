@@ -105,15 +105,13 @@ export class Doc extends React.Component {
                     <BreadcrumbItem href="#" onClick={this.redirectEditDoc}>
                       {this.props.doc.docName}
                     </BreadcrumbItem>
-                    {this.props.doc.docDescription ? ' (' + this.props.doc.docDescription + ')' : ''}
                   </Breadcrumb>
                   <ForkedFrom />
+                  {this.props.doc.docDescription ? <div className="mt10 doc-list-description">{this.props.doc.docDescription}</div> : <div></div>}
                 </div>
                 <div className="col-sm-4 text-right">
-                  <ButtonGroup>
-                    <DocMergeButton />
-                    <DocCopyButton />
-                  </ButtonGroup>
+                  <DocMergeButton />
+                  <DocCopyButton />
                 </div>
               </div>
               <div className="row doc-tabs">
@@ -122,7 +120,7 @@ export class Doc extends React.Component {
                     <Tab title="Document" eventKey="document" >
                       <DocDetails />
                     </Tab>
-                    <Tab title={"Merge Requests " + this.props.doc.pullRequests.length} eventKey="merge">
+                    <Tab title={<div>Merge Requests <div className="notifications-merge-req ml5"><span>{this.props.doc.pullRequests.length}</span></div></div>} eventKey="merge">
                       <DocMergeView />
                     </Tab>
                   {/*<Tab title="History" eventKey="history">

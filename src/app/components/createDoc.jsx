@@ -34,34 +34,22 @@ export class CreateDoc extends React.Component {
   render() {
     return (
       <div className="mt20 container create_doc" >
-        <h3>Create a new document</h3>
-        {/*<input onChange={this.handleChange} type="text" value={this.props.create.docName} name="docName" placeholder="Give me a name" /><br/>
-        <textarea onChange={this.handleChange} type="text" value={this.props.create.docDescription} name="docDescription" placeholder="Add a description (optional)" /><br/>
-        <div>Type of Doc:</div>
-        <select onChange={this.handleChange} value={this.props.create.docType} name="docType">
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select><br/>
-        <button onClick={this.createDocSubmit}>Submit</button> */}
-        <form onSubmit={this.createDocSubmit}>
-          <FormGroup>
-            <FormControl onChange={this.handleChange} type="text" value={this.props.create.docName} name="docName" placeholder="Give me a name" />
-            <FormControl.Feedback />
-          </FormGroup>
-          <FormGroup>
-            <FormControl onChange={this.handleChange} type="text" value={this.props.create.docDescription} name="docDescription" placeholder="Add a description (optional)" />
-            <FormControl.Feedback />
-          </FormGroup>
-          <FormGroup>
-            <select onChange={this.handleChange} value={this.props.create.docType} name="docType">
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select><br/>
-          </FormGroup>
-          <FormGroup controlId="formSubmit" className="mt25">
-            <input type="submit" className="btn btn-purple" label="Log in"/>
-          </FormGroup>
-        </form>
+        <div className="create-doc-container">
+          <div className="create-doc">
+            <form className="create-doc-form" onSubmit={this.createDocSubmit}>
+              <input className="create-doc-title" onChange={this.handleChange} type="text" value={this.props.create.docName} name="docName" placeholder="Give me a name" />
+              <textarea className="mt10" onChange={this.handleChange} type="text" value={this.props.create.docDescription} name="docDescription" placeholder="Add a description (optional)" />
+              <span className="privacy-selector mb20">
+                Make me
+                <select className="ml5" onChange={this.handleChange} value={this.props.create.docType} name="docType">
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </span>
+              <input type="submit" className="ml10 mt10 btn btn-purple" value="Create document"/>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
@@ -74,3 +62,22 @@ export default connect(state => state)(CreateDoc);
 
 
 
+/*<form onSubmit={this.createDocSubmit}>
+  <FormGroup>
+    <FormControl onChange={this.handleChange} type="text" value={this.props.create.docName} name="docName" placeholder="Give me a name" />
+    <FormControl.Feedback />
+  </FormGroup>
+  <FormGroup>
+    <FormControl onChange={this.handleChange} type="text" value={this.props.create.docDescription} name="docDescription" placeholder="Add a description (optional)" />
+    <FormControl.Feedback />
+  </FormGroup>
+  <FormGroup>
+    <select onChange={this.handleChange} value={this.props.create.docType} name="docType">
+      <option value="public">Public</option>
+      <option value="private">Private</option>
+    </select><br/>
+  </FormGroup>
+  <FormGroup controlId="formSubmit" className="mt25">
+    <input type="submit" className="btn btn-purple" label="Log in"/>
+  </FormGroup>
+</form>*/

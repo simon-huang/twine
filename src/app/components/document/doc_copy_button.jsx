@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Button from 'react-bootstrap/lib/Button';
 
 import * as merge from '../../actions/mergeActions.jsx';
 import * as doc from '../../actions/docActions.jsx';
@@ -19,7 +18,7 @@ export class DocCopyButton extends React.Component {
   render() {
     if (this.props.doc.docOwner !== this.props.user.username) {
       return (
-        <Button onClick={this.copyDocument} className="copy-button">Copy</Button>
+        <a className="btn btn-purple" onClick={this.copyDocument}>Copy this document</a>
       );
     } else {
       return (

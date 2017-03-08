@@ -8,6 +8,7 @@ import SignUp from './auth/signUp.jsx';
 import Login from './auth/login.jsx';
 import CreateDoc from './createDoc.jsx';
 import Navbar from './navigation/navbar.jsx';
+import Footer from './footer.jsx';
 import Theme from 'material-ui/styles/MuiThemeProvider';
 import LoginModal from './modals/loginModal.jsx';
 import EditDocModal from './modals/editDocModal.jsx';
@@ -53,9 +54,10 @@ export default class App extends React.Component {
       <Theme>
         <div>
           <Navbar props={this.props} />
-          <div className="mt20">
+          <div className="app-body">
             {this.props.children}
           </div>
+          <Footer />
           <LoginModal />
           <EditDocModal />
           <Toast />

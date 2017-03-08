@@ -22,7 +22,7 @@ export class DocMergeButton extends React.Component {
   render() {
     if (this.props.doc.originOwner !== null) {
       return (
-        <button className="btn btn-success merge_request" onClick={this.showMergeMenu}>Merge</button>
+        <a className="btn btn-gray mr10" onClick={this.showMergeMenu}>Submit your changes</a>
       );
     } else {
       return (

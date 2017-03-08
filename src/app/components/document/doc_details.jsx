@@ -16,7 +16,7 @@ export class Doc_details extends React.Component {
 
   render() {
     return (
-      <div className="doc-details mt10 mb10">
+      <div className="doc-details pt10 pb10">
         <div className="row">
           <div className="col-sm-12">
           {/*<div className="row mt15">

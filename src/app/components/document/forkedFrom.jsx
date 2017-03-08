@@ -19,8 +19,8 @@ export class ForkedFrom extends React.Component {
   render() {
     if (this.props.doc.originOwner) {
       return (
-        <div>
-          <span>Copied from: <a onClick={this.openDoc}>{`${this.props.doc.originOwner} / ${this.props.doc.docName}`}</a></span>
+        <div className="copied-from-tag ml5">
+          <span><i class="fa fa-code-fork"></i> from: <a onClick={this.openDoc}>{`${this.props.doc.originOwner} / ${this.props.doc.docName}`}</a></span>
         </div>
       );
     } else {
