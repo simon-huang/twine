@@ -172,69 +172,6 @@ function allDocsForUser(req, res, next) {
   })
 }
 
-// function allDocsForUser(req, res, next) {
-//   //req.params
-//   var user, docs;
-//   var docsObject = {};
-//   console.log('in the route handler', req.params);
-
-//   User.findOne({ where: {username: req.params.username } })
-//   .then(function(foundUser) {
-//     if (!foundUser) {
-//       console.log('user doesn\'t exist');
-//       return Promise.reject('User doesn\'t exist');
-//     } 
-//     user = foundUser.dataValues;
-//     console.log('found user in db ');
-//     if (req.user && req.user.username === req.params.username) {
-//       console.log('this is you');
-//       return Doc.findAll({ where: {docOwner: req.params.username } })
-//     } else if (!req.user || !(req.user.username === req.params.username)) {
-//       console.log('this is not you');
-//       return Doc.findAll({ 
-//         where: {docOwner: req.params.username, public: true },
-//         include: [{
-//           model: PullRequest,
-//           as: 'pullRequests',
-//           where: {targetUsername: user.username, status: 'open'}
-//         }]
-//        })
-//     } 
-//   })
-//   .then(function(foundDocs) {
-//     console.log('queried for docs')
-//     docs = foundDocs.map(instance => {
-//       var type = instance.dataValues.public === true ? 'public' : 'private';
-//       return {
-//         docID: instance.dataValues.id,
-//         docOwner: instance.dataValues.docOwner,
-//         docName: instance.dataValues.name, 
-//         docDescription: instance.dataValues.description,
-//         docType: type,
-//         parentID: instance.dataValues.originId,
-//         originOwner: instance.dataValues.originOwner,
-//         filePath: instance.dataValues.filepath,
-//         docContent: '',
-//         docCommits: [],
-//         currentCommit: '',
-//         pullRequests: []
-//       }
-//     });
-//     docsObject.both = docs;
-//     docsObject.owned = docs.filter(doc => {
-//       return doc.parentID === null;
-//     });
-//     docsObject.contributing = docs.filter(doc => {
-//       return doc.parentID !== null;
-//     });
-//     res.send({username: req.params.username, userDocuments: docsObject});
-//   })
-//   .then(null, function(err){
-//     console.log('Error: ', err);
-//     res.end(err);
-//   })
-// }
-
 function allDocs(req, res, next) {
   var docs;
   console.log('requesting all docs');
