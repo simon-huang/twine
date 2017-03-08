@@ -69,7 +69,7 @@ export class EditDoc extends React.Component {
       }
     }
     return (
-      <div className="doc-editor">
+      <div>
         <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} toolbar={simpleToolbar}/>
         <EditDoc_details />
       </div>
@@ -82,3 +82,4 @@ export default connect(state => state)(EditDoc);
 
 
 
+/*<div className="doc-editor">*/
