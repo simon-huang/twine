@@ -69,8 +69,7 @@ export function login () {
       dispatch(userCreated(response.data));
     })
     .catch((err) => {
-      dispatch(loading.toggleToast(true, err.response.data)); 
-      // 'Username or email is already in use'
+      dispatch(loading.toggleToast(true, 'Incorrect email or username')); 
       dispatch(authReject(err));
     })
   }
@@ -92,6 +91,7 @@ export function modalLogin () {
       }
     })
     .catch((err) => {
+      dispatch(loading.toggleToast(true, 'Incorrect email or username')); 
       dispatch(authReject(err));
     })
   }
@@ -109,6 +109,7 @@ export function signup () {
       dispatch(userCreated(response.data));
     })
     .catch((err) => {
+      dispatch(loading.toggleToast(true, 'Username or email is already in use')); 
       dispatch(authReject(err));
     })
   }
