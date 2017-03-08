@@ -56,9 +56,21 @@ export class EditDoc extends React.Component {
   }
 
   render() {
+    var simpleToolbar = {
+      options: ['inline', 'remove', 'list', 'blockType', 'history'],
+      inline: {
+        options: ['bold', 'italic', 'underline', 'strikethrough', 'monospace'],
+      },
+      blockType: {
+        options: [ 'Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'],
+      },
+      list: {
+        options: ['unordered', 'ordered']
+      }
+    }
     return (
       <div className="doc-editor">
-        <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} />
+        <Editor editorState={this.props.doc.editsObject} onEditorStateChange={this.editingDoc} onContentStateChange={this.createHTML} toolbar={simpleToolbar}/>
         <EditDoc_details />
       </div>
     )
@@ -66,4 +78,7 @@ export class EditDoc extends React.Component {
 }
 
 export default connect(state => state)(EditDoc);
+
+
+
 
