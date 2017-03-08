@@ -12,7 +12,6 @@ fse.ensureDir = promisify(fse.ensureDir);
 
 // pull
 var exec = require('child_process').exec;
-// exec = promisify(exec);
 
 // diff
 var jsdiff = require('diff');
@@ -20,7 +19,6 @@ var jsdiff = require('diff');
 var filesFolder = 'documents';
 
 function specificDoc(req, res, next) {
-  // adapted from openDoc
   console.log('specificDoc params: ', req.params);
   var user, doc, pullRequests;
   var text, commits, currentCommit;
@@ -111,95 +109,131 @@ function allDocsForUser(req, res, next) {
   var docsObject = {};
   console.log('in the route handler', req.params);
 
-  if (req.user && req.user.username === req.params.username) {
-    console.log('this is you');
-    User.findOne({ where: {username: req.params.username } })
-    .then(function(foundUser) {
-      if (!foundUser) {
-        console.log('user doesn\'t exist');
-        return Promise.reject('User doesn\'t exist');
-      } 
-      // user = foundUser.dataValues;
-      console.log('found user in db ');
+  User.findOne({ where: {username: req.params.username } })
+  .then(function(foundUser) {
+    if (!foundUser) {
+      console.log('user doesn\'t exist');
+      return Promise.reject('User doesn\'t exist');
+    } 
+    user = foundUser.dataValues;
+    console.log('found user in db ');
+    if (req.user && req.user.username === req.params.username) {
+      console.log('this is you');
       return Doc.findAll({ where: {docOwner: req.params.username } })
-    })
-    .then(function(foundDocs) {
-      console.log('found')
-      docs = foundDocs.map(instance => {
-        var type = instance.dataValues.public === true ? 'public' : 'private';
-        return {
-          docID: instance.dataValues.id,
-          docOwner: instance.dataValues.docOwner,
-          docName: instance.dataValues.name, 
-          docDescription: instance.dataValues.description,
-          docType: type,
-          parentID: instance.dataValues.originId,
-          originOwner: instance.dataValues.originOwner,
-          filePath: instance.dataValues.filepath,
-          docContent: '',
-          docCommits: [],
-          currentCommit: ''
-        }
-      });
-      docsObject.both = docs;
-      
-      docsObject.owned = docs.filter(doc => {
-        return doc.parentID === null;
-      });
-      docsObject.contributing = docs.filter(doc => {
-        return doc.parentID !== null;
-      });
-      res.send({username: req.params.username, userDocuments: docsObject});
-    })
-    .then(null, function(err){
-      console.log('Error: ', err);
-      res.end(err);
-    })
-  } else {
-    console.log('not yours');
-    User.findOne({ where: {username: req.params.username } })
-    .then(function(foundUser) {
-      if (!foundUser) {
-        console.log('user doesn\'t exist');
-        return Promise.reject('User doesn\'t exist');
-      } 
-      // user = foundUser.dataValues;
-      console.log('found user in db ');
+    } else if (!req.user || !(req.user.username === req.params.username)) {
+      console.log('this is not you');
       return Doc.findAll({ where: {docOwner: req.params.username, public: true } })
-    })
-    .then(function(foundDocs) {
-      console.log('queried for docs')
-      docs = foundDocs.map(instance => {
-        var type = instance.dataValues.public === true ? 'public' : 'private';
-        return {
-          docID: instance.dataValues.id,
-          docOwner: instance.dataValues.docOwner,
-          docName: instance.dataValues.name, 
-          docDescription: instance.dataValues.description,
-          docType: type,
-          parentID: instance.dataValues.originId,
-          originOwner: instance.dataValues.originOwner,
-          filePath: instance.dataValues.filepath,
-          docContent: '',
-          docCommits: [],
-          currentCommit: ''
+    } 
+  })
+  .then(function(foundDocs) {
+    console.log('queried for docs')
+    docs = foundDocs.map(instance => {
+      var type = instance.dataValues.public === true ? 'public' : 'private';
+      return {
+        docID: instance.dataValues.id,
+        docOwner: instance.dataValues.docOwner,
+        docName: instance.dataValues.name, 
+        docDescription: instance.dataValues.description,
+        docType: type,
+        parentID: instance.dataValues.originId,
+        originOwner: instance.dataValues.originOwner,
+        filePath: instance.dataValues.filepath,
+        docContent: '',
+        docCommits: [],
+        currentCommit: '',
+        pullRequests: []
+      }
+    });
+    return PullRequest.findAll({ where: {targetUsername: user.username, status: 'open'} })
+  })
+  .then(function(foundPullRequests) {
+    if (foundPullRequests) {
+      foundPullRequests.forEach(instance => {
+        for (var i = 0; i < docs.length; i++) {
+          if (docs[i].docID === instance.dataValues.upstreamDocId) {
+            docs[i].pullRequests.push('pull request');
+          }
         }
-      });
-      docsObject.both = docs;
-      docsObject.owned = docs.filter(doc => {
-        return doc.parentID === null;
-      });
-      docsObject.contributing = docs.filter(doc => {
-        return doc.parentID !== null;
-      });
-      res.send({username: req.params.username, userDocuments: docsObject});
-    })
-    .then(null, function(err){
-      console.log('Error: ', err);
-      res.end(err);
-    })
-  }
+      })
+    }
+    console.log('THESE ARE THE DOCS. CHECK FOR PRS: ', docs);
+    docsObject.both = docs;
+    docsObject.owned = docs.filter(doc => {
+      return doc.parentID === null;
+    });
+    docsObject.contributing = docs.filter(doc => {
+      return doc.parentID !== null;
+    });
+    res.send({username: req.params.username, userDocuments: docsObject});
+  })
+  .then(null, function(err){
+    console.log('Error: ', err);
+    res.end(err);
+  })
 }
+
+// function allDocsForUser(req, res, next) {
+//   //req.params
+//   var user, docs;
+//   var docsObject = {};
+//   console.log('in the route handler', req.params);
+
+//   User.findOne({ where: {username: req.params.username } })
+//   .then(function(foundUser) {
+//     if (!foundUser) {
+//       console.log('user doesn\'t exist');
+//       return Promise.reject('User doesn\'t exist');
+//     } 
+//     user = foundUser.dataValues;
+//     console.log('found user in db ');
+//     if (req.user && req.user.username === req.params.username) {
+//       console.log('this is you');
+//       return Doc.findAll({ where: {docOwner: req.params.username } })
+//     } else if (!req.user || !(req.user.username === req.params.username)) {
+//       console.log('this is not you');
+//       return Doc.findAll({ 
+//         where: {docOwner: req.params.username, public: true },
+//         include: [{
+//           model: PullRequest,
+//           as: 'pullRequests',
+//           where: {targetUsername: user.username, status: 'open'}
+//         }]
+//        })
+//     } 
+//   })
+//   .then(function(foundDocs) {
+//     console.log('queried for docs')
+//     docs = foundDocs.map(instance => {
+//       var type = instance.dataValues.public === true ? 'public' : 'private';
+//       return {
+//         docID: instance.dataValues.id,
+//         docOwner: instance.dataValues.docOwner,
+//         docName: instance.dataValues.name, 
+//         docDescription: instance.dataValues.description,
+//         docType: type,
+//         parentID: instance.dataValues.originId,
+//         originOwner: instance.dataValues.originOwner,
+//         filePath: instance.dataValues.filepath,
+//         docContent: '',
+//         docCommits: [],
+//         currentCommit: '',
+//         pullRequests: []
+//       }
+//     });
+//     docsObject.both = docs;
+//     docsObject.owned = docs.filter(doc => {
+//       return doc.parentID === null;
+//     });
+//     docsObject.contributing = docs.filter(doc => {
+//       return doc.parentID !== null;
+//     });
+//     res.send({username: req.params.username, userDocuments: docsObject});
+//   })
+//   .then(null, function(err){
+//     console.log('Error: ', err);
+//     res.end(err);
+//   })
+// }
 
 function allDocs(req, res, next) {
   var docs;

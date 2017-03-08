@@ -23,6 +23,7 @@ export class ProfileDocSummary extends React.Component {
           <div className="col-sm-12">
             <span className="doc-list-title bold" onClick={this.openDoc}>{this.props.docData.docName}</span>
             {this.props.docData.docType === 'private' ? <span className="doc-list-privacy-tag ml10">{this.props.docData.docType}</span> : <span></span>}
+            {this.props.docData.pullRequests.length > 0 ? <div className="notifications-merge-req ml5"><span>{this.props.docData.pullRequests.length}</span></div> : <span></span>}
           </div>
         </div>
         <div className="row">
