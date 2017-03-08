@@ -38,7 +38,7 @@ export function createDocument() {
     })
     .catch(function(err) {
       console.log(err);
-      dispatch(loading.toggleToast(true, 'You already have a doc with that name'));
+      dispatch(loading.toggleToast(true, err));
     });
   }
 }
