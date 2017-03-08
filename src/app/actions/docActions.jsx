@@ -119,6 +119,9 @@ export function copyDoc() {
     axios.post('/api/doc/copyDoc', copyInfo)
     .then(function(response) {
       console.log(response.data)
+      if (response.data === 'You already have a doc with that name') {
+        return Promise.reject('You already have a doc with that name');
+      }
       dispatch({
         type: 'RETRIEVE_DOC',
         payload: response.data
@@ -129,7 +132,7 @@ export function copyDoc() {
     })
     .catch(function(err) {
       dispatch({type: 'REQ_ERROR'});
-      dispatch(loading.toggleToast(true, 'Error saving'));
+      dispatch(loading.toggleToast(true, 'You already have a doc with that name'));
     });
   }
 }

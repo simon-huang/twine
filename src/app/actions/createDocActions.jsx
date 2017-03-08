@@ -22,6 +22,9 @@ export function createDocument() {
     };
     axios.post('/api/doc/createDoc', createRequestInfo)
     .then(function(data){
+      if (data.data === 'You already have a doc with that name') {
+        return Promise.reject('You already have a doc with that name');
+      }
       data = data.data;
       dispatch({
         type: 'RETRIEVE_DOC',
@@ -31,10 +34,13 @@ export function createDocument() {
     })
     .then(function(data){
       browserHistory.push(`/profile/${data.docOwner}/${data.docID}/editing`);
-      dispatch(loading.toggleToast(true, `${data.docName} created!`));
+      dispatch(loading.toggleToast(true, `"${data.docName}" created!`));
     })
     .catch(function(err) {
       console.log(err);
+      dispatch(loading.toggleToast(true, err));
     });
   }
 }
+
+      

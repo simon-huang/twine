@@ -978,8 +978,16 @@ function validateMerge(req, res, next) {
   PullRequest.findOne({ where: {commitId: req.body.commitID} }) 
   .then(function(pullRequestFound) {
     if (pullRequestFound) {
-      console.log('Merge request pending for these changes');
-      return Promise.reject('Merge request pending for these changes');
+      if (pullRequestFound.dataValues.status === 'open') {
+        console.log('Merge request still pending');
+        return Promise.reject('Merge request still pending');
+      } else if (pullRequestFound.dataValues.status === 'accept') {
+        console.log('Merge request already accepted');
+        return Promise.reject('Merge request already accepted');
+      } else if (pullRequestFound.dataValues.status === 'decline') {
+        console.log('Merge request already declined');
+        return Promise.reject('Merge request already declined');
+      }
     }
     console.log('no open pull requests')
     return DocVersion.findOne({ where: {commitID: req.body.commitID} })
@@ -1000,7 +1008,7 @@ function validateMerge(req, res, next) {
     } 
     console.log('found user ');
     user = foundUser.dataValues;
-    if (!req.user || !(req.user.username === req.body.username)) {
+    if (!req.user || !(req.user.username === user.username)) {
       console.log('You are not logged in at that username');
       return Promise.reject('You are not logged in at that username');      
     }
@@ -1047,10 +1055,6 @@ function validateMerge(req, res, next) {
     } else {
       res.send(true);
     }
-  })
-  .then(null, function(err){
-    console.log('Error: ', err);
-    res.end(err);
   })
   .then(null, function(err){
     console.log('Error: ', err);

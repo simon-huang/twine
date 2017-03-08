@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as loading from './loadingActions.jsx';
 
 export function switchSplitOrUnified (view) {
   return {
@@ -44,7 +45,7 @@ export function actionPullRequest (info) {
     axios.post('/api/doc/actionPullRequest', info)
     .then(function(response) {
       // dependent on how we handle error handling, toast message should change
-      dispatch(loading.toggleToast(true, 'Merge successful!'));
+      dispatch(loading.toggleToast(true, `Merge ${info.mergeStatus} successful!`));
     });
   }
 }
