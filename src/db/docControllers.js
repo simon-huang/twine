@@ -16,6 +16,26 @@ var exec = require('child_process').exec;
 // diff
 var jsdiff = require('diff');
 
+var addSpacesToTags = function (string) {
+  var result = string;
+  result = result.replace(/<p>/gi, ' <p> ');
+  result = result.replace(/<\/p>/gi, ' </p> ');
+  result = result.replace(/<H1>/gi, ' <H1> ');
+  result = result.replace(/<\/H1>/gi, ' </H1> ');
+  result = result.replace(/<H2>/gi, ' <H2> ');
+  result = result.replace(/<\/H2>/gi, ' </H2> ');
+  result = result.replace(/<H3>/gi, ' <H3> ');
+  result = result.replace(/<\/H3>/gi, ' </H3> ');
+  result = result.replace(/<H4>/gi, ' <pH4 ');
+  result = result.replace(/<\/H4>/gi, ' </pH4 ');
+  result = result.replace(/<H5>/gi, ' <p>H5');
+  result = result.replace(/<\/H5>/gi, ' </p>H5');
+  result = result.replace(/<H6>/gi, ' <p>H6');
+  result = result.replace(/<\/H6>/gi, ' </p>H6');
+  return result;
+}
+
+
 var filesFolder = 'documents';
 
 function specificDoc(req, res, next) {
@@ -770,13 +790,13 @@ function reviewUpstream(req, res, next) {
     return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text1 = data;
-    console.log('text 1 ', data);
+    obj.text1 = addSpacesToTags(data);
+    console.log('text 1 with spaces', obj.text1);
     return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text2 = data;
-    console.log('text 2 ', data);
+    obj.text2 = addSpacesToTags(data);
+    console.log('text 2 with spaces', obj.text2);
     var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
 
     diff.forEach(function(part){
@@ -1144,13 +1164,13 @@ function reviewPullRequest(req, res, next) {
     return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text1 = data;
+    obj.text1 = addSpacesToTags(data);
     console.log('text 1 ', data);
     var stringiFiedID = '' + pullRequest.id;
     return fse.readFile(path.join(__dirname, 'pullRequests', stringiFiedID, doc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text2 = data;
+    obj.text2 = addSpacesToTags(data);
     console.log('text 2 ', data);
     var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
 
