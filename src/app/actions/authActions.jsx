@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as doc from './docActions.jsx';
 import * as loading from './loadingActions.jsx';
+import { browserHistory } from 'react-router';
 
 export function autoLogin () {
   return function(dispatch, getState) {
@@ -79,6 +80,7 @@ export function modalLogin () {
   return function(dispatch, getState) {
     var user = getState().user;
     var auth = getState().auth;
+    var redirected = true;
     axios.post('/api/auth/login', {
       email: user.email,
       password: user.password
@@ -87,7 +89,13 @@ export function modalLogin () {
       if (auth.redirectUrl === '' || auth.redirectUrl === '/' || auth.redirectUrl === '/signup') {
         dispatch(userCreated(response.data));
       } else {
+        redirected = false;
         dispatch(userLogin(response.data.username));
+      }
+    })
+    .then(() => {
+      if (redirected === false) {
+        window.location.reload();
       }
     })
     .catch((err) => {
@@ -126,6 +134,16 @@ export function userLogout () {
     })
     .catch((err) => {
       dispatch(authReject(err));
+    })
+    .then(function() {
+      var currentlyEditing = window.location.pathname.indexOf('editing');
+      if (currentlyEditing !== -1) {
+        browserHistory.push(window.location.pathname.substring(0, currentlyEditing - 1));
+      } else if (window.location.pathname.indexOf('createdoc') !== -1) {
+        browserHistory.push('/explore');
+      } else {
+        window.location.reload();
+      }
     })
   }
 }
