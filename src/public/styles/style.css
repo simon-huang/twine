@@ -490,6 +490,14 @@ a:hover {
   margin-right: -50%;
 }
 
+.modal-backdrop {
+  z-index: 10400;
+}
+
+.modal {
+  z-index: 10400;
+}
+
 .login-modal {
   width: 420px;
   top: 50px;
