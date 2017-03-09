@@ -35,6 +35,25 @@ var addSpacesToTags = function (string) {
   return result;
 }
 
+var removeTags = function (string) {
+  var result = string;
+  result = result.replace(/<p>/g, ' ');
+  result = result.replace(/<\/p>/g, ' ');
+  result = result.replace(/<h1>/g, ' ');
+  result = result.replace(/<\/h1>/g, ' ');
+  result = result.replace(/<h2>/g, ' ');
+  result = result.replace(/<\/h2>/g, ' ');
+  result = result.replace(/<h3>/g, ' ');
+  result = result.replace(/<\/h3>/g, ' ');
+  result = result.replace(/<h4>/g, ' ');
+  result = result.replace(/<\/h4>/g, ' ');
+  result = result.replace(/<h5>/g, ' ');
+  result = result.replace(/<\/h5>/g, ' ');
+  result = result.replace(/<h6>/g, ' ');
+  result = result.replace(/<\/h6>/g, ' ');
+  return result;
+}
+
 
 var filesFolder = 'documents';
 
@@ -790,12 +809,12 @@ function reviewUpstream(req, res, next) {
     return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text1 = addSpacesToTags(data);
+    obj.text1 = removeTags(data);
     console.log('text 1 with spaces', obj.text1);
     return fse.readFile(path.join(upstreamDoc.filepath, upstreamDoc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text2 = addSpacesToTags(data);
+    obj.text2 = removeTags(data);
     console.log('text 2 with spaces', obj.text2);
     var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
 
@@ -1164,13 +1183,13 @@ function reviewPullRequest(req, res, next) {
     return fse.readFile(path.join(doc.filepath, doc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text1 = addSpacesToTags(data);
+    obj.text1 = removeTags(data);
     console.log('text 1 ', data);
     var stringiFiedID = '' + pullRequest.id;
     return fse.readFile(path.join(__dirname, 'pullRequests', stringiFiedID, doc.name + '.txt'), 'utf8')
   })
   .then(function(data) {
-    obj.text2 = addSpacesToTags(data);
+    obj.text2 = removeTags(data);
     console.log('text 2 ', data);
     var diff = jsdiff.diffWordsWithSpace(obj.text1, obj.text2);
 
