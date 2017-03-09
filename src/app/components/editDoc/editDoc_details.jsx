@@ -12,6 +12,7 @@ export class EditDoc_details extends React.Component {
     this.clearMergeInfo = this.clearMergeInfo.bind(this);
     this.cancelMerge = this.cancelMerge.bind(this);
     this.saveDoc = this.saveDoc.bind(this);
+    this.revertDoc = this.revertDoc.bind(this);
   }
 
   toggleMergeMenu(value) {
@@ -43,6 +44,17 @@ export class EditDoc_details extends React.Component {
     this.props.dispatch(doc.saveDoc());
   }
 
+  revertDoc(commitID) {
+    if (this.props.doc.editMode) {
+      if (confirm('You have unsaved changes. Are you sure you want to continue?')) {
+        this.props.dispatch(doc.revertDoc(commitID));
+        this.props.dispatch(doc.toggleEditMode());
+      }
+    } else {
+      this.props.dispatch(doc.revertDoc(commitID));
+    }
+  }
+
   // toggleMerge() {
   //   if (this.props.merge.showMergeMenu) {
   //     return (
@@ -66,6 +78,11 @@ export class EditDoc_details extends React.Component {
   render() {
     return (
       <div className="editDoc-details">
+        {this.props.doc.docCommits.map((commit, i) => 
+          commit.commitID === this.props.doc.currentCommit ? 
+            <div key={i} onClick={ ()=> this.revertDoc(commit.commitID) }><strong>{commit.commitMessage}</strong></div> : 
+            <div key={i} onClick={ ()=> this.revertDoc(commit.commitID) }>{commit.commitMessage}</div>
+        )}
         <button className="btn btn-success save_request" onClick={this.saveDoc}>Save</button>
       </div>
     );

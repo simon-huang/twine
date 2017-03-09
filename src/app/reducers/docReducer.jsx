@@ -84,6 +84,12 @@ export default function reducer(state = {
         masterHtml: action.payload
       }
     }
+    case "EDIT_CURRENTCOMMIT": {
+      return {
+        ...state,
+        currentCommit: action.payload,
+      }
+    }
     case "EDIT_DOCCOMMITS": {
       return {
         ...state,
@@ -91,7 +97,6 @@ export default function reducer(state = {
         editMode: false
       }
     }
-
     case "EDIT_PULLREQUESTS": {
       return {
         ...state,
