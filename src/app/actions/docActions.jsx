@@ -96,7 +96,9 @@ export function saveDoc() {
     axios.post('/api/doc/saveDoc', docSaveInfo)
     .then(function(data) {
       data = data.data;
-      dispatch(handleChange('docCommits', data));
+      console.log('WHAT IS THIS THAT WAS SENT BACK? ', data);
+      dispatch(handleChange('docCommits', data.docCommits));
+      dispatch(handleChange('currentCommit', data.currentCommit));
       dispatch({type: 'REQ_COMPLETED'});
       dispatch(loading.toggleToast(true, 'Document saved'));
     })
@@ -112,10 +114,23 @@ export function revertDoc(commitID) {
     dispatch({type: 'REQ_STARTED'});
     axios.post('/api/doc/pastVersion', {commitID: commitID})
     .then((response) => {
+      // console.log('WHAT GETS SENT BACK ON REVERT? ', response.data);
+      const blocksFromHTML = convertFromHTML(response.data.docContent);
+      const contentState = ContentState.createFromBlockArray(blocksFromHTML);
+      const editorState = EditorState.createWithContent(contentState);
+      dispatch(handleChange('masterHtml', response.data.docContent));
       dispatch({
-        type: 'RETRIEVE_DOC',
-        payload: response.data
-      })
+        type: "POPULATE_EDITOR",
+        payload: {
+          editorState: editorState,
+          editsHtml: response.data.docContent
+        }
+      });
+      dispatch(handleChange('currentCommit', response.data.currentCommit));
+      // dispatch({
+      //   type: 'RETRIEVE_DOC',
+      //   payload: response.data
+      // })
       dispatch({type: 'REQ_COMPLETED'});
     })
     .catch((err) => {

@@ -45,7 +45,13 @@ export class EditDoc_details extends React.Component {
   }
 
   revertDoc(commitID) {
-    this.props.dispatch(doc.revertDoc(commitID));
+    if (this.props.doc.editMode) {
+      if (confirm('You have unsaved changes. Are you sure you want to continue?')) {
+        this.props.dispatch(doc.revertDoc(commitID));
+      }
+    } else {
+      this.props.dispatch(doc.revertDoc(commitID));
+    }
   }
 
   // toggleMerge() {
