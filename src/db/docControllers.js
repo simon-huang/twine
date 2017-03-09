@@ -54,7 +54,7 @@ function specificDoc(req, res, next) {
         ownerMessage: ''
       }
     });
-    return DocVersion.findAll({ where: {docId: doc.id, userId: doc.UserId} })
+    return DocVersion.findAll({ where: {docId: doc.id} })
   })
   .then(function(foundCommits){
     console.log('found commits ');
@@ -65,6 +65,7 @@ function specificDoc(req, res, next) {
         commitMessage: instance.dataValues.commitMessage
       }
     });
+
     // console.log('reduced commits to send later ', commits);
     return NodeGit.Repository.open(doc.filepath)
   })
@@ -156,7 +157,6 @@ function allDocsForUser(req, res, next) {
         }
       })
     }
-    console.log('THESE ARE THE DOCS. CHECK FOR PRS: ', docs);
     docsObject.both = docs;
     docsObject.owned = docs.filter(doc => {
       return doc.parentID === null;
@@ -678,7 +678,7 @@ function openDoc(req, res, next) {
       }
     });
     console.log('found pull requests (if they exist)');
-    return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
+    return DocVersion.findAll({ where: {docId: doc.id} })
   })
   .then(function(foundCommits){
     commits = foundCommits.map((instance) => {
@@ -905,7 +905,7 @@ function getUpstream(req, res, next) {
         .then(function(data) {
           console.log('read contents ', data);
           text = data;
-          return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
+          return DocVersion.findAll({ where: {docId: doc.id} })
         })
         .then(function(foundCommits) {
           commits = foundCommits.map((instance) => {
@@ -1291,7 +1291,7 @@ function actionPullRequest(req, res, next) {
       .save()
       .then(function(madeDocVersion) {
         // console.log('made another docVersion', madeDocVersion);
-        return DocVersion.findAll({ where: {docId: upstreamDoc.id, userId: user.id} })
+        return DocVersion.findAll({ where: {docId: upstreamDoc.id} })
       })
       .then(function(foundCommits) {
         // console.log('found all commits ', foundCommits);
@@ -1371,7 +1371,7 @@ function pastVersion(req, res, next) {//commit ID, username, doc name
     // console.log('found doc', foundDoc.dataValues);
     doc = foundDoc.dataValues; 
     console.log('get commits');
-    return DocVersion.findAll({ where: {docId: doc.id, userId: user.id} })
+    return DocVersion.findAll({ where: {docId: doc.id} })
   })
   .then(function(foundCommits){
     console.log('found commits ');

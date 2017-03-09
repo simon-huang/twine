@@ -107,6 +107,23 @@ export function saveDoc() {
   }
 }
 
+export function revertDoc(commitID) {
+  return (dispatch, getState) => {
+    dispatch({type: 'REQ_STARTED'});
+    axios.post('/api/doc/pastVersion', {commitID: commitID})
+    .then((response) => {
+      dispatch({
+        type: 'RETRIEVE_DOC',
+        payload: response.data
+      })
+      dispatch({type: 'REQ_COMPLETED'});
+    })
+    .catch((err) => {
+      dispatch({type: 'REQ_ERROR'});
+    })
+  }
+}
+
 export function copyDoc() {
   return (dispatch, getState) => {
     dispatch({type: 'REQ_STARTED'});
