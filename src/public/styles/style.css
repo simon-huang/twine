@@ -187,6 +187,112 @@ a:hover {
 }
 
 /*==================================*/
+/*============= Editing ============*/
+/*==================================*/
+
+.btn-edit-doc {
+  width: 90px;
+  padding: 8px 0;
+}
+
+.col-doc-editing-w-sidebar {
+  display: inline-block;
+  width: calc(100vw - 300px);
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+
+.col-doc-editing-full {
+  display: inline-block;
+  width: 100vw;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+
+.col-doc-sidebar-open {
+  display: inline-block;
+  width: 300px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  background: white;
+  overflow-y: scroll;
+  border-left: 1px solid #DBDBDA;
+  z-index: 10000;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+
+.col-doc-sidebar-closed {
+  display: inline-block;
+  width: 300px;
+  position: fixed;
+  bottom: 0;
+  right: -300px;
+  height: 100%;
+  background: white;
+  border-left: 1px solid #DBDBDA;
+  z-index: 10000;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+
+.sidebar-header {
+  background: #5F00FF;
+  width: 100%;
+  position: relative;
+  padding: 15px;
+  color: white;
+}
+
+.sidebar-body {
+  padding: 15px;
+  overflow-y: scroll;
+}
+
+.sidebar-header > span {
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.sidebar-close {
+  position: absolute;
+  right: 10px;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.sidebar-close:hover {
+  cursor: pointer;
+}
+
+.history-entry {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.history-entry li {
+  padding: 3px 5px;
+  border-bottom: 1px solid #dedede;
+}
+
+.history-entry li:hover {
+  background: #5F00FF;
+  color: white;
+  cursor: pointer;
+}
+
+/*==================================*/
 /*============== Tabs ==============*/
 /*==================================*/
 
@@ -327,7 +433,7 @@ a:hover {
   position: fixed !important;
   right: -100px !important;
   left: inherit !important;
-  z-index: 9999 !important;
+  z-index: 11111 !important;
   -webkit-transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
   transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
@@ -692,7 +798,7 @@ a:hover {
   position: fixed;
   right: 20px;
   bottom: 20px;
-  z-index: 9999;
+  z-index: 10001;
 }
 
 @media (min-width: 768px) {

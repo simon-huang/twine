@@ -1,5 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
+// Import components
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+
+// Import actions
 import * as merge from '../../actions/mergeActions.jsx';
 import * as doc from '../../actions/docActions.jsx';
 
@@ -12,7 +17,7 @@ export class EditDoc_details extends React.Component {
     this.clearMergeInfo = this.clearMergeInfo.bind(this);
     this.cancelMerge = this.cancelMerge.bind(this);
     this.saveDoc = this.saveDoc.bind(this);
-    this.revertDoc = this.revertDoc.bind(this);
+    this.toggleSideBar = this.toggleSideBar.bind(this);
   }
 
   toggleMergeMenu(value) {
@@ -44,15 +49,8 @@ export class EditDoc_details extends React.Component {
     this.props.dispatch(doc.saveDoc());
   }
 
-  revertDoc(commitID) {
-    if (this.props.doc.editMode) {
-      if (confirm('You have unsaved changes. Are you sure you want to continue?')) {
-        this.props.dispatch(doc.revertDoc(commitID));
-        this.props.dispatch(doc.toggleEditMode());
-      }
-    } else {
-      this.props.dispatch(doc.revertDoc(commitID));
-    }
+  toggleSideBar() {
+    this.props.dispatch(doc.toggleSideBar());
   }
 
   // toggleMerge() {
@@ -78,20 +76,15 @@ export class EditDoc_details extends React.Component {
   render() {
     return (
       <div className="editDoc-details">
-        {this.props.doc.docCommits.map((commit, i) => 
-          commit.commitID === this.props.doc.currentCommit ? 
-            <div key={i} onClick={ ()=> this.revertDoc(commit.commitID) }><strong>{commit.commitMessage}</strong></div> : 
-            <div key={i} onClick={ ()=> this.revertDoc(commit.commitID) }>{commit.commitMessage}</div>
-        )}
-        <button className="btn btn-success save_request" onClick={this.saveDoc}>Save</button>
+        <ButtonGroup>
+          <button className="btn btn-purple btn-edit-doc" onClick={this.saveDoc}><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+          <button className="btn btn-gray btn-edit-doc" onClick={this.toggleSideBar}><i class="fa fa-cog" aria-hidden="true"></i> Settings</button>
+        </ButtonGroup>
       </div>
     );
   }
 };
 
 export default connect(state => state)(EditDoc_details);
-
-
-
 
 

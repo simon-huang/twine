@@ -17,7 +17,7 @@ import Explore from './components/explore/explore.jsx';
 import NoPage404 from './components/noPage404.jsx';
 
 store.subscribe(() => {
-  // console.log('store changed', store.getState());
+  console.log('store changed', store.getState());
 })
 
 function createElement(Component, props) {
