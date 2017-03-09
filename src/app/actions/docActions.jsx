@@ -96,13 +96,39 @@ export function saveDoc() {
     axios.post('/api/doc/saveDoc', docSaveInfo)
     .then(function(data) {
       data = data.data;
-      dispatch(handleChange('docCommits', data));
+      dispatch(handleChange('docCommits', data.docCommits));
+      dispatch(handleChange('currentCommit', data.currentCommit));
       dispatch({type: 'REQ_COMPLETED'});
       dispatch(loading.toggleToast(true, 'Document saved'));
     })
     .catch(function(err) {
       dispatch({type: 'REQ_ERROR'});
       dispatch(loading.toggleToast(true, 'Error saving'));
+    })
+  }
+}
+
+export function revertDoc(commitID) {
+  return (dispatch, getState) => {
+    dispatch({type: 'REQ_STARTED'});
+    axios.post('/api/doc/pastVersion', {commitID: commitID})
+    .then((response) => {
+      const blocksFromHTML = convertFromHTML(response.data.docContent);
+      const contentState = ContentState.createFromBlockArray(blocksFromHTML);
+      const editorState = EditorState.createWithContent(contentState);
+      dispatch(handleChange('masterHtml', response.data.docContent));
+      dispatch({
+        type: "POPULATE_EDITOR",
+        payload: {
+          editorState: editorState,
+          editsHtml: response.data.docContent
+        }
+      });
+      dispatch(handleChange('currentCommit', response.data.currentCommit));
+      dispatch({type: 'REQ_COMPLETED'});
+    })
+    .catch((err) => {
+      dispatch({type: 'REQ_ERROR'});
     })
   }
 }
