@@ -28,7 +28,7 @@ export class Publishus extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Router history={browserHistory} createElement={createElement}>
+        <Router history={browserHistory} createElement={createElement} onUpdate={() => window.scrollTo(0, 0)}>
           <Route component={App}>
             <Route path="/" component={Home}/>
             <Route path="404" component={NoPage404}/>
