@@ -48,6 +48,7 @@ export class EditDoc_details extends React.Component {
     if (this.props.doc.editMode) {
       if (confirm('You have unsaved changes. Are you sure you want to continue?')) {
         this.props.dispatch(doc.revertDoc(commitID));
+        this.props.dispatch(doc.toggleEditMode());
       }
     } else {
       this.props.dispatch(doc.revertDoc(commitID));
