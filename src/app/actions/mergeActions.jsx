@@ -68,10 +68,10 @@ export function displayMergeFalse () {
   }
 }
 
-export function reviewPullRequest (data) {
+export function reviewPullRequest (prInfo) {
   return (dispatch, getState) => {
-    dispatch(doc.handleChange('mergeCommitID', data));
-    axios.post('/api/doc/reviewPullRequest', {commitID: data})
+    dispatch(doc.handleChange('merge_details', prInfo));
+    axios.post('/api/doc/reviewPullRequest', {commitID: prInfo.commitID})
     .then(function(response) {
       response = response.data
       dispatch(doc.handleChange('originContent', response.originContent));

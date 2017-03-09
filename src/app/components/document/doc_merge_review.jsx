@@ -39,9 +39,9 @@ class DocMergeReview extends React.Component {
       return (
         <div>
           <div className="row">
-            <div className="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">
+            <div className="col-sm-12 col-md-10 col-lg-8 col-centered">
               <div className="unified-container">
-                <div className="unified-title mb10">Master document</div>
+                <div className="unified-title mb10">{this.props.merge.mergeDetails.username}’s proposed edits</div>
                 {this.editMode()}
               </div>
             </div>
@@ -51,11 +51,11 @@ class DocMergeReview extends React.Component {
     } else {
       return (
         <div>
-          <div className="split-master">
+          <div className="split-master hidden-xs hidden-sm col-md-6">
             <div className="split-title mb10">Master document</div>
-            <div className="split-document split-document-L" dangerouslySetInnerHTML={{'__html': this.props.doc.masterHtml}}></div>
-          </div><div className="split-changes">
-            <div className="split-title mb10">franklinjjeng’s changes</div>
+            <div className="master-edits" dangerouslySetInnerHTML={{'__html': this.props.doc.masterHtml}}></div>
+          </div><div className="split-changes col-md-6">
+            <div className="split-title mb10">{this.props.merge.mergeDetails.username}’s proposed edits</div>
             {this.editMode()}
           </div>
         </div>
@@ -70,7 +70,7 @@ class DocMergeReview extends React.Component {
       )
     } else {
       return (
-        <div className="split-document" dangerouslySetInnerHTML={{'__html': this.props.merge.diffHtml}}></div>
+        <div className="proposed-edits" dangerouslySetInnerHTML={{'__html': this.props.merge.diffHtml}}></div>
       )
     }
   }

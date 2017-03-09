@@ -10,6 +10,8 @@ import MenuItem from 'react-bootstrap/lib/MenuItem';
 
 // Components
 import MergeReview from './doc_merge_review.jsx';
+import Tooltip from 'react-bootstrap/lib/Tooltip';
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 // Store properties
 import * as doc from '../../actions/docActions.jsx';
@@ -26,6 +28,7 @@ export class Doc_merge extends React.Component {
     this.editMerge = this.editMerge.bind(this);
     this.mergeRequestList = this.mergeRequestList.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.addTooltip = this.addTooltip.bind(this);
   }
 
   componentWillMount() {    
@@ -75,6 +78,11 @@ export class Doc_merge extends React.Component {
     this.props.dispatch(doc.handleChange(e.target.name, e.target.value));
   }
 
+  addTooltip(text) {
+    return (
+      <Tooltip id="tooltip">{text}</Tooltip>
+    );
+  }
 
   commentBox() {
     if (this.props.docSummary.reviewChanges.acceptComments) {
@@ -109,28 +117,29 @@ export class Doc_merge extends React.Component {
       <div className="doc-merge mt10 mb10">
         <div className="row">
           <div className="col-sm-12">
-            <div className="row title-container mt10">
-              <div className="col-sm-12">
-                <div className="doc-merge-details">
-                  <button onClick={this.mergeRequestList}>Return to list</button>
-                  <p>franklinjjeng wants to merge changes into this document : “Adding results section with data analysis”</p>
-                </div>
-              </div>  
-            </div>
-            <div className="row actions-container mt15">
+            <div className="row actions-container mt10">
               <div className="col-sm-12">
                 <div className="merge-actions text-center">
                   <div className="row">
-                    <div className="col-sm-3 text-left">
-                      <p>3 changes in this merge</p>
+                    <div className="col-md-6 text-left">
+                      <OverlayTrigger placement="top" overlay={this.addTooltip('Back to edit requests')}>
+                        <span onClick={this.mergeRequestList} className="back-to-requests">Edit requests</span>
+                      </OverlayTrigger>
+                      <span className="merge-request-details ml10"><i class="fa fa-angle-right mr5" aria-hidden="true"></i> {this.props.merge.mergeDetails.username}<span> wants to </span>{this.props.merge.mergeDetails.collaboratorMessage}</span>
                     </div>
-                    <div className="col-sm-9 text-right">
-                      <ButtonGroup className="mr10">
-                        <Button className={(this.props.docSummary.mergeSplitView === 'split') ? 'radioActive' : ''} onClick={this.switchSplitOrUnified} value="split" bsSize="small">Split</Button>
-                        <Button className={(this.props.docSummary.mergeSplitView === 'unified') ? 'radioActive' : ''} onClick={this.switchSplitOrUnified} value="unified" bsSize="small">Unified</Button>
+                    <div className="col-md-6 text-right merge-review-actions">
+                      <ButtonGroup className="mr10 view-toggle">
+                        <OverlayTrigger className="hidden-xs hidden-sm" placement="top" overlay={this.addTooltip('Split view')}>
+                          <Button className={(this.props.docSummary.mergeSplitView === 'split') ? 'radioActive hidden-xs hidden-sm' : 'hidden-xs hidden-sm'} onClick={this.switchSplitOrUnified} value="split" bsSize="small">Split</Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger placement="top" overlay={this.addTooltip('Unified view')}>
+                          <Button className={(this.props.docSummary.mergeSplitView === 'unified') ? 'radioActive' : ''} onClick={this.switchSplitOrUnified} value="unified" bsSize="small">Unified</Button>
+                        </OverlayTrigger>
                       </ButtonGroup>
                       <ButtonGroup className="mr10">
-                        <Button onClick={this.editMerge} bsSize="small"><i className="fa fa-pencil"></i></Button>
+                        <OverlayTrigger placement="top" overlay={this.addTooltip('Modify this edit')}>
+                          <Button onClick={this.editMerge} bsSize="small"><i className="fa fa-pencil"></i></Button>
+                        </OverlayTrigger>
                       </ButtonGroup>
                       <DropdownButton onSelect={this.reviewChanges} bsSize="small" title="Review changes" id="review-merge">
                         <MenuItem eventKey="acceptQuick" name="acceptQuick" onClick={this.submitMergeComment}>Quick Accept</MenuItem>

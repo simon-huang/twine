@@ -120,7 +120,7 @@ export class Doc extends React.Component {
                     <Tab title="Document" eventKey="document" >
                       <DocDetails />
                     </Tab>
-                    <Tab title={<div>Merge Requests <div className="notifications-merge-req ml5"><span>{this.props.doc.pullRequests.length}</span></div></div>} eventKey="merge">
+                    <Tab title={<div>Edit Requests <div className="notifications-merge-req ml5"><span>{this.props.doc.pullRequests.length}</span></div></div>} eventKey="merge">
                       <DocMergeView />
                     </Tab>
                   {/*<Tab title="History" eventKey="history">

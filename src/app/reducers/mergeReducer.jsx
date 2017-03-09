@@ -10,6 +10,7 @@ export default function reducer(state = {
   originHtml: '',
   ownerMergeMessage: '',
   mergeCommitID: '',
+  mergeDetails: {},
   error: null
 }, action) {
 
@@ -51,10 +52,11 @@ export default function reducer(state = {
         ownerMergeMessage: action.payload
       }
     }
-    case "EDIT_MERGECOMMITID": {
+    case "EDIT_MERGE_DETAILS": {
       return {
         ...state,
-        mergeCommitID: action.payload
+        mergeCommitID: action.payload.commitID,
+        mergeDetails: action.payload
       }
     }
     case "TOGGLE_DISPLAYMERGEREQUEST": {
