@@ -31,11 +31,17 @@ export class Explore extends React.Component {
       return <ProgressBar />
     } else {
       return (
-        <div className="mt20 container explore-documents">
-          <h1>Explore</h1>
-          <hr/>
-          {this.props.allDoc.allDocuments.map((docs, i) => (
-            <ExploreDocuments key={i} docData={docs} />))}
+        <div>
+          <div className="full-width-container">
+            <div className="container pt30 pb30">
+              <h1 className="white">Explore</h1>
+              <h4 className="white mt5">Twine is a hub where writers can share their work with the world and solicit feedback, while others can fork the story and make their own variation. Explore the many researchers, authors, and professionals using Twine for their work.</h4>
+            </div>
+          </div>
+          <div className="mt30 container explore-documents">
+            {this.props.allDoc.allDocuments.map((docs, i) => (
+              <ExploreDocuments key={i} docData={docs} />))}
+          </div>
         </div>
       )
     }

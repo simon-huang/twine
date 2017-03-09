@@ -2,7 +2,7 @@
 /*========== STYLE RESET ===========*/
 /*==================================*/
 
-html, body, div, span, applet, object, iframe,
+/*html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -20,7 +20,7 @@ time, mark, audio, video {
   border: 0;
   vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
   display: block;
@@ -46,13 +46,13 @@ table {
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px white inset;
-}
+}*/
 
 /*==================================*/
 /*============= Fonts ==============*/
 /*==================================*/
 
-html, body, div, span, applet, object, iframe, p, 
+/*html, body, div, span, applet, object, iframe, p, 
 blockquote, pre, a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -79,7 +79,7 @@ h2 { font-size: 35px; line-height: 42px; }
 h3 { font-size: 25px; line-height: 30px; }
 h4 { font-size: 18px; line-height: 24px; }
 h5 { font-size: 16px; line-height: 22px; }
-h6 { font-size: 14px; line-height: 20px; }
+h6 { font-size: 14px; line-height: 20px; }*/
 
 a:hover {
   cursor: pointer;
@@ -119,7 +119,8 @@ a:hover {
 .notifications-merge-req span {
   color: #6D6D6D;
   vertical-align: middle;
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 20px;
 }
 
 /*==================================*/
@@ -214,6 +215,53 @@ a:hover {
 /*============ Styling =============*/
 /*==================================*/
 
+.full-width-container {
+  position: relative;
+  left: 0;
+  width: 100%;
+  background: -webkit-linear-gradient(148deg, #d308e0, #5400ff);
+}
+
+.open-merge-icon i {
+  font-size: 12px;
+  color: #37B600;
+}
+
+.merge-req-title,
+.open-merge-tag,
+.open-merge-icon {
+  vertical-align: middle;
+}
+
+.merge-req-title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+}
+
+.merge-req-title:hover,
+.merge-req-title:focus {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.open-merge-tag {
+  border-radius: 3px;
+  background: #E4E4E4;
+  padding: 4px 8px;
+  color: #3F3F3F;
+  font-size: 11px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.open-merge-author {
+  font-size: 14px;
+  color: #818181;
+  padding-left: 24px;
+}
+
+
 .breadcrumb {
   background: transparent;
   padding: 0px;
@@ -239,7 +287,7 @@ a:hover {
 }
 
 .app-body {
-  min-height: 90vh;
+  min-height: 100vh;
 }
 
 .form-control {
@@ -320,6 +368,50 @@ a:hover {
   vertical-align: middle
 }
 
+.explore-plain-text {
+  font-size: 18px;
+  line-height: 24px;
+  vertical-align: middle;
+}
+
+.explore-avatar {
+  width: 50px;
+}
+
+.col-explore-docs {
+  float: left;
+  width: 94%;
+  position: relative;
+  min-height: 1px;
+  padding: 0 15px;
+}
+
+.col-explore-avatar {
+  float: left;
+  width: 6%;
+  position: relative;
+  min-height: 1px;
+  padding: 0 15px;
+}
+
+@media (max-width: 992px) {
+  .col-explore-docs {
+    width: 90%;
+  }
+  .col-explore-avatar {
+    width: 10%;
+  }
+}
+
+@media (max-width: 768px) {
+  .col-explore-docs {
+    width: 100%;
+  }
+  .col-explore-avatar {
+    display: none;
+  }
+}
+
 .doc-list-title:hover,
 .doc-list-title:focus {
   color: #2A97FF;
@@ -365,7 +457,7 @@ a:hover {
 
 .home-page {
   position: relative;
-  z-index: -1;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
@@ -452,7 +544,7 @@ a:hover {
 .btn-purple:active {
   cursor: pointer;
   background-color: #520ACB;
-  color: #333333;
+  color: #fff;
   text-decoration: none;
   outline: none;
 }
@@ -568,45 +660,7 @@ a:hover {
   background-color: #F9F9F9;
   padding: 15px 10px;
   z-index: 1;
-}
-
-.split-master,
-.split-changes {
-  display: inline-block;
-  width: 50%;
-  margin: 0;
-  padding: 0;
-}
-
-.split-master {
-  float: left;
-}
-
-.split-title,
-.unified-title {
-  display: block;
-  font-size: 12px;
-  color: #818181;
-  font-weight: 600;
-}
-
-.split-document {
-  background-color: white;
-  border: 1px solid #BABABA;
-  padding: 30px 40px;
-  width: 560px;
-  height: 725px;
-}
-
-.split-document-L {
-  border-right: none; 
-}
-
-.unified-document {
-  background-color: white;
-  border: 1px solid #BABABA;
-  padding: 30px 40px;
-  height: 1056px;
+  overflow: auto;
 }
 
 .doc-editor {
@@ -677,6 +731,7 @@ a:hover {
 
 .navbar {
   margin-bottom: 0px;
+  z-index: 10000;
 }
 
 .navbar li a:focus {
@@ -768,36 +823,141 @@ a:hover {
 /*======== Merge Styling ===========*/
 /*==================================*/
 
-.text-addition {
-  background-color: rgba(1, 187, 72, 0.49);
+.back-to-requests,
+.merge-request-details {
+  font-size: 16px;
+  line-height: 30px;
+  font-weight: 600;
+  color: #2A97FF;
 }
 
-.text-deletion {
-  background-color: rgba(201, 2, 66, 0.5);
-  color: black;
+.merge-request-details {
+  color: #545454;
 }
 
-.strikethrough {
-  text-decoration: line-through;
-  color: rgba(201, 2, 66, 0.5);
+.back-to-requests:hover,
+.back-to-requests:focus {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.merge-request-details > span {
+  font-weight: 400;
+}
+
+.view-toggle button {
+  width: 80px;
+}
+
+.hideTooltip {
+  display: none;
+}
+
+.proposed-edits,
+.master-edits {
+  background-color: white;
+  border: 1px solid #BABABA;
+  padding: 30px 40px;
+  height: 725px;
+}
+
+.master-edits {
+  border-right: none;
+}
+
+.unified-container .proposed-edits {
+  height: 1000px;
+}
+
+.split-master,
+.split-changes {
+  margin: 0;
+  padding: 0;
+}
+
+.split-title,
+.unified-title {
+  display: block;
+  font-size: 12px;
+  color: #818181;
+  font-weight: 600;
+}
+
+.merge-review-actions .dropdown-menu {
+  left: inherit;
+  right: 0;
+  border: 1px solid #2D2D2D;
+  border-radius: 3px;
+  padding: 0px;
+}
+
+.merge-review-actions .dropdown-menu a {
+  padding: 5px 10px;
+}
+
+.merge-review-actions .dropdown-menu a:hover,
+.merge-review-actions .dropdown-menu a:focus {
+  background: #5F00FF;
+  color: #fff;
+  outline: none;
+}
+
+ins {
+  background-color: rgba(1, 187, 72, 0.5);
+  text-decoration: none;
+}
+
+del {
+  background-color: rgba(201, 2, 66, 0.4);
+  text-decoration: none;
+  color: rgba(201, 2, 66, 0.6);
 }
 
 /*==================================*/
 /*======== Home Page Style ==========*/
 /*==================================*/
 
-.fold_one {
+.fold-one {
   background: -webkit-linear-gradient(148deg, #02f0ff, #5400ff);
   padding-top: 100px;
 }
-.fold_one h1,
-.fold_one h4 {
+.fold-one h1,
+.fold-one h4 {
   color: white;
+}
+
+.fold-two {
+  background: white;
+}
+
+.btn-explore {
+  background-color: #fff;
+  border-radius: 3px;
+  border: 2px solid #520ACB;
+  padding: 15px 45px;
+  color: #520ACB;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.btn-explore:hover,
+.btn-explore:focus,
+.btn-explore:active {
+  cursor: pointer;
+  background-color: #520ACB;
+  color: #fff;
+  text-decoration: none;
+  outline: none;
 }
 
 /*==================================*/
 /*============ Spacing =============*/
 /*==================================*/
+
+.pl0 {padding-left: 0px;}
+.pr0 {padding-right: 0px;}
+.ml0 {padding-left: 0px;}
+.mr0 {padding-right: 0px;}
 
 .pt5 {padding-top: 5px;}
 .pt10 {padding-top: 10px;}
