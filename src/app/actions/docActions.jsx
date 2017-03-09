@@ -10,6 +10,11 @@ export function handleChange(name, value) {
   }
 }
 
+export function toggleSideBar() {
+  return {
+    type: "TOGGLE_SIDE_BAR"
+  }
+}
 
 export function retrieveSpecificDoc (username, docID) {
   return function(dispatch, getState) {

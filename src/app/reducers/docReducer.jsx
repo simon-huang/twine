@@ -18,6 +18,7 @@ export default function reducer(state = {
   editMode: false,
   unsavedChangesModal: false,
   nextRouteAfterEdits: '',
+  docSideBar: false,
   error: null
 }, action) {
 
@@ -123,6 +124,13 @@ export default function reducer(state = {
         ...state,
         editsObject: action.payload.editorState,
         editsHtml: action.payload.editsHtml
+      }
+    }
+
+    case "TOGGLE_SIDE_BAR": {
+      return {
+        ...state,
+        docSideBar: !state.docSideBar
       }
     }
 
