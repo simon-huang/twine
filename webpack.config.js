@@ -8,7 +8,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, 'src/app'),
